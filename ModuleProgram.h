@@ -4,6 +4,8 @@
 #include "Module.h"
 #include "Application.h"
 
+#include "glew/include/GL/glew.h"
+
 class ModuleProgram : public Module {
 	
 public:
@@ -15,6 +17,12 @@ public:
 	update_status Update();
 	update_status PostUpdate();
 	bool CleanUp();
+	const char* loadFile(const char* file_name);
+
+public:
+	GLuint vertex_shader;
+	GLuint fragment_shader;
+	GLuint shader_program;
 
 };
 

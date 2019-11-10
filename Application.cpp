@@ -3,7 +3,7 @@
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "ModuleInput.h"
-
+#include "ModuleProgram.h"
 using namespace std;
 
 Application::Application()
@@ -12,6 +12,7 @@ Application::Application()
 	modules.push_back(window = new ModuleWindow());
 	modules.push_back(renderer = new ModuleRender());
 	modules.push_back(input = new ModuleInput());
+	modules.push_back(program = new ModuleProgram());
 }
 
 Application::~Application()
