@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
+#include "glew/include/GL/glew.h"
 #include "SDL.h"
 
 ModuleRender::ModuleRender()
@@ -18,7 +19,7 @@ bool ModuleRender::Init()
 {
 	LOG("Creating Renderer context");
 
-
+	glewInit();
 	return true;
 }
 
