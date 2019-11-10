@@ -9,7 +9,7 @@ class ModuleWindow;
 class ModuleTextures;
 class ModuleInput;
 class ModuleProgram;
-class ModuleRenderExercise;
+class ModuleRenderExercice;
 
 class Application
 {
@@ -27,7 +27,7 @@ public:
 	ModuleWindow* window = nullptr;
 	ModuleInput* input = nullptr;
 	ModuleProgram* program = nullptr;
-
+	ModuleRenderExercice* renderExercice = nullptr;
 private:
 
 	std::list<Module*> modules;
