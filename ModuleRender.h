@@ -2,6 +2,9 @@
 #include "Module.h"
 #include "Globals.h"
 
+#include "glew/include/GL/glew.h"
+#include "SDL.h"
+
 struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;
@@ -18,7 +21,9 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 	void WindowResized(unsigned width, unsigned height);
-
+	SDL_GLContext glcontext;
+	GLuint vbo;
 private:
 	void* context;
+
 };
