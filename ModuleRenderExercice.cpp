@@ -8,6 +8,7 @@
 #include "MathGeoLib/include/Math/float4x4.h"
 #include "MathGeoLib/include/Math/float3x3.h"
 #include "MathGeoLib/include/Geometry/Frustum.h"
+#include "DevIL/include/IL/il.h"
 #include "SDL.h"
 
 ModuleRenderExercice::ModuleRenderExercice()
@@ -93,8 +94,8 @@ bool ModuleRenderExercice::Init()
 	glGenBuffers(1, &ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo); 
+	ilInit();
 	return true;
 }
 
