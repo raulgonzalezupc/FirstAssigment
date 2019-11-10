@@ -21,3 +21,4 @@ enum update_status
 #define FRAGMENT_SHADER_PATH "./default.fs"
 #define VSYNC true
 #define TITLE "Super Awesome Engine"
+#define PI 3.1415

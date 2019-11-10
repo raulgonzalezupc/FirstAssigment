@@ -3,6 +3,7 @@
 #include "Module.h"
 #include "Globals.h"
 
+#include "MathGeoLib/include/Math/float4x4.h"
 #include "glew/include/GL/glew.h"
 #include "SDL.h"
 
@@ -26,6 +27,10 @@ public:
 public:
 	SDL_GLContext glcontext;
 	GLuint vbo;
+	GLuint ebo;
+	float4x4 proj;
+	float4x4 view;
+	float4x4 model;
 private:
 	void* context;
 
