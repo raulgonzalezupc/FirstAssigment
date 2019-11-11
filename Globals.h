@@ -22,3 +22,4 @@ enum update_status
 #define VSYNC true
 #define TITLE "Super Awesome Engine"
 #define PI 3.1415
+#define IMAGE_NAME "lena.png"

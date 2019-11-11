@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "Globals.h"
 #include "ModuleProgram.h"
+#include "ModuleTexture.h"
 #include "glew/include/GL/glew.h"
 #include "MathGeoLib/include/Math/float4.h"
 #include "MathGeoLib/include/Math/float3.h"
@@ -30,6 +31,10 @@ bool ModuleRenderExercice::Init()
 	 0.5f, -0.5f, 0.0f,  // bottom right
 	-0.5f, -0.5f, 0.0f,  // bottom left
 	-0.5f,  0.5f, 0.0f,   // top left 
+	 0.0F, 0.0F,
+	 1.0F, 0.0F,
+	 0.0F, 1.0F,
+	 1.0F, 1.0F
 	};
 	unsigned int indices[] = {  // note that we start from 0!
 		0, 1, 3,   // first triangle
@@ -86,6 +91,7 @@ bool ModuleRenderExercice::Init()
 	buffer_data[9] = finalVertex3.x;
 	buffer_data[10] = finalVertex3.y;
 	buffer_data[11] = finalVertex3.z;
+
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(buffer_data), buffer_data, GL_STATIC_DRAW);
@@ -95,7 +101,8 @@ bool ModuleRenderExercice::Init()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo); 
-	ilInit();
+
+	
 	return true;
 }
 
@@ -113,9 +120,24 @@ update_status ModuleRenderExercice::PreUpdate()
 
 update_status ModuleRenderExercice::Update()
 {
+	glLineWidth(1.0f);
+	float d = 200.0f;
+	glBegin(GL_LINES);
+	for (float i = -d; i <= d; i += 1.0f)
+	{
+		glVertex3f(i, 0.0f, -d);
+		glVertex3f(i, 0.0f, d);
+		glVertex3f(-d, 0.0f, i);
+		glVertex3f(d, 0.0f, i);
+	}
+	glEnd();
+	glEnableVertexAttribArray(0); // attribute 0  
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0); //change if triangle
-	glEnableVertexAttribArray(0); // attribute 0      
+	glEnableVertexAttribArray(1); // attribute 0  
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, App->texture->texture);
+	glUniform1i(glGetUniformLocation(App->program->shader_program, "texture0"), 0);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * 4));
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);

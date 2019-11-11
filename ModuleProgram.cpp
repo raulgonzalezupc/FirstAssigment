@@ -39,10 +39,10 @@ bool ModuleProgram::Init()
 	glCompileShader(fragment_shader);
 	GLint statusF = NULL;
 	char charF[512];
-	glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &statusF);
+	glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &statusF);
 	if (!statusF)
 	{
-		glGetShaderInfoLog(vertex_shader, 512, NULL, charF);
+		glGetShaderInfoLog(fragment_shader, 512, NULL, charF);
 		LOG(charF);
 	}
 
@@ -67,6 +67,14 @@ update_status ModuleProgram::Update()
 
 	//Linking shader program
 	glLinkProgram(shader_program);
+	GLint statusP = NULL;
+	char charP[512];
+	glGetProgramiv(shader_program, GL_LINK_STATUS, &statusP);
+	if (!statusP)
+	{
+		glGetProgramInfoLog(shader_program, 512, NULL, charP);
+		LOG(charP);
+	}
 
 	return UPDATE_CONTINUE;
 }
