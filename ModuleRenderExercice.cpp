@@ -58,7 +58,7 @@ bool ModuleRenderExercice::Init()
 
 	//setting up our proj
 	proj = frustum.ProjectionMatrix();
-	model = float4x4::FromTRS(float3(0.0F, 0.0F, -4.0F), float3x3::RotateY(PI / 4.0F), float3(1.0F, 1.0F, 1.0F));
+	model = float4x4::FromTRS(float3(0.0F, 0.0F, -4.0F), float3x3::RotateX(PI / 4.0F), float3(1.0F, 1.0F, 1.0F));
 	view = float4x4::LookAt(float3(0.0F, 0.0F, -1.0F), float3(0.0F, 0.0F, -1.0F), float3(0.0F, 1.0F, 0.0F), float3(0.0F, 1.0F, 0.0F));
 	float4x4 transform = proj * view * float4x4(model);
 
