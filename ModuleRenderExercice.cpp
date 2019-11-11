@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "Globals.h"
 #include "ModuleProgram.h"
+#include "ModuleWindow.h"
 #include "ModuleTexture.h"
 #include "glew/include/GL/glew.h"
 #include "MathGeoLib/include/Math/float4.h"
@@ -31,10 +32,10 @@ bool ModuleRenderExercice::Init()
 	 0.5f, -0.5f, 0.0f,  // bottom right
 	-0.5f, -0.5f, 0.0f,  // bottom left
 	-0.5f,  0.5f, 0.0f,   // top left 
-	 0.0F, 0.0F,
+	 1.0F, 1.0F,
 	 1.0F, 0.0F,
-	 0.0F, 1.0F,
-	 1.0F, 1.0F
+	 0.0F, 0.0F,
+	 0.0F, 1.0F
 	};
 	unsigned int indices[] = {  // note that we start from 0!
 		0, 1, 3,   // first triangle
@@ -47,11 +48,11 @@ bool ModuleRenderExercice::Init()
 	Frustum frustum;
 	frustum.type = FrustumType::PerspectiveFrustum;
 
-	frustum.pos = float3::zero;
+	frustum.pos = float3::unitX;
 	frustum.front = -float3::unitZ;
 	frustum.up = float3::unitY;
 
-	frustum.nearPlaneDistance = 0.1F;
+	frustum.nearPlaneDistance = 1.0F;
 	frustum.farPlaneDistance = 100.0F;
 	frustum.verticalFov = PI / 4.0F;
 	frustum.horizontalFov = 2.0F*atanf(tanf(frustum.verticalFov*0.5F)*aspect);
@@ -101,8 +102,6 @@ bool ModuleRenderExercice::Init()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo); 
-
-	
 	return true;
 }
 
@@ -131,6 +130,7 @@ update_status ModuleRenderExercice::Update()
 		glVertex3f(d, 0.0f, i);
 	}
 	glEnd();
+
 	glEnableVertexAttribArray(0); // attribute 0  
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0); //change if triangle
@@ -141,6 +141,7 @@ update_status ModuleRenderExercice::Update()
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * 4));
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	
 	return UPDATE_CONTINUE;
 }
 

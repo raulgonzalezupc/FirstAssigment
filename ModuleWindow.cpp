@@ -25,17 +25,19 @@ bool ModuleWindow::Init()
 	else
 	{
 		//Create window
-		int width = SCREEN_WIDTH;
-		int height = SCREEN_HEIGHT;
 		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL;
 
 		if(FULLSCREEN == true)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN;
 		}
+		if (RESIZE)
+		{
+			flags |= SDL_WINDOW_RESIZABLE;
+		}
 
 		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
-
+		windowID = SDL_GetWindowID(window);
 		if(window == NULL)
 		{
 			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
@@ -51,7 +53,27 @@ bool ModuleWindow::Init()
 
 	return ret;
 }
-
+update_status ModuleWindow::Update() 
+{
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		switch (event.type) {
+			case SDL_WINDOWEVENT: {
+				if (event.window.windowID == windowID) {
+					switch (event.window.event) {
+						case SDL_WINDOWEVENT_SIZE_CHANGED: {
+							width = event.window.data1;
+							height = event.window.data2;
+							LOG("%d",width);
+						}break;
+					}
+				}
+			}
+		}
+		
+	}
+	return UPDATE_CONTINUE;
+}
 // Called before quitting
 bool ModuleWindow::CleanUp()
 {
