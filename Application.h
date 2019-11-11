@@ -11,6 +11,7 @@ class ModuleInput;
 class ModuleProgram;
 class ModuleRenderExercice;
 class ModuleTexture;
+class ModuleCamera;
 
 class Application
 {
@@ -30,6 +31,7 @@ public:
 	ModuleProgram* program = nullptr;
 	ModuleRenderExercice* renderExercice = nullptr;
 	ModuleTexture* texture = nullptr;
+	ModuleCamera* camera = nullptr;
 private:
 
 	std::list<Module*> modules;
