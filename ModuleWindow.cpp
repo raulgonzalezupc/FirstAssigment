@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
-
+#include "MathGeoLib.h"
 ModuleWindow::ModuleWindow()
 {
 }
@@ -64,9 +64,18 @@ update_status ModuleWindow::Update()
 					switch (event.window.event) {
 						case SDL_WINDOWEVENT_SIZE_CHANGED: 
 							width = event.window.data1;	height = event.window.data2;
-							LOG("%d",width);
 							App->camera->SetAspectRatio(width/height);
 						break;
+					}
+				}
+			break;
+			case SDL_MOUSEMOTION:
+				if (event.motion.state & SDL_BUTTON_RMASK) { //if user press right click
+					if (math::Abs(event.motion.xrel) > 1.5) {
+						App->camera->MouseXMotion(event.motion.xrel); //passing the relative motion in the X direction
+					}
+					if (math::Abs(event.motion.yrel) > 1.5) {
+						App->camera->MouseYMotion(event.motion.yrel); //passing the relative motion in the Y direction
 					}
 				}
 			break;

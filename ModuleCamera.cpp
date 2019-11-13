@@ -33,7 +33,7 @@ bool ModuleCamera::Init()
 
 	//setting up our proj
 	proj = frustum.ProjectionMatrix();
-	model = float4x4::FromTRS(float3(0.0F, 0.0F, -4.0F), float3x3::RotateX(PI / 4.0F), float3(1.0F, 1.0F, 1.0F));
+	model = float4x4::FromTRS(float3(0.0F, 0.0F, -4.0F), float3x3::RotateX(0.0F), float3(1.0F, 1.0F, 1.0F));
 	view = frustum.ViewMatrix();
 	float4x4 transform = proj * view * float4x4(model);
 
@@ -156,5 +156,51 @@ void ModuleCamera::MoveRight()
 	proj = frustum.ProjectionMatrix();
 	view = frustum.ViewMatrix();
 
+}
+
+void ModuleCamera::MouseXMotion(const float x_motion)
+{
+	bool correct = false;
+	if (!correct)
+	{
+		const float adjusted_angle = x_motion * -0.01f;
+		float3x3 rotation_matrix = float3x3::RotateY(adjusted_angle);
+		frustum.up = rotation_matrix * frustum.up;
+		frustum.front = rotation_matrix * frustum.front;
+		frustum.pos = rotation_matrix * frustum.pos;
+		proj = frustum.ProjectionMatrix();
+		view = frustum.ViewMatrix();
+	}
+	else {
+		const float adjusted_angle = x_motion * -0.01f;
+		float3x3 rotation_matrix = float3x3::RotateY(adjusted_angle);
+		frustum.up = rotation_matrix * frustum.up;
+		frustum.front = rotation_matrix * frustum.front;
+		proj = frustum.ProjectionMatrix();
+		view = frustum.ViewMatrix();
+	}
+}
+void ModuleCamera::MouseYMotion(const float y_motion)
+{
+	bool correct = false;
+	if (correct)
+	{
+		const float adjusted_angle = y_motion * -0.1f;
+		float3x3 rotation_matrix = float3x3::RotateX(adjusted_angle);
+		frustum.up = rotation_matrix * frustum.up;
+		frustum.front = rotation_matrix * frustum.front;
+		frustum.pos = rotation_matrix * frustum.pos;
+		proj = frustum.ProjectionMatrix();
+		view = frustum.ViewMatrix();
+	}
+	else {
+		const float adjusted_angle = y_motion * -0.1F;
+		float3x3 rotation_matrix = float3x3::RotateX(adjusted_angle);
+		frustum.up = rotation_matrix * frustum.up;
+		frustum.front = rotation_matrix * frustum.front;
+		proj = frustum.ProjectionMatrix();
+		view = frustum.ViewMatrix();
+
+	}
 }
 

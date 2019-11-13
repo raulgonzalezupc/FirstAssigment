@@ -33,12 +33,16 @@ public:
 	void MoveBackwards();
 	void MoveLeft();
 	void MoveRight();
+	void MouseXMotion(const float x_motion);
+	void MouseYMotion(const float y_motion);
 public:
 	Frustum frustum;
 	float aspect;
 	float4x4 proj;
 	float4x4 view;
 	float4x4 model;
+	float yaw = -90.0f;
+	float pitch = 0;
 
 public:
 	float3 new_camera_pos;
