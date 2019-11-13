@@ -10,8 +10,8 @@ class Application;
 class ModuleWindow : public Module
 {
 public:
-	int width = 640;
-	int height = 480;
+	float width;
+	float height;
 	ModuleWindow();
 	
 	// Destructor

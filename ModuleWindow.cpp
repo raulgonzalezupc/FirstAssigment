@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
+#include "ModuleCamera.h"
 
 ModuleWindow::ModuleWindow()
 {
@@ -36,7 +37,7 @@ bool ModuleWindow::Init()
 			flags |= SDL_WINDOW_RESIZABLE;
 		}
 
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, flags);
 		windowID = SDL_GetWindowID(window);
 		if(window == NULL)
 		{
@@ -58,17 +59,18 @@ update_status ModuleWindow::Update()
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
-			case SDL_WINDOWEVENT: {
+			case SDL_WINDOWEVENT: 
 				if (event.window.windowID == windowID) {
 					switch (event.window.event) {
-						case SDL_WINDOWEVENT_SIZE_CHANGED: {
-							width = event.window.data1;
-							height = event.window.data2;
+						case SDL_WINDOWEVENT_SIZE_CHANGED: 
+							width = event.window.data1;	height = event.window.data2;
 							LOG("%d",width);
-						}break;
+							App->camera->SetAspectRatio(width/height);
+						break;
 					}
 				}
-			}
+			break;
+
 		}
 		
 	}

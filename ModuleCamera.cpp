@@ -19,9 +19,9 @@ ModuleCamera::~ModuleCamera()
 bool ModuleCamera::Init()
 {
 	
-	Frustum frustum;
+	
 	frustum.type = FrustumType::PerspectiveFrustum;
-
+	aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
 	frustum.pos = float3::unitX;
 	frustum.front = -float3::unitZ;
 	frustum.up = float3::unitY;
@@ -34,7 +34,7 @@ bool ModuleCamera::Init()
 	//setting up our proj
 	proj = frustum.ProjectionMatrix();
 	model = float4x4::FromTRS(float3(0.0F, 0.0F, -4.0F), float3x3::RotateX(PI / 4.0F), float3(1.0F, 1.0F, 1.0F));
-	view = float4x4::LookAt(float3(0.0F, 0.0F, -1.0F), float3(0.0F, 0.0F, -1.0F), float3(0.0F, 1.0F, 0.0F), float3(0.0F, 1.0F, 0.0F));
+	view = frustum.ViewMatrix();
 	float4x4 transform = proj * view * float4x4(model);
 
 
@@ -89,3 +89,72 @@ bool ModuleCamera::CleanUp()
 {
 	return true;
 }
+
+void ModuleCamera::SetAspectRatio(const float aspect_ratio)
+{
+	aspect = aspect_ratio;
+	LOG("Aspect ratio: %f",aspect);
+	frustum.horizontalFov = 2.0F*atanf(tanf(frustum.verticalFov*0.5F)*aspect);
+	proj = frustum.ProjectionMatrix();
+}
+
+void ModuleCamera::setFOV(const float fov)
+{
+	frustum.verticalFov = fov;
+	frustum.horizontalFov = 2.0F*atanf(tanf(frustum.verticalFov*0.5F)*aspect);
+}
+
+void ModuleCamera::Position(const float3 position)
+{
+	frustum.pos = position;
+	proj = frustum.ProjectionMatrix();
+}
+
+
+
+void ModuleCamera::MoveUp()
+{
+	new_camera_pos = frustum.pos;
+	new_camera_pos.y = new_camera_pos.y + distance;
+	frustum.pos = new_camera_pos;
+	proj = frustum.ProjectionMatrix();
+	view = frustum.ViewMatrix();
+}
+void ModuleCamera::MoveDown()
+{
+	new_camera_pos = frustum.pos;
+	new_camera_pos.y = new_camera_pos.y - distance;
+	frustum.pos = new_camera_pos;
+	proj = frustum.ProjectionMatrix();
+	view = frustum.ViewMatrix();
+}
+void ModuleCamera::MoveForward()
+{
+	new_camera_pos = frustum.front;
+	frustum.pos += frustum.front.ScaledToLength(distance);
+	proj = frustum.ProjectionMatrix();
+	view = frustum.ViewMatrix();
+}
+void ModuleCamera::MoveBackwards()
+{
+	new_camera_pos = frustum.front;
+	frustum.pos -= frustum.front.ScaledToLength(distance);
+	proj = frustum.ProjectionMatrix();
+	view = frustum.ViewMatrix();
+}
+
+void ModuleCamera::MoveLeft()
+{
+	frustum.pos -= frustum.WorldRight().ScaledToLength(distance);
+	proj = frustum.ProjectionMatrix();
+	view = frustum.ViewMatrix();
+}
+
+void ModuleCamera::MoveRight()
+{
+	frustum.pos = frustum.pos + frustum.WorldRight().ScaledToLength(distance);
+	proj = frustum.ProjectionMatrix();
+	view = frustum.ViewMatrix();
+
+}
+
