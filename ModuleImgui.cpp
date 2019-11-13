@@ -43,8 +43,30 @@ update_status ModuleImgui::PreUpdate()
 // Called every draw update
 update_status ModuleImgui::Update()
 {
+	//Menu
+	if (ImGui::BeginMainMenuBar())
+	{
+		ImGui::MenuItem("Menu", (const char*)0, &menuButton);
+		ImGui::MenuItem("Console", (const char*)0, &consoleButton);
+		ImGui::MenuItem("About", (const char*)0, &aboutButton);
+		ImGui::MenuItem("FPS", (const char*)0, &fpsButton);
+		ImGui::EndMainMenuBar();
+	}
+	if (fpsButton)
+	{
+		char title[25];
+		char titleMs[25];
+		ImGuiIO& io = ImGui::GetIO();
+		fps.push_back(io.Framerate);
+		fpsms.push_back(1000.0f / io.Framerate);
+		sprintf_s(title, 25, "Framerate %.1f", fps[fps.size() - 1]);
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+		ImGui::PlotHistogram("##Framerate", &fps[0], fps.size(), 0, title, 0.0F, 100.0F, ImVec2(310, 100) );
+		sprintf_s(title, 25, "Miliseconds %.1f", fpsms[fpsms.size() - 1]);
+		ImGui::PlotHistogram("##Miliseconds", &fpsms[0], fpsms.size(), 0, title, 0.0F, 50.0F, ImVec2(310, 100));
 
-	ImGui::ShowTestWindow();
+		//ImGui::ShowMetricsWindow();
+	}
 
 	return UPDATE_CONTINUE;
 }

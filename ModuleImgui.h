@@ -8,6 +8,8 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "imgui/imgui_impl_sdl.h"
+#include <vector>
+using namespace std;
 
 
 class ModuleImgui : public Module
@@ -23,7 +25,15 @@ public:
 	bool CleanUp();
 
 	void ShowMainMenu();
+
+public: 
 	SDL_GLContext imguiglcontext;
+	bool menuButton = false;
+	bool consoleButton = false;
+	bool aboutButton = false;
+	bool fpsButton = false;
+	vector<float> fps;
+	vector<float> fpsms;
 };
 
 #endif
