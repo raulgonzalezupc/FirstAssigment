@@ -3,7 +3,7 @@
 
 #include "Module.h"
 #include "Application.h"
-#include "SDL/include/SDL.h"
+#include "SDL.h"
 
 class Application;
 
@@ -23,6 +23,7 @@ public:
 
 	// Called before quitting
 	bool CleanUp();
+	void ShowWindowUI();
 
 public:
 	//The window we'll be rendering to
@@ -31,6 +32,9 @@ public:
 	
 	//The surface contained by the window
 	SDL_Surface* screen_surface = NULL;
+
+	bool resizable;
+	Uint32 flags;
 };
 
 #endif // __ModuleWindow_H__

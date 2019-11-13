@@ -32,6 +32,7 @@ public:
 	bool consoleButton = false;
 	bool aboutButton = false;
 	bool fpsButton = false;
+	bool windowButton = false;
 	vector<float> fps;
 	vector<float> fpsms;
 };

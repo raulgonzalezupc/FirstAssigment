@@ -3,6 +3,8 @@
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
 #include "MathGeoLib.h"
+#include "imgui/imgui.h"
+#include "glew/include/GL/glew.h"
 ModuleWindow::ModuleWindow()
 {
 }
@@ -15,6 +17,8 @@ ModuleWindow::~ModuleWindow()
 // Called before render is available
 bool ModuleWindow::Init()
 {
+
+	resizable = true;
 	LOG("Init SDL window & surface");
 	bool ret = true;
 
@@ -26,13 +30,13 @@ bool ModuleWindow::Init()
 	else
 	{
 		//Create window
-		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL;
+		flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL;
 
 		if(FULLSCREEN == true)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN;
 		}
-		if (RESIZE)
+		if (resizable)
 		{
 			flags |= SDL_WINDOW_RESIZABLE;
 		}
@@ -101,3 +105,14 @@ bool ModuleWindow::CleanUp()
 	return true;
 }
 
+void ModuleWindow::ShowWindowUI()
+{
+	//ImGui::ShowTestWindow();
+	ImGui::Text("Window Settings:");
+	ImGui::Checkbox("Resizable off:", &resizable); 
+	if (!resizable)
+	{
+		SDL_HideWindow(App->window->window);
+	}
+
+}

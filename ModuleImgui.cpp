@@ -47,6 +47,7 @@ update_status ModuleImgui::Update()
 	if (ImGui::BeginMainMenuBar())
 	{
 		ImGui::MenuItem("Menu", (const char*)0, &menuButton);
+		ImGui::MenuItem("Window", (const char*)0, &windowButton);
 		ImGui::MenuItem("Console", (const char*)0, &consoleButton);
 		ImGui::MenuItem("About", (const char*)0, &aboutButton);
 		ImGui::MenuItem("FPS", (const char*)0, &fpsButton);
@@ -67,7 +68,10 @@ update_status ModuleImgui::Update()
 
 		//ImGui::ShowMetricsWindow();
 	}
-
+	if (windowButton)
+	{
+		App->window->ShowWindowUI();
+	}
 	return UPDATE_CONTINUE;
 }
 
