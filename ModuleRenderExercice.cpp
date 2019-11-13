@@ -60,6 +60,7 @@ update_status ModuleRenderExercice::Update()
 		glVertex3f(d, 0.0f, i);
 	}
 	glEnd();
+
 	glLineWidth(2.0f);
 	glBegin(GL_LINES);
 	// red X
@@ -84,8 +85,8 @@ update_status ModuleRenderExercice::Update()
 
 	glEnableVertexAttribArray(0); // attribute 0  
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0); //change if triangle
-	glEnableVertexAttribArray(1); // attribute 0  
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0); 
+	glEnableVertexAttribArray(1); // attribute 1
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, App->texture->texture);
 	glUniform1i(glGetUniformLocation(App->program->shader_program, "texture0"), 0);

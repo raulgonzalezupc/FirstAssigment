@@ -1,11 +1,15 @@
 #include "ModuleCamera.h"
 #include "Globals.h"
-
+#include "ModuleWindow.h"
 #include "MathGeoLib/include/Math/float4.h"
 #include "MathGeoLib/include/Math/float3.h"
 #include "MathGeoLib/include/Math/float4x4.h"
 #include "MathGeoLib/include/Math/float3x3.h"
 #include "MathGeoLib/include/Geometry/Frustum.h"
+
+
+
+
 ModuleCamera::ModuleCamera()
 {
 
@@ -18,8 +22,7 @@ ModuleCamera::~ModuleCamera()
 
 bool ModuleCamera::Init()
 {
-	
-	
+
 	frustum.type = FrustumType::PerspectiveFrustum;
 	aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
 	frustum.pos = float3::unitX;

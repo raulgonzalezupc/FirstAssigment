@@ -24,7 +24,11 @@ bool ModuleRender::Init()
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
+
+	glEnable(GL_DEBUG_OUTPUT);
+	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	glClearDepth(1.0f);
@@ -48,7 +52,7 @@ bool ModuleRender::Init()
 
 update_status ModuleRender::PreUpdate()
 {
-	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	glViewport(0, 0, App->window->width, App->window->height);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	return UPDATE_CONTINUE;
@@ -57,15 +61,13 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {	
-	SDL_GL_MakeCurrent(App->window->window,glcontext);
-	glViewport(0, 0, App->window->width, App->window->height);
+	//SDL_GL_MakeCurrent(App->window->window,glcontext);
 	
 	return UPDATE_CONTINUE;
 }
 
 update_status ModuleRender::PostUpdate()
 {
-	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }
 
