@@ -9,7 +9,7 @@ class ModuleTimer : public Module {
 
 public:
 	ModuleTimer();
-	~ModuleTimer();
+	virtual ~ModuleTimer();
 
 	bool Init();
 	update_status PreUpdate();
@@ -17,9 +17,12 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 	
-	float StartRealTimeClock() const;
+	float StartRealTimeClock();
+
 	float StartGameClock();
 
+public: 
+	int realTime = NULL;
 
 
 

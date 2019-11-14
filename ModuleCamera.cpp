@@ -154,7 +154,7 @@ void ModuleCamera::MoveLeft()
 
 void ModuleCamera::MoveRight()
 {
-	frustum.pos = frustum.pos + frustum.WorldRight().ScaledToLength(distance);
+	frustum.pos += frustum.WorldRight().ScaledToLength(distance);
 	proj = frustum.ProjectionMatrix();
 	view = frustum.ViewMatrix();
 
@@ -163,10 +163,11 @@ void ModuleCamera::MoveRight()
 void ModuleCamera::MouseXMotion(const float x_motion)
 {
 	bool correct = false;
+	const float angle = x_motion * -0.01f;
 	if (!correct)
 	{
-		const float adjusted_angle = x_motion * -0.01f;
-		float3x3 rotation_matrix = float3x3::RotateY(adjusted_angle);
+		
+		float3x3 rotation_matrix = float3x3::RotateY(angle);
 		frustum.up = rotation_matrix * frustum.up;
 		frustum.front = rotation_matrix * frustum.front;
 		frustum.pos = rotation_matrix * frustum.pos;
@@ -174,8 +175,7 @@ void ModuleCamera::MouseXMotion(const float x_motion)
 		view = frustum.ViewMatrix();
 	}
 	else {
-		const float adjusted_angle = x_motion * -0.01f;
-		float3x3 rotation_matrix = float3x3::RotateY(adjusted_angle);
+		float3x3 rotation_matrix = float3x3::RotateY(angle);
 		frustum.up = rotation_matrix * frustum.up;
 		frustum.front = rotation_matrix * frustum.front;
 		proj = frustum.ProjectionMatrix();
@@ -185,10 +185,11 @@ void ModuleCamera::MouseXMotion(const float x_motion)
 void ModuleCamera::MouseYMotion(const float y_motion)
 {
 	bool correct = false;
+	const float angle = y_motion * -0.1f;
 	if (correct)
 	{
-		const float adjusted_angle = y_motion * -0.1f;
-		float3x3 rotation_matrix = float3x3::RotateX(adjusted_angle);
+		
+		float3x3 rotation_matrix = float3x3::RotateX(angle);
 		frustum.up = rotation_matrix * frustum.up;
 		frustum.front = rotation_matrix * frustum.front;
 		frustum.pos = rotation_matrix * frustum.pos;
@@ -196,8 +197,7 @@ void ModuleCamera::MouseYMotion(const float y_motion)
 		view = frustum.ViewMatrix();
 	}
 	else {
-		const float adjusted_angle = y_motion * -0.1F;
-		float3x3 rotation_matrix = float3x3::RotateX(adjusted_angle);
+		float3x3 rotation_matrix = float3x3::RotateX(angle);
 		frustum.up = rotation_matrix * frustum.up;
 		frustum.front = rotation_matrix * frustum.front;
 		proj = frustum.ProjectionMatrix();

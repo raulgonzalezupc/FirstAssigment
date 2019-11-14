@@ -13,6 +13,7 @@ class ModuleRenderExercice;
 class ModuleTexture;
 class ModuleCamera;
 class ModuleImgui;
+class ModuleTimer;
 
 class Application
 {
@@ -34,6 +35,7 @@ public:
 	ModuleTexture* texture = nullptr;
 	ModuleCamera* camera = nullptr;
 	ModuleImgui* imgui = nullptr;
+	ModuleTimer* timer = nullptr;
 private:
 
 	std::list<Module*> modules;

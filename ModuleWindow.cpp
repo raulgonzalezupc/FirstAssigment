@@ -64,14 +64,12 @@ update_status ModuleWindow::Update()
 	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
 			case SDL_WINDOWEVENT: 
-				if (event.window.windowID == windowID) {
 					switch (event.window.event) {
 						case SDL_WINDOWEVENT_SIZE_CHANGED: 
 							width = event.window.data1;	height = event.window.data2;
 							App->camera->SetAspectRatio(width/height);
 						break;
 					}
-				}
 			break;
 			case SDL_MOUSEMOTION:
 				if (event.motion.state & SDL_BUTTON_RMASK) { //if user press right click

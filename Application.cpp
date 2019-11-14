@@ -8,6 +8,7 @@
 #include "ModuleTexture.h"
 #include "ModuleCamera.h"
 #include "ModuleImgui.h"
+#include "ModuleTimer.h"
 
 using namespace std;
 
@@ -18,10 +19,11 @@ Application::Application()
 	modules.push_back(camera = new ModuleCamera());
 	modules.push_back(texture = new ModuleTexture());
 	modules.push_back(renderer = new ModuleRender());
-	modules.push_back(imgui = new ModuleImgui());
 	modules.push_back(input = new ModuleInput());
 	modules.push_back(program = new ModuleProgram());
 	modules.push_back(renderExercice = new ModuleRenderExercice());
+	modules.push_back(imgui = new ModuleImgui());
+	modules.push_back(timer = new ModuleTimer());
 }
 
 Application::~Application()

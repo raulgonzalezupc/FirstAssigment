@@ -35,7 +35,8 @@ bool ModuleTimer::CleanUp()
 	return true;
 }
 
-float ModuleTimer::StartRealTimeClock() const
+float ModuleTimer::StartRealTimeClock()
 {
-	return SDL_GetTicks();
+	realTime=SDL_GetTicks();
+	return realTime;
 }

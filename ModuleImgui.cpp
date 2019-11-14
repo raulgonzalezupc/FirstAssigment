@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "Globals.h"
 #include "ModuleWindow.h"
+#include "ModuleTimer.h"
 #include "glew/include/GL/glew.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_opengl3.h"
@@ -65,6 +66,7 @@ update_status ModuleImgui::Update()
 		ImGui::PlotHistogram("##Framerate", &fps[0], fps.size(), 0, title, 0.0F, 100.0F, ImVec2(310, 100) );
 		sprintf_s(title, 25, "Miliseconds %.1f", fpsms[fpsms.size() - 1]);
 		ImGui::PlotHistogram("##Miliseconds", &fpsms[0], fpsms.size(), 0, title, 0.0F, 50.0F, ImVec2(310, 100));
+		
 		if (fps.size() > 50)
 		{
 			fps.erase(fps.begin());
@@ -74,6 +76,8 @@ update_status ModuleImgui::Update()
 			fpsms.erase(fpsms.begin());
 		}
 		//ImGui::ShowMetricsWindow();
+		int timer = App->timer->StartRealTimeClock();
+		LOG("Real time: %d:%d:%d", (timer / (1000 * 60 * 60)) % 24, (timer / (1000*60)) % 60, (timer / 1000) % 60);
 	}
 	if (windowButton)
 	{
