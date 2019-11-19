@@ -17,7 +17,11 @@ bool ModuleModelLoader::Init() {
 bool ModuleModelLoader::CleanUp() {
 	return true;
 }
-
+void ModuleModelLoader::Draw(unsigned int program)
+{
+	for (unsigned int i = 0; i < meshes.size(); i++)
+		meshes[i]->Draw(program);
+}
 
 void ModuleModelLoader::LoadModel(const char* path) {
 	Assimp::Importer importer;
@@ -32,7 +36,7 @@ void ModuleModelLoader::LoadModel(const char* path) {
 void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene) {
 	for (unsigned int i = 0; i < node->mNumMeshes; i++) {
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		meshes.push_back(processMesh(mesh, scene));
+		meshes.push_back(new Mesh(processMesh(mesh, scene)));
 	}
 
 	for (unsigned int i = 0; i < node->mNumChildren; i++) {

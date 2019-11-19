@@ -42,5 +42,5 @@ struct Vertex {
 #define PI 3.1415
 #define IMAGE_NAME "lena.png"
 #define RESIZE true
-#define BAKER_HOUSE_FBX "BakerHouse.fbx"
-#define BAKER_HOUSE_JPEG "Baker_house.jpeg"
+#define BAKER_HOUSE_FBX "./BakerHouse.fbx"
+#define BAKER_HOUSE_PNG "./Baker_house.png"

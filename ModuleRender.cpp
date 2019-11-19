@@ -64,6 +64,7 @@ update_status ModuleRender::PreUpdate()
 update_status ModuleRender::Update()
 {	
 	SDL_GL_MakeCurrent(App->window->window,glcontext);
+	App->modelLoader->Draw(App->program->shader_program);
 	
 	return UPDATE_CONTINUE;
 }

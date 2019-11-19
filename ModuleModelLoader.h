@@ -10,7 +10,7 @@ class ModuleModelLoader : public Module
 {
 public:
 	std::vector<Texture> texturesLoaded;
-	std::vector<Mesh> meshes;
+	std::vector<Mesh*> meshes;
 	std::string directory;
 
 	ModuleModelLoader();
@@ -18,6 +18,7 @@ public:
 	bool Init();
 	bool CleanUp();
 	void LoadModel(const char*);
+	void Draw(unsigned int program);
 
 private:
 	void processNode(aiNode*, const aiScene*);
