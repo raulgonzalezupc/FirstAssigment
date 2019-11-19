@@ -46,7 +46,7 @@ bool ModuleRender::Init()
 	glewInit();
 	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
 
-	App->modelLoader->LoadModel(BAKER_HOUSE_FBX);
+	App->modelLoader->LoadModel("BakerHouse.fbx");
 	
 	
 	return true;

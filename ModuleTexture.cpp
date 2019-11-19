@@ -25,7 +25,7 @@ bool ModuleTexture::Init()
 	ilutInit();
 	ImageName = ilGenImage();
 	ilBindImage(ImageName);
-	bool imageLoaded = ilLoadImage(IMAGE_NAME);
+	bool imageLoaded = ilLoadImage(BAKER_HOUSE_PNG);
 	ilEnable(IL_FILE_OVERWRITE);
 	if (imageLoaded)
 	{
@@ -63,8 +63,8 @@ update_status ModuleTexture::PostUpdate()
 
 bool ModuleTexture::CleanUp()
 {
-	//ilDeleteImages(1, &ImageName);
-	//glDeleteTextures(1, &ImageName);
+	ilDeleteImages(1, &ImageName);
+	glDeleteTextures(1, &ImageName);
 	return true;
 }
 

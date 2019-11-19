@@ -16,10 +16,11 @@ public:
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 	std::vector<Texture> textures;
-	/*  Functions  */
-	void Init();
 	Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, std::vector<Texture>& textures);
 	~Mesh();
+	/*  Functions  */
+	void Init();
+	
 	void Draw(unsigned int program) const;
 private:
 	/*  Render data  */
