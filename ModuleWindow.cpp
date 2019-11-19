@@ -69,6 +69,9 @@ update_status ModuleWindow::Update()
 							width = event.window.data1;	height = event.window.data2;
 							App->camera->SetAspectRatio(width/height);
 						break;
+						case SDL_WINDOWEVENT_CLOSE:
+							return UPDATE_STOP;
+						break;
 					}
 			break;
 		}

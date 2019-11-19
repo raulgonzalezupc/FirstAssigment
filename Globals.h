@@ -32,8 +32,8 @@ struct Vertex {
 
 
 // Configuration -----------
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
+#define SCREEN_WIDTH 1240
+#define SCREEN_HEIGHT 720
 #define FULLSCREEN false
 #define VERTEX_SHADER_PATH "./default.vs"
 #define FRAGMENT_SHADER_PATH "./default.fs"

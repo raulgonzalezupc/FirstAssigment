@@ -28,11 +28,15 @@ public:
 
 public: 
 	SDL_GLContext imguiglcontext;
+
+	//buttons
 	bool menuButton = false;
 	bool consoleButton = false;
 	bool aboutButton = false;
 	bool fpsButton = false;
 	bool windowButton = false;
+	bool hardwareButton = false;
+
 	vector<float> fps;
 	vector<float> fpsms;
 };

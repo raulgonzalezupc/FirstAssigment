@@ -44,6 +44,10 @@ update_status ModuleImgui::PreUpdate()
 // Called every draw update
 update_status ModuleImgui::Update()
 {
+	int timer = App->timer->StartRealTimeClock();
+	ImGui::Begin("Clock");
+	ImGui::Text("Real time:  %d:%d:%d", (timer / (1000 * 60 * 60)) % 24, (timer / (1000 * 60)) % 60, (timer / 1000) % 60);
+	ImGui::End();
 	//Menu
 	if (ImGui::BeginMainMenuBar())
 	{
@@ -52,6 +56,7 @@ update_status ModuleImgui::Update()
 		ImGui::MenuItem("Console", (const char*)0, &consoleButton);
 		ImGui::MenuItem("About", (const char*)0, &aboutButton);
 		ImGui::MenuItem("FPS", (const char*)0, &fpsButton);
+		ImGui::MenuItem("Hardware", (const char*)0, &hardwareButton);
 		ImGui::EndMainMenuBar();
 	}
 	if (fpsButton)
@@ -78,9 +83,13 @@ update_status ModuleImgui::Update()
 			fpsms.erase(fpsms.begin());
 		}
 		//ImGui::ShowMetricsWindow();
-		int timer = App->timer->StartRealTimeClock();
-		LOG("Real time: %d:%d:%d", (timer / (1000 * 60 * 60)) % 24, (timer / (1000*60)) % 60, (timer / 1000) % 60);
+		
 
+		
+
+
+	}
+	if (hardwareButton) {
 		// Hardware
 		ImGui::Begin("Hardware");
 		ImGui::Text("CPU cores: %d (Cache: %d Kb)", SDL_GetCPUCount(), SDL_GetCPUCacheLineSize());
@@ -88,9 +97,8 @@ update_status ModuleImgui::Update()
 		ImGui::Text("GPU Vendor: %s", glGetString(GL_VENDOR));
 		ImGui::Text("GPU Model: %s", glGetString(GL_RENDERER));
 		ImGui::End();
-
-
 	}
+	
 	if (windowButton)
 	{
 		App->window->ShowWindowUI();
