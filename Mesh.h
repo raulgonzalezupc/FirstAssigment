@@ -3,24 +3,12 @@
 
 #include "Globals.h"
 #include "Module.h"
-#include "MathGeoLib/include/Math/float3.h"
 #include <string>
 #include <vector>
-#include "MathGeoLib/include/Math/float2.h"
 #include "ModuleTexture.h"
 
 
-struct Vertex {
-	float3 Position;
-	float3 Normal;
-	float2 TexCoords;
-	float3 Tangent;
-	float3 Bitangent;
-};
-struct Texture {
-	unsigned int id;
-	std::string type;
-};
+
 class Mesh
 {
 public:
