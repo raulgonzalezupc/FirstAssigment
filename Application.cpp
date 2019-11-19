@@ -9,7 +9,7 @@
 #include "ModuleCamera.h"
 #include "ModuleImgui.h"
 #include "ModuleTimer.h"
-
+#include "ModuleModelLoader.h"
 using namespace std;
 
 Application::Application()
@@ -24,6 +24,7 @@ Application::Application()
 	modules.push_back(renderExercice = new ModuleRenderExercice());
 	modules.push_back(imgui = new ModuleImgui());
 	modules.push_back(timer = new ModuleTimer());
+	modules.push_back(modelLoader = new ModuleModelLoader());
 }
 
 Application::~Application()

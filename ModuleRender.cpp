@@ -3,6 +3,7 @@
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
 #include "ModuleProgram.h"
+#include "ModuleModelLoader.h"
 #include "glew/include/GL/glew.h"
 #include "SDL.h"
 
@@ -45,6 +46,7 @@ bool ModuleRender::Init()
 	glewInit();
 	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
 
+	App->modelLoader->LoadModel(BAKER_HOUSE_FBX);
 	
 	
 	return true;

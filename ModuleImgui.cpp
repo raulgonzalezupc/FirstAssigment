@@ -56,6 +56,7 @@ update_status ModuleImgui::Update()
 	}
 	if (fpsButton)
 	{
+		ImGui::Begin("FPS");
 		char title[25];
 		char titleMs[25];
 		ImGuiIO& io = ImGui::GetIO();
@@ -66,6 +67,7 @@ update_status ModuleImgui::Update()
 		ImGui::PlotHistogram("##Framerate", &fps[0], fps.size(), 0, title, 0.0F, 100.0F, ImVec2(310, 100) );
 		sprintf_s(title, 25, "Miliseconds %.1f", fpsms[fpsms.size() - 1]);
 		ImGui::PlotHistogram("##Miliseconds", &fpsms[0], fpsms.size(), 0, title, 0.0F, 50.0F, ImVec2(310, 100));
+		ImGui::End();
 		
 		if (fps.size() > 50)
 		{
@@ -78,6 +80,16 @@ update_status ModuleImgui::Update()
 		//ImGui::ShowMetricsWindow();
 		int timer = App->timer->StartRealTimeClock();
 		LOG("Real time: %d:%d:%d", (timer / (1000 * 60 * 60)) % 24, (timer / (1000*60)) % 60, (timer / 1000) % 60);
+
+		// Hardware
+		ImGui::Begin("Hardware");
+		ImGui::Text("CPU cores: %d (Cache: %d Kb)", SDL_GetCPUCount(), SDL_GetCPUCacheLineSize());
+		ImGui::Text("System RAM: %d Mb", SDL_GetSystemRAM());
+		ImGui::Text("GPU Vendor: %s", glGetString(GL_VENDOR));
+		ImGui::Text("GPU Model: %s", glGetString(GL_RENDERER));
+		ImGui::End();
+
+
 	}
 	if (windowButton)
 	{
