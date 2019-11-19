@@ -84,7 +84,7 @@ update_status ModuleCamera::Update()
 	SDL_PumpEvents();
 	keyboard = SDL_GetKeyboardState(NULL);
 	SDL_Event event;
-	if(SDL_PollEvent(&event)) {
+	while (SDL_PollEvent(&event)) {
 		if(event.type == SDL_MOUSEMOTION) {
 			if (event.motion.state & SDL_BUTTON_RMASK) { //if user press right click
 				if (math::Abs(event.motion.xrel) > 1.5) {
