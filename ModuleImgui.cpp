@@ -48,6 +48,7 @@ update_status ModuleImgui::Update()
 	ImGui::Begin("Clock");
 	ImGui::Text("Real time:  %d:%d:%d", (timer / (1000 * 60 * 60)) % 24, (timer / (1000 * 60)) % 60, (timer / 1000) % 60);
 	ImGui::End();
+	//ImGui::ShowDemoWindow();
 	//Menu
 	if (ImGui::BeginMainMenuBar())
 	{
@@ -82,7 +83,7 @@ update_status ModuleImgui::Update()
 		{
 			fpsms.erase(fpsms.begin());
 		}
-		//ImGui::ShowMetricsWindow();
+		
 		
 
 		

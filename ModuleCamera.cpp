@@ -95,6 +95,18 @@ update_status ModuleCamera::Update()
 				}
 			}
 		}
+		if (event.type == SDL_MOUSEWHEEL) {
+			if (event.wheel.y > 0) // scroll up
+			{
+				MoveForward();
+				LOG("up");
+			}
+			else if (event.wheel.y < 0) // scroll down
+			{
+				MoveBackwards();
+				LOG("up");
+			}
+		}
 	}
 /*
 			case SDL_KEYDOWN:
@@ -151,6 +163,14 @@ update_status ModuleCamera::Update()
 	{
 		App->camera->MoveRight();
 	}
+	if (keyboard[SDL_SCANCODE_LSHIFT])
+	{
+		App->camera->multSpeed();
+	}
+	else {
+		speed = 1.0f;
+	}
+	
 	return UPDATE_CONTINUE;
 }
 
@@ -174,6 +194,7 @@ void ModuleCamera::setFOV(const float fov)
 {
 	frustum.verticalFov = fov;
 	frustum.horizontalFov = 2.0F*atanf(tanf(frustum.verticalFov*0.5F)*aspect);
+	proj = frustum.ProjectionMatrix();
 }
 
 void ModuleCamera::Position(const float3 position)
@@ -196,12 +217,12 @@ void ModuleCamera::MoveDown()
 }
 void ModuleCamera::MoveForward()
 {
-	frustum.pos += frustum.front.ScaledToLength(distance);
+	frustum.pos += frustum.front.ScaledToLength(distance)*speed;
 	view = frustum.ViewMatrix();
 }
 void ModuleCamera::MoveBackwards()
 {
-	frustum.pos -= frustum.front.ScaledToLength(distance);
+	frustum.pos -= frustum.front.ScaledToLength(distance)*speed;
 	view = frustum.ViewMatrix();
 }
 
@@ -262,5 +283,10 @@ void ModuleCamera::MouseYMotion(const float y_motion)
 		view = frustum.ViewMatrix();
 
 	}
+}
+
+void ModuleCamera::multSpeed()
+{
+	speed = 5.0f;
 }
 

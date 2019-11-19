@@ -23,11 +23,11 @@ Mesh::~Mesh()
 	glDeleteBuffers(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	glDeleteVertexArrays(1, &EBO);
-
 }
 
 void Mesh::Init()
 {
+	;
 }
 
 void Mesh::setupMesh()

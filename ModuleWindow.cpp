@@ -105,4 +105,7 @@ void ModuleWindow::ShowWindowUI()
 		SDL_HideWindow(App->window->window);
 	}
 
+	float f2 = App->camera->frustum.verticalFov;
+	ImGui::SliderFloat("Fov ", &f2, 0.01f, 3.12F, "%.2f", 2.0f);
+	App->camera->setFOV(f2);
 }

@@ -42,7 +42,8 @@ bool ModuleTexture::Init()
 	Height = ilGetInteger(IL_IMAGE_HEIGHT);
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, Width, Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, Data);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Width, Height, 0, GL_RGB, GL_UNSIGNED_BYTE, Data);
+	//glGenerateMipmap(GL_TEXTURE_2D);
 	return true;
 }
 

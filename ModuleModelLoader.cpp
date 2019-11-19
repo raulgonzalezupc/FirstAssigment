@@ -19,14 +19,18 @@ bool ModuleModelLoader::CleanUp() {
 }
 void ModuleModelLoader::Draw(unsigned int program)
 {
-	for (unsigned int i = 0; i < meshes.size(); i++)
+	for (unsigned int i = 0; i < meshes.size(); i++) 
+	{
 		meshes[i]->Draw(program);
+	}
+		
 }
 
 void ModuleModelLoader::LoadModel(const char* path) {
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
-	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
+	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+	{
 		LOG("Error loading the file");
 		return;
 	}

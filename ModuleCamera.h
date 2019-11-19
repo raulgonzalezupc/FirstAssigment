@@ -39,6 +39,7 @@ public:
 	void MoveRight();
 	void MouseXMotion(const float x_motion);
 	void MouseYMotion(const float y_motion);
+	void multSpeed();
 public:
 	Frustum frustum;
 	float aspect;
@@ -52,6 +53,7 @@ public:
 public:
 	float3 new_camera_pos;
 	const float distance = 0.25f * 1.0F;
+	float speed = 1.0f;
 	float buffer_data[20] = {
 	 0.5f,  0.5f, 0.0f,  // top right
 	 0.5f, -0.5f, 0.0f,  // bottom right
