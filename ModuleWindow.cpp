@@ -71,17 +71,6 @@ update_status ModuleWindow::Update()
 						break;
 					}
 			break;
-			case SDL_MOUSEMOTION:
-				if (event.motion.state & SDL_BUTTON_RMASK) { //if user press right click
-					if (math::Abs(event.motion.xrel) > 1.5) {
-						App->camera->MouseXMotion(event.motion.xrel); //passing the relative motion in the X direction
-					}
-					if (math::Abs(event.motion.yrel) > 1.5) {
-						App->camera->MouseYMotion(event.motion.yrel); //passing the relative motion in the Y direction
-					}
-				}
-			break;
-
 		}
 		
 	}

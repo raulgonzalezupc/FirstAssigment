@@ -6,6 +6,10 @@
 #include "MathGeoLib/include/Math/float4x4.h"
 #include "MathGeoLib/include/Geometry/Frustum.h"
 
+typedef unsigned __int8 Uint8;
+
+
+
 class ModuleCamera : public Module
 {
 public:
@@ -43,6 +47,7 @@ public:
 	float4x4 model;
 	float yaw = -90.0f;
 	float pitch = 0;
+	const Uint8 *keyboard = NULL;
 
 public:
 	float3 new_camera_pos;

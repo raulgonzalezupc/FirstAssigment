@@ -14,7 +14,5 @@ public:
 	bool Init();
 	update_status Update();
 	bool CleanUp();
-
-private:
 	const Uint8 *keyboard = NULL;
 };

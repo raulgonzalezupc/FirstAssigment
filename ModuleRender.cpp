@@ -61,13 +61,14 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {	
-	//SDL_GL_MakeCurrent(App->window->window,glcontext);
+	SDL_GL_MakeCurrent(App->window->window,glcontext);
 	
 	return UPDATE_CONTINUE;
 }
 
 update_status ModuleRender::PostUpdate()
 {
+	//SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }
 

@@ -1,12 +1,13 @@
 #include "ModuleCamera.h"
 #include "Globals.h"
 #include "ModuleWindow.h"
+#include "ModuleInput.h"
 #include "MathGeoLib/include/Math/float4.h"
 #include "MathGeoLib/include/Math/float3.h"
 #include "MathGeoLib/include/Math/float4x4.h"
 #include "MathGeoLib/include/Math/float3x3.h"
 #include "MathGeoLib/include/Geometry/Frustum.h"
-
+#include "MathGeoLib.h"
 
 
 
@@ -80,6 +81,76 @@ update_status ModuleCamera::PreUpdate()
 
 update_status ModuleCamera::Update()
 {
+	SDL_PumpEvents();
+	keyboard = SDL_GetKeyboardState(NULL);
+	SDL_Event event;
+	if(SDL_PollEvent(&event)) {
+		if(event.type == SDL_MOUSEMOTION) {
+			if (event.motion.state & SDL_BUTTON_RMASK) { //if user press right click
+				if (math::Abs(event.motion.xrel) > 1.5) {
+					App->camera->MouseXMotion(event.motion.xrel); //passing the relative motion in the X direction
+				}
+				if (math::Abs(event.motion.yrel) > 1.5) {
+					App->camera->MouseYMotion(event.motion.yrel); //passing the relative motion in the Y direction
+				}
+			}
+		}
+	}
+/*
+			case SDL_KEYDOWN:
+				if (keyboard[SDL_SCANCODE_Q])
+				{
+					App->camera->MoveUp();
+				}
+				if (keyboard[SDL_SCANCODE_E])
+				{
+					App->camera->MoveDown();
+				}
+				if (keyboard[SDL_SCANCODE_W])
+				{
+					App->camera->MoveForward();
+				}
+				if (keyboard[SDL_SCANCODE_S])
+				{
+					App->camera->MoveBackwards();
+				}
+				if (keyboard[SDL_SCANCODE_A])
+				{
+					App->camera->MoveLeft();
+				}
+				if (keyboard[SDL_SCANCODE_D])
+				{
+					App->camera->MoveRight();
+				}
+			break;
+		}
+
+	}
+	*/
+	if (keyboard[SDL_SCANCODE_Q])
+	{
+		App->camera->MoveUp();
+	}
+	if (keyboard[SDL_SCANCODE_E])
+	{
+		App->camera->MoveDown();
+	}
+	if (keyboard[SDL_SCANCODE_W])
+	{
+		App->camera->MoveForward();
+	}
+	if (keyboard[SDL_SCANCODE_S])
+	{
+		App->camera->MoveBackwards();
+	}
+	if (keyboard[SDL_SCANCODE_A])
+	{
+		App->camera->MoveLeft();
+	}
+	if (keyboard[SDL_SCANCODE_D])
+	{
+		App->camera->MoveRight();
+	}
 	return UPDATE_CONTINUE;
 }
 
@@ -116,46 +187,34 @@ void ModuleCamera::Position(const float3 position)
 
 void ModuleCamera::MoveUp()
 {
-	new_camera_pos = frustum.pos;
-	new_camera_pos.y = new_camera_pos.y + distance;
-	frustum.pos = new_camera_pos;
-	proj = frustum.ProjectionMatrix();
+	frustum.pos.y += distance;
 	view = frustum.ViewMatrix();
 }
 void ModuleCamera::MoveDown()
 {
-	new_camera_pos = frustum.pos;
-	new_camera_pos.y = new_camera_pos.y - distance;
-	frustum.pos = new_camera_pos;
-	proj = frustum.ProjectionMatrix();
+	frustum.pos.y -= distance;
 	view = frustum.ViewMatrix();
 }
 void ModuleCamera::MoveForward()
 {
-	new_camera_pos = frustum.front;
 	frustum.pos += frustum.front.ScaledToLength(distance);
-	proj = frustum.ProjectionMatrix();
 	view = frustum.ViewMatrix();
 }
 void ModuleCamera::MoveBackwards()
 {
-	new_camera_pos = frustum.front;
 	frustum.pos -= frustum.front.ScaledToLength(distance);
-	proj = frustum.ProjectionMatrix();
 	view = frustum.ViewMatrix();
 }
 
 void ModuleCamera::MoveLeft()
 {
 	frustum.pos -= frustum.WorldRight().ScaledToLength(distance);
-	proj = frustum.ProjectionMatrix();
 	view = frustum.ViewMatrix();
 }
 
 void ModuleCamera::MoveRight()
 {
 	frustum.pos += frustum.WorldRight().ScaledToLength(distance);
-	proj = frustum.ProjectionMatrix();
 	view = frustum.ViewMatrix();
 
 }

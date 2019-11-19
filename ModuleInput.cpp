@@ -33,29 +33,10 @@ update_status ModuleInput::Update()
 	SDL_PumpEvents();
 
 	keyboard = SDL_GetKeyboardState(NULL);
-	if (keyboard[SDL_SCANCODE_Q])
+	
+	if (keyboard[SDL_SCANCODE_ESCAPE])
 	{
-		App->camera->MoveUp();
-	}
-	if (keyboard[SDL_SCANCODE_E])
-	{
-		App->camera->MoveDown();
-	}
-	if (keyboard[SDL_SCANCODE_W])
-	{
-		App->camera->MoveForward();
-	}
-	if (keyboard[SDL_SCANCODE_S])
-	{
-		App->camera->MoveBackwards();
-	}
-	if (keyboard[SDL_SCANCODE_A])
-	{
-		App->camera->MoveLeft();
-	}
-	if (keyboard[SDL_SCANCODE_D])
-	{
-		App->camera->MoveRight();
+		return UPDATE_STOP;
 	}
 	return UPDATE_CONTINUE;
 }
