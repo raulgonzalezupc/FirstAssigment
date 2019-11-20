@@ -138,3 +138,10 @@ std::vector<Texture> ModuleModelLoader::loadMaterialTextures(aiMaterial *mat, ai
 	return textures;
 }
 
+void ModuleModelLoader::SetupTexture(Texture& texture) {
+	glBindTexture(GL_TEXTURE_2D, texture.id);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture.width, texture.height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture.data);
+	glGenerateMipmap(GL_TEXTURE_2D);
+}

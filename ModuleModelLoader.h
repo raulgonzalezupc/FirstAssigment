@@ -19,6 +19,7 @@ public:
 	bool CleanUp();
 	void LoadModel(const char*);
 	void Draw(unsigned int program);
+	void SetupTexture(Texture& texture);
 
 private:
 	void processNode(aiNode*, const aiScene*);

@@ -43,7 +43,7 @@ bool ModuleRender::Init()
 	LOG("Creating Renderer context");
 	glcontext = SDL_GL_CreateContext(App->window->window);
 
-	glewInit();
+	GLenum err = glewInit();
 	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
 
 	App->modelLoader->LoadModel("BakerHouse.fbx");
