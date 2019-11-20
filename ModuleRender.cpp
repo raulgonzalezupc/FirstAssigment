@@ -67,12 +67,16 @@ update_status ModuleRender::PreUpdate()
 
 // Called every draw update
 update_status ModuleRender::Update()
-{	
-	SDL_GL_MakeCurrent(App->window->window,glcontext);
-	App->modelLoader->Draw(App->program->shader_program);
+{
 	ShowGrid();
 	ShowAxis();
+	SDL_GL_MakeCurrent(App->window->window,glcontext);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, App->texture->texture);
+	glUniform1i(glGetUniformLocation(App->program->shader_program, "texture0"), 0);
+	App->modelLoader->Draw(App->program->shader_program);
 
+	//axis and grid
 
 	return UPDATE_CONTINUE;
 }

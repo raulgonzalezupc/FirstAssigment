@@ -1,5 +1,7 @@
 #include "ModuleTexture.h"
 #include "Globals.h"
+#include "ModuleModelLoader.h"
+#include "Application.h"
 #include "DevIL/include/IL/il.h"
 #include "DevIL/include/IL/ilu.h"
 #include "DevIL/include/IL/ilut.h"
@@ -16,34 +18,12 @@ ModuleTexture::~ModuleTexture()
 
 bool ModuleTexture::Init()
 {
-	if (ilGetInteger(IL_VERSION_NUM) < IL_VERSION) {
-		printf("DevIL version is different...exiting!\n");
-		return 1;
-	}
 	ilInit();
 	iluInit();
 	ilutInit();
-	ImageName = ilGenImage();
-	ilBindImage(ImageName);
-	bool imageLoaded = ilLoadImage(BAKER_HOUSE_PNG);
-	ilEnable(IL_FILE_OVERWRITE);
-	if (imageLoaded)
-	{
-		LOG("Image loaded");
-
-	}
-	else {
-		LOG("Image not loaded");
-		return false;
-	}
-	ILubyte *Data = ilGetData();
-	ILuint Width, Height;
-	Width = ilGetInteger(IL_IMAGE_WIDTH);
-	Height = ilGetInteger(IL_IMAGE_HEIGHT);
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Width, Height, 0, GL_RGB, GL_UNSIGNED_BYTE, Data);
-	//glGenerateMipmap(GL_TEXTURE_2D);
+	ilutRenderer(ILUT_OPENGL);
+	ilGenImages(1, &imageName);
+	ilBindImage(imageName);
 	return true;
 }
 
@@ -64,8 +44,8 @@ update_status ModuleTexture::PostUpdate()
 
 bool ModuleTexture::CleanUp()
 {
-	ilDeleteImages(1, &ImageName);
-	glDeleteTextures(1, &ImageName);
+	ilDeleteImages(1, &imageName);
+	glDeleteTextures(1, &imageName);
 	return true;
 }
 
@@ -82,5 +62,6 @@ Texture ModuleTexture::LoadTexture(const char* path) {
 	texture.height = ilGetInteger(IL_IMAGE_HEIGHT);
 	texture.data = ilGetData();
 	texture.path = path;
+	
 	return texture;
 }

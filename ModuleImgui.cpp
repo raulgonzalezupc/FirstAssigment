@@ -73,6 +73,14 @@ update_status ModuleImgui::Update()
 		ImGui::PlotHistogram("##Framerate", &fps[0], fps.size(), 0, title, 0.0F, 100.0F, ImVec2(310, 100) );
 		sprintf_s(title, 25, "Miliseconds %.1f", fpsms[fpsms.size() - 1]);
 		ImGui::PlotHistogram("##Miliseconds", &fpsms[0], fpsms.size(), 0, title, 0.0F, 50.0F, ImVec2(310, 100));
+		/*ImGui::Spacing();
+		ImGui::TextUnformatted(Buf.begin()); 
+		if (ScrollToBottom)
+			ImGui::SetScrollHere(1.0f);
+		ScrollToBottom = false;
+
+*/
+
 		ImGui::End();
 		
 		if (fps.size() > 50)
@@ -83,12 +91,6 @@ update_status ModuleImgui::Update()
 		{
 			fpsms.erase(fpsms.begin());
 		}
-		
-		
-
-		
-
-
 	}
 	if (hardwareButton) {
 		// Hardware

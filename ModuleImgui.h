@@ -39,6 +39,9 @@ public:
 
 	vector<float> fps;
 	vector<float> fpsms;
+
+	ImGuiTextBuffer Buf;
+	bool ScrollToBottom = true;
 };
 
 #endif

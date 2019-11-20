@@ -21,7 +21,7 @@ public:
 	Texture LoadTexture(const char* path);
 
 public:
-	ILuint ImageName;
+	ILuint imageName;
 	GLuint texture;
 	ILinfo imageInfo;
 };
