@@ -6,9 +6,15 @@
 #include "assimp/include/assimp/postprocess.h"
 
 
-ModuleModelLoader::ModuleModelLoader() {}
+ModuleModelLoader::ModuleModelLoader() 
+{
 
-ModuleModelLoader::~ModuleModelLoader() {}
+}
+
+ModuleModelLoader::~ModuleModelLoader() 
+{
+
+}
 
 bool ModuleModelLoader::Init() {
 	return true;

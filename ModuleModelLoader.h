@@ -6,6 +6,7 @@
 #include "Mesh.h"
 #include "assimp/include/assimp/scene.h"
 #include <vector>
+
 class ModuleModelLoader : public Module
 {
 public:

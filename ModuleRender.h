@@ -4,7 +4,6 @@
 #include "Globals.h"
 
 #include "MathGeoLib/include/Math/float4x4.h"
-#include "glew/include/GL/glew.h"
 #include "SDL.h"
 
 struct SDL_Texture;
@@ -24,11 +23,11 @@ public:
 	bool CleanUp();
 	void WindowResized(unsigned width, unsigned height);
 
+	void ShowGrid();
+	void ShowAxis();
+
 public:
 	SDL_GLContext glcontext;
-	float4x4 proj;
-	float4x4 view;
-	float4x4 model;
 private:
 	void* context;
 

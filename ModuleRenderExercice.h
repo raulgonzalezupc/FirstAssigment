@@ -20,8 +20,6 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
-	void ShowGrid();
-	void ShowAxis();
 public:
 
 	GLuint vbo;
