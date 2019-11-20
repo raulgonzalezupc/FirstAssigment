@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "Globals.h"
 #include "ModuleWindow.h"
+#include "ModuleModelLoader.h"
 #include "ModuleTimer.h"
 #include "glew/include/GL/glew.h"
 #include "imgui/imgui.h"
@@ -27,6 +28,7 @@ bool ModuleImgui::Init()
 	imguiglcontext = ImGui::CreateContext();
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, imguiglcontext);
 	ImGui_ImplOpenGL3_Init("#version 330");
+	AddLog("Open GL version 330\n");
 	ImGui::StyleColorsDark();
 
 	return true;
@@ -44,6 +46,7 @@ update_status ModuleImgui::PreUpdate()
 // Called every draw update
 update_status ModuleImgui::Update()
 {
+	ImGui::ShowDemoWindow();
 	int timer = App->timer->StartRealTimeClock();
 	ImGui::Begin("Clock");
 	ImGui::Text("Real time:  %d:%d:%d", (timer / (1000 * 60 * 60)) % 24, (timer / (1000 * 60)) % 60, (timer / 1000) % 60);
@@ -56,14 +59,14 @@ update_status ModuleImgui::Update()
 		ImGui::MenuItem("Window", (const char*)0, &windowButton);
 		ImGui::MenuItem("Console", (const char*)0, &consoleButton);
 		ImGui::MenuItem("About", (const char*)0, &aboutButton);
-		ImGui::MenuItem("FPS", (const char*)0, &fpsButton);
-		ImGui::MenuItem("Hardware", (const char*)0, &hardwareButton);
+		ImGui::MenuItem("Configuration", (const char*)0, &configButton);
+		ImGui::MenuItem("Properties", (const char*)0, &propertiesButton);
 		ImGui::EndMainMenuBar();
 	}
-	if (fpsButton)
+	if (configButton)
 	{
-		ImGui::Begin("FPS");
-		
+		ImGui::Begin("Configuration");
+		ImGui::TextWrapped("FPS information:");
 		char title[25];
 		char titleMs[25];
 		ImGuiIO& io = ImGui::GetIO();
@@ -74,8 +77,8 @@ update_status ModuleImgui::Update()
 		ImGui::PlotHistogram("##Framerate", &fps[0], fps.size(), 0, title, 0.0F, 100.0F, ImVec2(310, 100) );
 		sprintf_s(title, 25, "Miliseconds %.1f", fpsms[fpsms.size() - 1]);
 		ImGui::PlotHistogram("##Miliseconds", &fpsms[0], fpsms.size(), 0, title, 0.0F, 50.0F, ImVec2(310, 100));
-		ImGui::End();
 		
+		ImGui::TextWrapped("---------------------------------");
 		if (fps.size() > 50)
 		{
 			fps.erase(fps.begin());
@@ -84,10 +87,8 @@ update_status ModuleImgui::Update()
 		{
 			fpsms.erase(fpsms.begin());
 		}
-	}
-	if (hardwareButton) {
 		// Hardware
-		ImGui::Begin("Hardware");
+		ImGui::TextWrapped("Hardware information: ");
 		ImGui::Text("CPU cores: %d (Cache: %d Kb)", SDL_GetCPUCount(), SDL_GetCPUCacheLineSize());
 		ImGui::Text("System RAM: %d Mb", SDL_GetSystemRAM());
 		ImGui::Text("GPU Vendor: %s", glGetString(GL_VENDOR));
@@ -95,11 +96,30 @@ update_status ModuleImgui::Update()
 		ImGui::End();
 	}
 	
+	
 	if (windowButton)
 	{
 		App->window->ShowWindowUI();
 	}
-
+	if (propertiesButton)
+	{
+		ImGui::Begin("Properties");
+		if (ImGui::CollapsingHeader("Transformation")) 
+		{
+			
+		}
+		if (ImGui::CollapsingHeader("Geometry")) 
+		{
+			ImGui::TextWrapped("Geometry: ");
+		}
+		if (ImGui::CollapsingHeader("Texture")) 
+		{
+			ImGui::Text("Texture width: %d", App->modelLoader->width);
+			ImGui::Text("Texture height %d", App->modelLoader->height);
+		}
+		
+		ImGui::End();
+	}
 	ImGui::Begin("LOG");
 	ImGui::TextUnformatted(buffer.begin());
 	ImGui::End();

@@ -70,12 +70,9 @@ update_status ModuleCamera::Update()
 		}
 	}
 
-
-
 	if (keyboard[SDL_SCANCODE_Q])
 	{
 		App->camera->MoveUp();
-		App->imgui->AddLog("Q");
 	}
 	if (keyboard[SDL_SCANCODE_E])
 	{
@@ -141,12 +138,12 @@ void ModuleCamera::Position(const float3 position)
 
 void ModuleCamera::MoveUp()
 {
-	frustum.pos.y += distance;
+	frustum.pos.y += distance * speed;
 	view = frustum.ViewMatrix();
 }
 void ModuleCamera::MoveDown()
 {
-	frustum.pos.y -= distance;
+	frustum.pos.y -= distance * speed;
 	view = frustum.ViewMatrix();
 }
 void ModuleCamera::MoveForward()
@@ -162,13 +159,13 @@ void ModuleCamera::MoveBackwards()
 
 void ModuleCamera::MoveLeft()
 {
-	frustum.pos -= frustum.WorldRight().ScaledToLength(distance);
+	frustum.pos -= frustum.WorldRight().ScaledToLength(distance)*speed;
 	view = frustum.ViewMatrix();
 }
 
 void ModuleCamera::MoveRight()
 {
-	frustum.pos += frustum.WorldRight().ScaledToLength(distance);
+	frustum.pos += frustum.WorldRight().ScaledToLength(distance*speed);
 	view = frustum.ViewMatrix();
 
 }
@@ -221,6 +218,6 @@ void ModuleCamera::MouseYMotion(const float y_motion)
 
 void ModuleCamera::multSpeed()
 {
-	speed = 5.0f;
+	speed = 2.0f;
 }
 

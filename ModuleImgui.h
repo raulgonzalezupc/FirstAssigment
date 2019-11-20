@@ -34,10 +34,9 @@ public:
 	bool menuButton = false;
 	bool consoleButton = false;
 	bool aboutButton = false;
-	bool fpsButton = false;
+	bool configButton = false;
 	bool windowButton = false;
-	bool hardwareButton = false;
-
+	bool propertiesButton = false;
 
 	ImGuiTextBuffer buffer;
 	bool scrollToBottom;

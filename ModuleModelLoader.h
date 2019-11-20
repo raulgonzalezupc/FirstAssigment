@@ -21,6 +21,8 @@ public:
 	void LoadModel(const char*);
 	void Draw(unsigned int program);
 	void SetupTexture(Texture& texture);
+	int width;
+	int height;
 
 private:
 	void processNode(aiNode*, const aiScene*);
