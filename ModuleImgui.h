@@ -25,6 +25,7 @@ public:
 	bool CleanUp();
 
 	void ShowMainMenu();
+	void AddLog(const char*, ...);
 
 public: 
 	SDL_GLContext imguiglcontext;
@@ -37,11 +38,12 @@ public:
 	bool windowButton = false;
 	bool hardwareButton = false;
 
+
+	ImGuiTextBuffer buffer;
+	bool scrollToBottom;
 	vector<float> fps;
 	vector<float> fpsms;
 
-	ImGuiTextBuffer Buf;
-	bool ScrollToBottom = true;
 };
 
 #endif

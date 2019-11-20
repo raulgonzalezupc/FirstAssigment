@@ -1,5 +1,6 @@
 #include "ModuleProgram.h"
 #include "Application.h"
+#include "ModuleImgui.h"
 #include "Globals.h"
 #include "SDL.h"
 
@@ -27,7 +28,7 @@ bool ModuleProgram::Init()
 	if(!statusV)
 	{
 		glGetShaderInfoLog(vertex_shader, 512, NULL, charV);
-		LOG(charV);
+		App->imgui->AddLog("Vertex shader created wrong, code: %s\n", charV);
 	}
 
 
@@ -43,7 +44,7 @@ bool ModuleProgram::Init()
 	if (!statusF)
 	{
 		glGetShaderInfoLog(fragment_shader, 512, NULL, charF);
-		LOG(charF);
+		App->imgui->AddLog("Fragment shader created wrong, code: %s\n", charF);
 	}
 
 	return true;
@@ -73,7 +74,7 @@ update_status ModuleProgram::Update()
 	if (!statusP)
 	{
 		glGetProgramInfoLog(shader_program, 512, NULL, charP);
-		LOG(charP);
+		App->imgui->AddLog("Program created wrong, code: %s\n", charP);
 	}
 
 	return UPDATE_CONTINUE;
@@ -86,10 +87,11 @@ update_status ModuleProgram::PostUpdate()
 
 bool ModuleProgram::CleanUp()
 {
-	LOG("Deleting vertex shader");
+	App->imgui->AddLog("Deleting vertex shader\n");
 	glDeleteShader(vertex_shader);
 
-	LOG("Deleting fragment shader");
+	App->imgui->AddLog("Deleting fragment shader\n");
+
 	glDeleteShader(fragment_shader);
 	return true;
 }

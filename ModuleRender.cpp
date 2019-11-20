@@ -3,6 +3,7 @@
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
 #include "ModuleProgram.h"
+#include "ModuleImgui.h"
 #include "ModuleModelLoader.h"
 #include "ModuleCamera.h"
 #include "glew/include/GL/glew.h"
@@ -41,11 +42,11 @@ bool ModuleRender::Init()
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
 
-	LOG("Creating Renderer context");
+	App->imgui->AddLog("Creating Renderer context\n");
 	glcontext = SDL_GL_CreateContext(App->window->window);
 
 	GLenum err = glewInit();
-	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
+	App->imgui->AddLog("Using Glew %s\n", glewGetString(GLEW_VERSION));
 
 	App->modelLoader->LoadModel("BakerHouse.fbx");
 	
@@ -90,7 +91,7 @@ update_status ModuleRender::PostUpdate()
 // Called before quitting
 bool ModuleRender::CleanUp()
 {
-	LOG("Destroying renderer");
+	App->imgui->AddLog("Destroying renderer\n");
 	SDL_GL_DeleteContext(glcontext);
 	//Destroy window
 

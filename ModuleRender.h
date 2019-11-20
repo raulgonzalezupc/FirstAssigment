@@ -25,6 +25,7 @@ public:
 
 	void ShowGrid();
 	void ShowAxis();
+	
 
 public:
 	SDL_GLContext glcontext;

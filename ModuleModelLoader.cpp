@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "ModuleModelLoader.h"
 #include "ModuleTexture.h"
+#include "ModuleImgui.h"
 #include "assimp/include/assimp/Importer.hpp"
 #include "assimp/include/assimp/scene.h"
 #include "assimp/include/assimp/postprocess.h"
@@ -40,7 +41,7 @@ void ModuleModelLoader::LoadModel(const char* path)
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-		LOG("Error loading the file");
+		App->imgui->AddLog("ERROR::ASSIMP:: %s\n", importer.GetErrorString());
 		return;
 	}
 	processNode(scene->mRootNode, scene);

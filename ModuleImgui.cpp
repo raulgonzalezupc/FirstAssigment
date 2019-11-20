@@ -63,6 +63,7 @@ update_status ModuleImgui::Update()
 	if (fpsButton)
 	{
 		ImGui::Begin("FPS");
+		
 		char title[25];
 		char titleMs[25];
 		ImGuiIO& io = ImGui::GetIO();
@@ -73,14 +74,6 @@ update_status ModuleImgui::Update()
 		ImGui::PlotHistogram("##Framerate", &fps[0], fps.size(), 0, title, 0.0F, 100.0F, ImVec2(310, 100) );
 		sprintf_s(title, 25, "Miliseconds %.1f", fpsms[fpsms.size() - 1]);
 		ImGui::PlotHistogram("##Miliseconds", &fpsms[0], fpsms.size(), 0, title, 0.0F, 50.0F, ImVec2(310, 100));
-		/*ImGui::Spacing();
-		ImGui::TextUnformatted(Buf.begin()); 
-		if (ScrollToBottom)
-			ImGui::SetScrollHere(1.0f);
-		ScrollToBottom = false;
-
-*/
-
 		ImGui::End();
 		
 		if (fps.size() > 50)
@@ -106,6 +99,10 @@ update_status ModuleImgui::Update()
 	{
 		App->window->ShowWindowUI();
 	}
+
+	ImGui::Begin("LOG");
+	ImGui::TextUnformatted(buffer.begin());
+	ImGui::End();
 	return UPDATE_CONTINUE;
 }
 
@@ -114,7 +111,6 @@ update_status ModuleImgui::PostUpdate()
 	//update a window with OpenGL rendering
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-	//SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }
 
@@ -126,4 +122,11 @@ bool ModuleImgui::CleanUp()
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
 	return true;
+}
+void ModuleImgui::AddLog(const char* fmt, ...) {
+	va_list args;
+	va_start(args, fmt);
+	buffer.appendfv(fmt, args);
+	va_end(args);
+	scrollToBottom = true;
 }

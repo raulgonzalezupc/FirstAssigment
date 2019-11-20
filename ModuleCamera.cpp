@@ -1,6 +1,7 @@
 #include "ModuleCamera.h"
 #include "Globals.h"
 #include "ModuleWindow.h"
+#include "ModuleImgui.h"
 #include "ModuleInput.h"
 #include "MathGeoLib/include/Math/float4.h"
 #include "MathGeoLib/include/Math/float3.h"
@@ -9,7 +10,7 @@
 #include "MathGeoLib/include/Geometry/Frustum.h"
 #include "MathGeoLib.h"
 
-
+#define zoom App->input->GetMouseWheel()->y > 0
 
 ModuleCamera::ModuleCamera()
 {
@@ -67,23 +68,14 @@ update_status ModuleCamera::Update()
 				}
 			}
 		}
-		if (event.type == SDL_MOUSEWHEEL) {
-			if (event.wheel.y > 0) // scroll up
-			{
-				MoveForward();
-				LOG("up");
-			}
-			else if (event.wheel.y < 0) // scroll down
-			{
-				MoveBackwards();
-				LOG("up");
-			}
-		}
 	}
+
+
 
 	if (keyboard[SDL_SCANCODE_Q])
 	{
 		App->camera->MoveUp();
+		App->imgui->AddLog("Q");
 	}
 	if (keyboard[SDL_SCANCODE_E])
 	{
