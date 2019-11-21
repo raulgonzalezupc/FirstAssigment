@@ -89,11 +89,22 @@ update_status ModuleImgui::Update()
 			fpsms.erase(fpsms.begin());
 		}
 		// Hardware
-		ImGui::TextWrapped("Hardware information: ");
+		ImGui::TextWrapped("HARDWARE INFO \n");
 		ImGui::Text("CPU cores: %d (Cache: %d Kb)", SDL_GetCPUCount(), SDL_GetCPUCacheLineSize());
 		ImGui::Text("System RAM: %d Mb", SDL_GetSystemRAM());
 		ImGui::Text("GPU Vendor: %s", glGetString(GL_VENDOR));
 		ImGui::Text("GPU Model: %s", glGetString(GL_RENDERER));
+		ImGui::TextWrapped("---------------------------------");
+		//mouse info
+		ImGui::TextWrapped("MOUSE INFO \n");
+		if (ImGui::IsMousePosValid())
+			ImGui::Text("Mouse pos: (%g, %g)", io.MousePos.x, io.MousePos.y);
+			ImGui::Text("Mouse delta: (%g, %g)", io.MouseDelta.x, io.MouseDelta.y);
+			ImGui::Text("Mouse down:");     for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) if (io.MouseDownDuration[i] >= 0.0f) { ImGui::SameLine(); ImGui::Text("b%d (%.02f secs)", i, io.MouseDownDuration[i]); }
+			ImGui::Text("Mouse clicked:");  for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) if (ImGui::IsMouseClicked(i)) { ImGui::SameLine(); ImGui::Text("b%d", i); }
+			ImGui::Text("Mouse dbl-clicked:"); for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) if (ImGui::IsMouseDoubleClicked(i)) { ImGui::SameLine(); ImGui::Text("b%d", i); }
+			ImGui::Text("Mouse released:"); for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++) if (ImGui::IsMouseReleased(i)) { ImGui::SameLine(); ImGui::Text("b%d", i); }
+			ImGui::Text("Mouse wheel: %.1f", io.MouseWheel);
 		ImGui::End();
 	}
 	
@@ -132,7 +143,7 @@ update_status ModuleImgui::Update()
 		
 		ImGui::End();
 	}
-	ImGui::Begin("LOG");
+	ImGui::Begin("CONSOLE");
 	ImGui::TextUnformatted(buffer.begin());
 	ImGui::End();
 	return UPDATE_CONTINUE;
