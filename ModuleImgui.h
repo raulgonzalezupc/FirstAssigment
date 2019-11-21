@@ -37,6 +37,7 @@ public:
 	bool configButton = false;
 	bool windowButton = false;
 	bool propertiesButton = false;
+	bool quit = false;
 
 	ImGuiTextBuffer buffer;
 	bool scrollToBottom;

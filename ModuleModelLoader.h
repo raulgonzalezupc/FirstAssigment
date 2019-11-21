@@ -13,17 +13,21 @@ public:
 	std::vector<Texture> texturesLoaded;
 	std::vector<Mesh*> meshes;
 	std::string directory;
-
 	ModuleModelLoader();
 	~ModuleModelLoader();
 	bool Init();
 	bool CleanUp();
 	void LoadModel(const char*);
 	void Draw(unsigned int program);
-	void SetupTexture(Texture& texture);
-	int width;
-	int height;
 
+
+	unsigned int numMeshes = 0;
+	int numPolys=NULL;
+	unsigned int numVertices = 0;
+	int textureWidth;
+	int textureHeight;
+	char* textureType=nullptr;
+	int textureId;
 private:
 	void processNode(aiNode*, const aiScene*);
 	Mesh processMesh(aiMesh*, const aiScene*);

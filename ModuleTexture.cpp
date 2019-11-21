@@ -1,6 +1,7 @@
 #include "ModuleTexture.h"
 #include "Globals.h"
 #include "ModuleModelLoader.h"
+#include "ModuleImgui.h"
 #include "Application.h"
 #include "DevIL/include/IL/il.h"
 #include "DevIL/include/IL/ilu.h"
@@ -21,6 +22,7 @@ bool ModuleTexture::Init()
 	ilInit();
 	iluInit();
 	ilutInit();
+	App->imgui->AddLog("Initialization of Il.\n");
 	ilutRenderer(ILUT_OPENGL);
 	ilGenImages(1, &imageName);
 	ilBindImage(imageName);
@@ -49,7 +51,8 @@ bool ModuleTexture::CleanUp()
 	return true;
 }
 
-Texture ModuleTexture::LoadTexture(const char* path) {
+Texture ModuleTexture::LoadTexture(const char* path) 
+{
 	Texture texture;
 	ilLoadImage(path);
 	iluGetImageInfo(&imageInfo);
@@ -62,6 +65,7 @@ Texture ModuleTexture::LoadTexture(const char* path) {
 	texture.height = ilGetInteger(IL_IMAGE_HEIGHT);
 	texture.data = ilGetData();
 	texture.path = path;
+	
 	
 	return texture;
 }

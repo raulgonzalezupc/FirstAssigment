@@ -51,6 +51,3 @@ bool ModuleInput::CleanUp()
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
 }
-SDL_MouseWheelEvent* ModuleInput::GetMouseWheel() const {
-	return mouseWheel;
-}

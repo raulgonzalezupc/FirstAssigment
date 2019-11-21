@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "Globals.h"
 #include "ModuleWindow.h"
+#include "ModuleCamera.h"
 #include "ModuleModelLoader.h"
 #include "ModuleTimer.h"
 #include "glew/include/GL/glew.h"
@@ -100,22 +101,33 @@ update_status ModuleImgui::Update()
 	if (windowButton)
 	{
 		App->window->ShowWindowUI();
+		ImGui::Checkbox("Quit Game", &quit);
+		if (quit)
+		{
+			return UPDATE_STOP;
+		}
 	}
 	if (propertiesButton)
 	{
 		ImGui::Begin("Properties");
 		if (ImGui::CollapsingHeader("Transformation")) 
 		{
-			
+			static float pos[3] = { 0.0F, 0.0F, 0.0F };
+			ImGui::DragFloat3("Position", pos);
+			ImGui::DragFloat3("Rotation", pos);
+			ImGui::DragFloat3("Scale", pos);
 		}
 		if (ImGui::CollapsingHeader("Geometry")) 
 		{
-			ImGui::TextWrapped("Geometry: ");
+			;
 		}
 		if (ImGui::CollapsingHeader("Texture")) 
 		{
-			ImGui::Text("Texture width: %d", App->modelLoader->width);
-			ImGui::Text("Texture height %d", App->modelLoader->height);
+			ImGui::Text("Texture id: %d", App->modelLoader->textureId);
+			ImGui::Text("Texture width: %d", App->modelLoader->textureWidth);
+			ImGui::Text("Texture height: %d", App->modelLoader->textureHeight);
+			ImGui::Text("Texture type: %s", App->modelLoader->textureType);
+			ImGui::Text("Texture number of vertices: %d", App->modelLoader->numPolys);
 		}
 		
 		ImGui::End();

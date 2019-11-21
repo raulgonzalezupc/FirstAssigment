@@ -44,6 +44,9 @@ void ModuleModelLoader::LoadModel(const char* path)
 		App->imgui->AddLog("ERROR::ASSIMP:: %s\n", importer.GetErrorString());
 		return;
 	}
+	else {
+		App->imgui->AddLog("Path of the geometry correct.\n");
+	}
 	processNode(scene->mRootNode, scene);
 }
 
@@ -70,7 +73,7 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 	std::vector<Texture> textures;
-	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
+	for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
 	{
 		Vertex vertex;
 		float3 vector;
@@ -80,7 +83,7 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 		vector.y = mesh->mVertices[i].y;
 		vector.z = mesh->mVertices[i].z;
 		vertex.Position = vector;
-
+		numPolys = (vertices.size())/3;
 		// normals
 		vector.x = mesh->mNormals[i].x;
 		vector.y = mesh->mNormals[i].y;
@@ -126,22 +129,30 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 	// 1. diffuse maps
 	std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-
+	if (textures[0].type == "texture_diffuse") {
+		textureType = textures[0].type;
+	}
 	// 2. specular maps
 	std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
 	textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-
+	if (textures[0].type == "texture_specular") {
+		textureType = textures[0].type;
+	}
 	// 3. normal maps
 	std::vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
 	textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
-
+	if (textures[0].type == "texture_normal") {
+		textureType = textures[0].type;
+	}
 	// 4. height maps
 
 	std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
 	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
-
-	width = textures[0].width;//TODO, IMPROVE CODE
-	height = textures[0].height;//TODO, IMPROVE CODE
+	
+	textureWidth = textures[0].width;//TODO, IMPROVE CODE
+	textureHeight = textures[0].height;//TODO, IMPROVE CODE
+	textureId = textures[0].id;//TODO, IMPROVE CODE
+	numPolys /= 3;
 	return Mesh(vertices, indices, textures);
 }
 

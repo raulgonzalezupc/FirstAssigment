@@ -9,7 +9,6 @@
 typedef unsigned __int8 Uint8;
 
 
-
 class ModuleCamera : public Module
 {
 public:
@@ -25,12 +24,8 @@ public:
 public:
 	void SetAspectRatio(const float aspect_ratio);
 	void setFOV(const float fov);
-	void SetPlaneDistances();
 	void Position(const float3 position);
-	void Orentiatin();
-	void LookAt(const float x, const float y, const float z);
-	void GetProjectionMatrix();
-	void GetViewMatrix();
+	void Rotate(char axis, float movement);
 	void MoveUp();
 	void MoveDown();
 	void MoveForward();
@@ -40,8 +35,35 @@ public:
 	void MouseXMotion(const float x_motion);
 	void MouseYMotion(const float y_motion);
 	void multSpeed();
+
+
+
+
+	void RotatePitch(const float angle);
+	void RotateYaw(const float angle);
+
+	void OrbitX(const float angle);
+	void OrbitY(const float angle);
+	void generateMatrices();
+	void SetOrbit(const bool is_orbiting);
+
+	void LookAt(const float3 focus);
+	void LookAt(const float x, const float y, const float z);
+	void SetOrientation(const float3 orientation);
+
+
+
 public:
+
+
+
+	bool is_orbiting = false;
+
+
+
+
 	Frustum frustum;
+	float rot_speed = 0.1f;
 	float aspect;
 	float4x4 proj;
 	float4x4 view;
@@ -54,20 +76,6 @@ public:
 	float3 new_camera_pos;
 	const float distance = 0.25f * 1.0F;
 	float speed = 1.0f;
-	float buffer_data[20] = {
-	 0.5f,  0.5f, 0.0f,  // top right
-	 0.5f, -0.5f, 0.0f,  // bottom right
-	-0.5f, -0.5f, 0.0f,  // bottom left
-	-0.5f,  0.5f, 0.0f,   // top left 
-	 1.0F, 1.0F,
-	 1.0F, 0.0F,
-	 0.0F, 0.0F,
-	 0.0F, 1.0F
-	};
-	unsigned int indices[6] = {  // note that we start from 0!
-		0, 1, 3,   // first triangle
-		1, 2, 3    // second triangle
-	};
 
 };
 

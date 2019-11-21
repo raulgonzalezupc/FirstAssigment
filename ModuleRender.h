@@ -29,6 +29,7 @@ public:
 
 public:
 	SDL_GLContext glcontext;
+	int width, height;
 private:
 	void* context;
 

@@ -60,6 +60,7 @@ update_status ModuleRender::PreUpdate()
 	glUniformMatrix4fv(glGetUniformLocation(App->program->shader_program, "model"), 1, GL_TRUE, &App->camera->model[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->program->shader_program, "view"), 1, GL_TRUE, &App->camera->view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(App->program->shader_program, "proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
+
 	glViewport(0, 0, App->window->width, App->window->height);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
@@ -71,11 +72,12 @@ update_status ModuleRender::Update()
 {
 	ShowGrid();
 	ShowAxis();
-	SDL_GL_MakeCurrent(App->window->window,glcontext);
+	
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, App->texture->texture);
 	glUniform1i(glGetUniformLocation(App->program->shader_program, "texture0"), 0);
 	App->modelLoader->Draw(App->program->shader_program);
+	SDL_GL_MakeCurrent(App->window->window, glcontext);
 
 	//axis and grid
 

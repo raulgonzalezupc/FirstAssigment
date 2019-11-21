@@ -15,7 +15,6 @@ public:
 	bool Init();
 	update_status Update();
 	bool CleanUp();
-	SDL_MouseWheelEvent* GetMouseWheel() const;
 	
 public:	
 	const Uint8 *keyboard = NULL;

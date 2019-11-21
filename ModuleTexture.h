@@ -19,7 +19,7 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 	Texture LoadTexture(const char* path);
-
+	std::vector<Texture> loadedTextures;
 public:
 	ILuint imageName;
 	GLuint texture;

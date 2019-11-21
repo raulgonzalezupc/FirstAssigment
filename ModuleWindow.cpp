@@ -2,9 +2,11 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
+#include "ModuleRender.h"
 #include "ModuleImgui.h"
 #include "MathGeoLib.h"
 #include "imgui/imgui.h"
+#include "SDL.h"
 #include "glew/include/GL/glew.h"
 ModuleWindow::ModuleWindow()
 {
@@ -23,6 +25,19 @@ bool ModuleWindow::Init()
 	App->imgui->AddLog("Init SDL window & surface\n");
 	bool ret = true;
 
+	SDL_DisplayMode DM;
+	SDL_Init(SDL_INIT_VIDEO);
+	int should_be_zero = SDL_GetCurrentDisplayMode(0, &DM);
+	if (should_be_zero != 0)
+	{
+		App->imgui->AddLog("Error loading current display \n");
+	}
+	else {
+		App->imgui->AddLog("Current display loaded correctly \n");
+	}
+	unsigned int width = DM.w;
+	unsigned int height = DM.h;
+	
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		App->imgui->AddLog("SDL_VIDEO could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -42,7 +57,7 @@ bool ModuleWindow::Init()
 			flags |= SDL_WINDOW_RESIZABLE;
 		}
 
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, flags);
+		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width*0.8, height*0.8, flags);
 		windowID = SDL_GetWindowID(window);
 		if(window == NULL)
 		{
@@ -75,6 +90,28 @@ update_status ModuleWindow::Update()
 						break;
 					}
 			break;
+			case SDL_MOUSEMOTION:
+				if (event.motion.state & SDL_BUTTON_RMASK ) {
+					if (math::Abs(event.motion.xrel) > 1.5) {
+						App->camera->RotateYaw(event.motion.xrel);
+					}
+
+					if (math::Abs(event.motion.yrel) > 1.5) {
+						App->camera->RotatePitch(event.motion.yrel);
+					}
+
+				}
+				else if (event.motion.state & SDL_BUTTON_LMASK ) {
+					if (math::Abs(event.motion.xrel) > 1.5) {
+						App->camera->OrbitX(event.motion.xrel);
+					}
+
+					if (math::Abs(event.motion.yrel) > 1.5) {
+						App->camera->OrbitY(event.motion.yrel);
+					}
+
+				}
+				break;
 		}
 		
 	}
@@ -104,6 +141,7 @@ void ModuleWindow::ShowWindowUI()
 	{
 		SDL_HideWindow(App->window->window);
 	}
+
 
 	float f2 = App->camera->frustum.verticalFov;
 	ImGui::SliderFloat("Fov ", &f2, 0.01f, 3.12F, "%.2f", 2.0f);
