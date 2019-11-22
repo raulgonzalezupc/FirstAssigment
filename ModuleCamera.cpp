@@ -56,19 +56,6 @@ update_status ModuleCamera::Update()
 {
 	SDL_PumpEvents();
 	keyboard = SDL_GetKeyboardState(NULL);
-	SDL_Event event;
-	//while (SDL_PollEvent(&event)) {
-	//	if(event.type == SDL_MOUSEMOTION) {
-	//		if (event.motion.state & SDL_BUTTON_RMASK) { //if user press right click
-	//			if (math::Abs(event.motion.xrel) > 1.5) {
-	//				MouseXMotion(event.motion.xrel); //passing the relative motion in the X direction
-	//			}
-	//			if (math::Abs(event.motion.yrel) > 1.5) {
-	//				MouseYMotion(event.motion.yrel); //passing the relative motion in the Y direction
-	//			}
-	//		}
-	//	}
-	//}
 
 	if (keyboard[SDL_SCANCODE_Q])
 	{
@@ -191,34 +178,23 @@ void ModuleCamera::Rotate(char axis, float movement)
 
 	if (axis=='X')
 	{
-		float3x3 rotation_matrixX = float3x3::RotateX(angle);
-		frustum.up = rotation_matrixX * frustum.up;
-		frustum.front = rotation_matrixX * frustum.front;
-		frustum.pos = rotation_matrixX * frustum.pos;
-		proj = frustum.ProjectionMatrix();
-		view = frustum.ViewMatrix();
+		rotation_matrix = float3x3::RotateY(movement * rot_speed);
+		frustum.up = rotation_matrix * frustum.up;
+		frustum.front = rotation_matrix * frustum.front;
+
 	}
 	if (axis == 'Y')
 	{
-		float3x3 rotation_matrixY = float3x3::RotateY(angle);
-		frustum.up = rotation_matrixY * frustum.up;
-		frustum.front = rotation_matrixY * frustum.front;
-		frustum.pos = rotation_matrixY * frustum.pos;
-		proj = frustum.ProjectionMatrix();
-		view = frustum.ViewMatrix();
+		const float current_angle = asinf(frustum.front.y / frustum.front.Length());
+		if (abs(current_angle + movement * rot_speed) >= math::pi / 2) {
+			return;
+		}
+		rotation_matrix = float3x3::identity;
+		rotation_matrix.SetRotatePart(frustum.WorldRight(), movement * rot_speed);
+		frustum.up = rotation_matrix * frustum.up;
+		frustum.front = rotation_matrix * frustum.front;
 	}
-	if (axis == 'Z') 
-	{
-		float3x3 rotation_matrixZ = float3x3::RotateZ(angle);
-		frustum.up = rotation_matrixZ * frustum.up;
-		frustum.front = rotation_matrixZ * frustum.front;
-		frustum.pos = rotation_matrixZ * frustum.pos;
-		proj = frustum.ProjectionMatrix();
-		view = frustum.ViewMatrix();
-	}
-		
-		
-
+	generateMatrices();
 }
 
 void ModuleCamera::LookAt(const float3 focus)
@@ -240,124 +216,10 @@ void ModuleCamera::LookAt(const float x, const float y, const float z)
 {
 	LookAt(float3(x, y, z));
 }
-void ModuleCamera::MouseXMotion(const float x_motion)
-{
-	bool correct = false;
-	const float angle = x_motion * -0.01f;
-	if (!correct)
-	{
-		
-		float3x3 rotation_matrix = float3x3::RotateY(angle);
-		frustum.up = rotation_matrix * frustum.up;
-		frustum.front = rotation_matrix * frustum.front;
-		frustum.pos = rotation_matrix * frustum.pos;
-		proj = frustum.ProjectionMatrix();
-		view = frustum.ViewMatrix();
-	}
-	else {
-		float3x3 rotation_matrix = float3x3::RotateY(angle);
-		frustum.up = rotation_matrix * frustum.up;
-		frustum.front = rotation_matrix * frustum.front;
-		proj = frustum.ProjectionMatrix();
-		view = frustum.ViewMatrix();
-	}
-}
-void ModuleCamera::MouseYMotion(const float y_motion)
-{
-	bool correct = false;
-	const float angle = y_motion * -0.1f;
-	if (correct)
-	{
-		
-		float3x3 rotation_matrix = float3x3::RotateX(angle);
-		frustum.up = rotation_matrix * frustum.up;
-		frustum.front = rotation_matrix * frustum.front;
-		frustum.pos = rotation_matrix * frustum.pos;
-		proj = frustum.ProjectionMatrix();
-		view = frustum.ViewMatrix();
-	}
-	else {
-		float3x3 rotation_matrix = float3x3::RotateX(angle);
-		frustum.up = rotation_matrix * frustum.up;
-		frustum.front = rotation_matrix * frustum.front;
-		proj = frustum.ProjectionMatrix();
-		view = frustum.ViewMatrix();
-
-	}
-}
 
 void ModuleCamera::multSpeed()
 {
 	speed = 2.0f;
-}
-
-
-void ModuleCamera::RotatePitch(const float angle)
-{
-	const float adjusted_angle =  rot_speed * -angle;
-	const float current_angle = asinf(frustum.front.y / frustum.front.Length());
-	if (abs(current_angle + adjusted_angle) >= math::pi / 2) {
-		return;
-	}
-	float3x3 rotation_matrix = float3x3::identity;
-	rotation_matrix.SetRotatePart(frustum.WorldRight(), adjusted_angle);
-	frustum.up = rotation_matrix * frustum.up;
-	frustum.front = rotation_matrix * frustum.front;
-
-	generateMatrices();
-}
-
-void ModuleCamera::RotateYaw(const float angle)
-{
-	const float adjusted_angle =  rot_speed * -angle;
-	float3x3 rotation_matrix = float3x3::RotateY(adjusted_angle);
-	frustum.up = rotation_matrix * frustum.up;
-	frustum.front = rotation_matrix * frustum.front;
-
-	generateMatrices();
-}
-
-void ModuleCamera::OrbitX(const float angle)
-{
-	if (!is_orbiting)
-	{
-		return;
-	}
-
-	const float adjusted_angle = rot_speed * -angle;
-	float3x3 rotation_matrix = float3x3::RotateY(adjusted_angle);
-	frustum.pos = rotation_matrix * frustum.pos;
-
-	LookAt(float3::zero);
-
-	generateMatrices();
-}
-
-void ModuleCamera::OrbitY(const float angle)
-{
-	if (!is_orbiting)
-	{
-		return;
-	}
-
-	const float adjusted_angle = rot_speed * -angle;
-	const float current_angle = asinf(frustum.front.y / frustum.front.Length());
-	if (abs(current_angle + adjusted_angle) >= math::pi / 2) {
-		return;
-	}
-
-	float3x3 rotation_matrix = float3x3::identity;
-	rotation_matrix.SetRotatePart(frustum.WorldRight(), adjusted_angle);
-	frustum.pos = rotation_matrix * frustum.pos;
-
-	LookAt(float3::zero);
-
-	generateMatrices();
-}
-
-void ModuleCamera::SetOrbit(const bool is_orbiting)
-{
-	this->is_orbiting = is_orbiting;
 }
 
 void ModuleCamera::generateMatrices()

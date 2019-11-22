@@ -3,6 +3,8 @@
 #include "ModuleInput.h"
 #include "ModuleCamera.h"
 #include "ModuleImgui.h"
+#include "ModuleWindow.h"
+#include "MathGeoLib.h"
 #include "SDL/include/SDL.h"
 
 ModuleInput::ModuleInput()
@@ -36,7 +38,35 @@ update_status ModuleInput::Update()
 	SDL_PumpEvents();
 
 	keyboard = SDL_GetKeyboardState(NULL);
-	
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		switch (event.type) {
+		case SDL_WINDOWEVENT:
+			switch (event.window.event) {
+			case SDL_WINDOWEVENT_SIZE_CHANGED:
+				App->window->width = event.window.data1;	App->window->height = event.window.data2;
+				App->camera->SetAspectRatio(App->window->width*0.8 / App->window->height*0.8);
+				break;
+			case SDL_WINDOWEVENT_CLOSE:
+				return UPDATE_STOP;
+				break;
+			}
+			break;
+		case SDL_MOUSEMOTION:
+			if (event.motion.state & SDL_BUTTON_RMASK) {
+				if (math::Abs(event.motion.xrel) > 1.5) {
+					App->camera->Rotate('X', event.motion.xrel * 0.03);
+				}
+
+				if (math::Abs(event.motion.yrel) > 1.5) {
+					App->camera->Rotate('Y', event.motion.yrel * 0.03);
+				}
+
+			}
+			break;
+		}
+
+	}
 	if (keyboard[SDL_SCANCODE_ESCAPE])
 	{
 		return UPDATE_STOP;

@@ -4,7 +4,6 @@
 #include "ModuleCamera.h"
 #include "ModuleRender.h"
 #include "ModuleImgui.h"
-#include "MathGeoLib.h"
 #include "imgui/imgui.h"
 #include "SDL.h"
 #include "glew/include/GL/glew.h"
@@ -76,45 +75,6 @@ bool ModuleWindow::Init()
 }
 update_status ModuleWindow::Update() 
 {
-	SDL_Event event;
-	while (SDL_PollEvent(&event)) {
-		switch (event.type) {
-			case SDL_WINDOWEVENT: 
-					switch (event.window.event) {
-						case SDL_WINDOWEVENT_SIZE_CHANGED: 
-							width = event.window.data1;	height = event.window.data2;
-							App->camera->SetAspectRatio(width/height);
-						break;
-						case SDL_WINDOWEVENT_CLOSE:
-							return UPDATE_STOP;
-						break;
-					}
-			break;
-			case SDL_MOUSEMOTION:
-				if (event.motion.state & SDL_BUTTON_RMASK ) {
-					if (math::Abs(event.motion.xrel) > 1.5) {
-						App->camera->RotateYaw(event.motion.xrel);
-					}
-
-					if (math::Abs(event.motion.yrel) > 1.5) {
-						App->camera->RotatePitch(event.motion.yrel);
-					}
-
-				}
-				else if (event.motion.state & SDL_BUTTON_LMASK ) {
-					if (math::Abs(event.motion.xrel) > 1.5) {
-						App->camera->OrbitX(event.motion.xrel);
-					}
-
-					if (math::Abs(event.motion.yrel) > 1.5) {
-						App->camera->OrbitY(event.motion.yrel);
-					}
-
-				}
-				break;
-		}
-		
-	}
 	return UPDATE_CONTINUE;
 }
 // Called before quitting

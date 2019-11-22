@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "MathGeoLib/include/Math/float4x4.h"
+#include "MathGeoLib/include/Math/float3x3.h"
 #include "MathGeoLib/include/Geometry/Frustum.h"
 
 typedef unsigned __int8 Uint8;
@@ -32,20 +33,9 @@ public:
 	void MoveBackwards();
 	void MoveLeft();
 	void MoveRight();
-	void MouseXMotion(const float x_motion);
-	void MouseYMotion(const float y_motion);
 	void multSpeed();
 
-
-
-
-	void RotatePitch(const float angle);
-	void RotateYaw(const float angle);
-
-	void OrbitX(const float angle);
-	void OrbitY(const float angle);
 	void generateMatrices();
-	void SetOrbit(const bool is_orbiting);
 
 	void LookAt(const float3 focus);
 	void LookAt(const float x, const float y, const float z);
@@ -58,7 +48,7 @@ public:
 
 
 	bool is_orbiting = false;
-
+	float3x3 rotation_matrix;
 
 
 

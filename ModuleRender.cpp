@@ -37,15 +37,17 @@ bool ModuleRender::Init()
 	glClearDepth(1.0f);
 	glClearColor(0.f, 0.f, 0.f, 1.f);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_DEPTH_TEST);
+	
 	glFrontFace(GL_CCW);
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_TEXTURE_2D);
+	
 
 	App->imgui->AddLog("Creating Renderer context\n");
 	glcontext = SDL_GL_CreateContext(App->window->window);
 
 	GLenum err = glewInit();
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_TEXTURE_2D);
 	App->imgui->AddLog("Using Glew %s\n", glewGetString(GLEW_VERSION));
 
 	App->modelLoader->LoadModel("BakerHouse.fbx");
