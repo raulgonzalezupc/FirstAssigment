@@ -4,6 +4,7 @@
 #include "ModuleCamera.h"
 #include "ModuleImgui.h"
 #include "ModuleWindow.h"
+#include "ModuleModelLoader.h"
 #include "MathGeoLib.h"
 #include "SDL/include/SDL.h"
 
@@ -63,6 +64,20 @@ update_status ModuleInput::Update()
 				}
 
 			}
+			if (event.motion.state & SDL_BUTTON_LMASK) {
+				if (math::Abs(event.motion.xrel) > 1.5) {
+					App->camera->Orbit('X', event.motion.xrel * 0.03);
+				}
+
+				if (math::Abs(event.motion.yrel) > 1.5) {
+					App->camera->Orbit('Y', event.motion.yrel * 0.03);
+				}
+
+			}
+			break;
+		case SDL_DROPFILE:
+			App->modelLoader->LoadModel(event.drop.file);
+			SDL_free(event.drop.file);
 			break;
 		}
 

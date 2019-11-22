@@ -124,13 +124,14 @@ update_status ModuleImgui::Update()
 		if (ImGui::CollapsingHeader("Transformation")) 
 		{
 			static float pos[3] = { 0.0F, 0.0F, 0.0F };
-			ImGui::DragFloat3("Position", pos);
+			ImGui::DragFloat3("Position",pos);
 			ImGui::DragFloat3("Rotation", pos);
 			ImGui::DragFloat3("Scale", pos);
 		}
 		if (ImGui::CollapsingHeader("Geometry")) 
 		{
-			;
+			ImGui::Text("Number of vertices: %d", App->modelLoader->numVertices);
+			ImGui::Text("Number of meshes: %d", App->modelLoader->numMeshes);
 		}
 		if (ImGui::CollapsingHeader("Texture")) 
 		{
@@ -138,7 +139,8 @@ update_status ModuleImgui::Update()
 			ImGui::Text("Texture width: %d", App->modelLoader->textureWidth);
 			ImGui::Text("Texture height: %d", App->modelLoader->textureHeight);
 			ImGui::Text("Texture type: %s", App->modelLoader->textureType);
-			ImGui::Text("Texture number of vertices: %d", App->modelLoader->numPolys);
+			
+			
 		}
 		
 		ImGui::End();

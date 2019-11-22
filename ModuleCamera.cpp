@@ -3,6 +3,7 @@
 #include "ModuleWindow.h"
 #include "ModuleImgui.h"
 #include "ModuleInput.h"
+#include "ModuleModelLoader.h"
 #include "MathGeoLib/include/Math/float4.h"
 #include "MathGeoLib/include/Math/float3.h"
 #include "MathGeoLib/include/Math/float4x4.h"
@@ -24,7 +25,7 @@ ModuleCamera::~ModuleCamera()
 
 bool ModuleCamera::Init()
 {
-
+	
 	frustum.type = FrustumType::PerspectiveFrustum;
 	aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
 	frustum.pos = float3::unitX;
@@ -80,6 +81,11 @@ update_status ModuleCamera::Update()
 	if (keyboard[SDL_SCANCODE_D])
 	{
 		MoveRight();
+	}
+	if (keyboard[SDL_SCANCODE_F])
+	{
+		App->modelLoader->computeModelBoundingBox();
+		focusCameraToNewPoint(App->modelLoader->correctCameraPositionForModel);
 	}
 	if (keyboard[SDL_SCANCODE_UP])
 	{
@@ -138,6 +144,15 @@ void ModuleCamera::Position(const float3 position)
 }
 
 
+void ModuleCamera::SetNearPlaneDistance(const float nearDist)
+{
+	frustum.nearPlaneDistance = nearDist;
+}
+
+void ModuleCamera::SetFarPlaneDistance(const float farDist)
+{
+	frustum.farPlaneDistance = farDist;
+}
 
 void ModuleCamera::MoveUp()
 {
@@ -174,8 +189,6 @@ void ModuleCamera::MoveRight()
 }
 void ModuleCamera::Rotate(char axis, float movement)
 {
-	const float angle = movement * -0.01f;
-
 	if (axis=='X')
 	{
 		rotation_matrix = float3x3::RotateY(movement * rot_speed);
@@ -204,18 +217,19 @@ void ModuleCamera::LookAt(const float3 focus)
 
 	generateMatrices();
 }
-void ModuleCamera::SetOrientation(const float3 orientation)
-{
-	float3x3 rotation_matrix = float3x3::LookAt(frustum.front, orientation, frustum.up, float3::unitY);
-	frustum.front = rotation_matrix * frustum.front;
-	frustum.up = rotation_matrix * frustum.up;
-
-	generateMatrices();
-}
 void ModuleCamera::LookAt(const float x, const float y, const float z)
 {
 	LookAt(float3(x, y, z));
 }
+void ModuleCamera::SetOrientation(const float3 orientation)
+{
+	float3 direction = (orientation - frustum.pos).Normalized();
+	float3x3 rotation = float3x3::LookAt(frustum.front, direction, frustum.up, float3::unitY);
+	frustum.front = rotation.Transform(frustum.front).Normalized();
+	frustum.up = rotation.Transform(frustum.up).Normalized();
+	generateMatrices();
+}
+
 
 void ModuleCamera::multSpeed()
 {
@@ -226,4 +240,50 @@ void ModuleCamera::generateMatrices()
 {
 	proj = frustum.ProjectionMatrix();
 	view = frustum.ViewMatrix();
+}
+
+
+void ModuleCamera::focusCameraToNewPoint(const float3 & newPos)
+{
+	frustum.pos = newPos;
+	LookAt(App->modelLoader->modelCenter);
+
+	//in case the orbit is going, set up the old model
+	model = float4x4::FromTRS(float3(0.0F, -5.0F, 20.0F), float3x3::RotateY(0.0F), float3(1.0F, 1.0F, 1.0F)); 
+	generateMatrices();
+
+}
+
+
+void ModuleCamera::Orbit(char axis, float movement) {
+	
+
+	if (axis == 'X') {
+		pitch = 0;
+		yaw = rot_speed * speed;
+
+		if (movement < 0) {
+			model = model * math::float3x3::RotateY(-yaw);
+			frustum.pos = frustum.pos * math::float3x3::RotateY(-yaw);
+		}
+		else {
+			model = model * math::float3x3::RotateY(yaw);
+			frustum.pos = frustum.pos * math::float3x3::RotateY(yaw);
+		}
+	}
+	else if (axis == 'Y') {
+		yaw = 0;
+		pitch = rot_speed * speed;
+
+		if (movement < 0) {
+			model = model * math::float3x3::RotateAxisAngle(frustum.WorldRight(), pitch);
+			frustum.pos = frustum.pos *math::float3x3::RotateAxisAngle(frustum.WorldRight(), pitch);
+		
+		}
+		else {
+			model = model * math::float3x3::RotateAxisAngle(frustum.WorldRight(), -pitch);
+			frustum.pos = frustum.pos * math::float3x3::RotateAxisAngle(frustum.WorldRight(), -pitch);
+		}	
+	}
+	generateMatrices();
 }

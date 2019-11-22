@@ -2,6 +2,7 @@
 #include "ModuleModelLoader.h"
 #include "ModuleTexture.h"
 #include "ModuleImgui.h"
+#include "ModuleCamera.h"
 #include "assimp/include/assimp/Importer.hpp"
 #include "assimp/include/assimp/scene.h"
 #include "assimp/include/assimp/postprocess.h"
@@ -58,6 +59,7 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		meshes.push_back(new Mesh(processMesh(mesh, scene)));
+		++numMeshes;
 	}
 
 	for (unsigned int i = 0; i < node->mNumChildren; i++) 
@@ -73,6 +75,7 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 	std::vector<Texture> textures;
+	numVertices += mesh->mNumVertices;
 	for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
 	{
 		Vertex vertex;
@@ -183,4 +186,71 @@ std::vector<Texture> ModuleModelLoader::loadMaterialTextures(aiMaterial *mat, ai
 		}
 	}
 	return textures;
+}
+
+
+void ModuleModelLoader::computeModelBoundingBox()
+{
+
+	//Min values
+	float minX = 10000000.0f, minY = 10000000.0f, minZ = 10000000.0f;
+
+	//Max values
+	float maxX = -1000000.0f, maxY = -1000000.0f, maxZ = -1000000.0f;
+
+	for (auto mesh : meshes)
+	{
+		for (auto vertex : mesh->vertices)
+		{
+			//Min vertex
+			if (vertex.Position.x < minX)
+				minX = vertex.Position.x;
+
+			if (vertex.Position.y < minY)
+				minY = vertex.Position.y;
+
+			if (vertex.Position.z < minZ)
+				minZ = vertex.Position.z;
+
+			//Max vertex
+			if (vertex.Position.x > maxX)
+				maxX = vertex.Position.x;
+
+			if (vertex.Position.y > maxY)
+				maxY = vertex.Position.y;
+
+			if (vertex.Position.z > maxZ)
+				maxZ = vertex.Position.z;
+		}
+	}
+
+	modelBox.push_back(float3(minX, minY, minZ));
+	modelBox.push_back(float3(maxX, minY, minZ));
+	modelBox.push_back(float3(maxX, minY, maxZ));
+	modelBox.push_back(float3(minX, minY, maxZ));
+	modelBox.push_back(float3(minX, maxY, minZ));
+	modelBox.push_back(float3(maxX, maxY, minZ));
+	modelBox.push_back(float3(maxX, maxY, maxZ));
+	modelBox.push_back(float3(minX, maxY, maxZ));
+
+
+	correctCameraPositionForModel = float3((maxX + minX) / 2, (maxY + minY) / 2, -2 * (maxZ - minZ));
+	App->imgui->AddLog("Compute the camera position depending of model size: (%.3f,%.3f,%.3f)", correctCameraPositionForModel.x, correctCameraPositionForModel.y, correctCameraPositionForModel.z);
+
+	modelCenter = correctCameraPositionForModel;
+	modelCenter.z = (maxZ - minZ) / 2;
+	App->imgui->AddLog("Computing models center: (%.3f,%.3f,%.3f) \n", modelCenter.x, modelCenter.y, modelCenter.z);
+
+
+	float distance = 3 * (maxX - minX);
+	if (App->camera->frustum.farPlaneDistance < distance)
+	{
+		App->camera->frustum.farPlaneDistance = distance;
+	}
+	else
+	{
+		App->camera->frustum.farPlaneDistance = 100.0f;
+	}
+
+
 }
