@@ -21,6 +21,7 @@ public:
 	Texture LoadTexture(const char* path);
 	std::vector<Texture> loadedTextures;
 public:
+	Texture Texture;
 	ILuint imageName;
 	GLuint texture;
 	ILinfo imageInfo;

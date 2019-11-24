@@ -20,7 +20,6 @@ public:
 	void LoadModel(const char*);
 	void Draw(unsigned int program);
 
-
 	unsigned int numMeshes = 0;
 	int numPolys=NULL;
 	unsigned int numVertices = 0;
@@ -32,7 +31,7 @@ public:
 	float3 correctCameraPositionForModel = float3(0.0f, 0.0f, 0.0f);
 	float3 modelCenter = float3(0.0f, 0.0f, 0.0f);
 	void computeModelBoundingBox();
-	
+	void ChangeModel(const char * path);
 private:
 	void processNode(aiNode*, const aiScene*);
 	Mesh processMesh(aiMesh*, const aiScene*);

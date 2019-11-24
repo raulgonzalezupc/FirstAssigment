@@ -247,9 +247,6 @@ void ModuleCamera::focusCameraToNewPoint(const float3 & newPos)
 {
 	frustum.pos = newPos;
 	LookAt(App->modelLoader->modelCenter);
-
-	//in case the orbit is going, set up the old model
-	model = float4x4::FromTRS(float3(0.0F, -5.0F, 20.0F), float3x3::RotateY(0.0F), float3(1.0F, 1.0F, 1.0F)); 
 	generateMatrices();
 
 }

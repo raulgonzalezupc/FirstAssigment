@@ -75,8 +75,28 @@ update_status ModuleInput::Update()
 
 			}
 			break;
+		case SDL_MOUSEWHEEL:
+			if (event.wheel.y > 0)
+			{
+				App->camera->MoveForward();
+			}
+			else if (event.wheel.y < 0)
+			{
+				App->camera->MoveBackwards();
+			}
+			break;
 		case SDL_DROPFILE:
-			App->modelLoader->LoadModel(event.drop.file);
+			std::string path = event.drop.file;
+			std::string extension = path.substr(path.size() - 3, path.size());
+
+			if (extension == "fbx")
+			{
+				App->modelLoader->ChangeModel(event.drop.file);
+			}
+			else if (extension == "jpg" || extension == "png" || extension == "dds")
+			{
+				Texture newTexture = App->texture->LoadTexture(path.c_str());
+			}
 			SDL_free(event.drop.file);
 			break;
 		}

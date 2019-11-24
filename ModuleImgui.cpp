@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
+#include "ModuleTexture.h"
 #include "ModuleModelLoader.h"
 #include "ModuleTimer.h"
 #include "glew/include/GL/glew.h"
@@ -123,10 +124,12 @@ update_status ModuleImgui::Update()
 		ImGui::Begin("Properties");
 		if (ImGui::CollapsingHeader("Transformation")) 
 		{
-			static float pos[3] = { 0.0F, 0.0F, 0.0F };
-			ImGui::DragFloat3("Position",pos);
-			ImGui::DragFloat3("Rotation", pos);
-			ImGui::DragFloat3("Scale", pos);
+			static float position[3] = { 0.0F, 0.0F, 0.0F };
+			static float rotation[3] = { 0.0F, 0.0F, 0.0F };
+			static float scale[3] = { 1.0F, 1.0F, 1.0F };
+			ImGui::DragFloat3("Position", position);
+			ImGui::DragFloat3("Rotation", rotation);
+			ImGui::DragFloat3("Scale", scale);
 		}
 		if (ImGui::CollapsingHeader("Geometry")) 
 		{
@@ -139,7 +142,7 @@ update_status ModuleImgui::Update()
 			ImGui::Text("Texture width: %d", App->modelLoader->textureWidth);
 			ImGui::Text("Texture height: %d", App->modelLoader->textureHeight);
 			ImGui::Text("Texture type: %s", App->modelLoader->textureType);
-			
+			ImGui::Image((void*)(intptr_t)App->texture->Texture.id, ImVec2(200 * 0.5f, 200 * 0.5f), ImVec2(0, 1), ImVec2(1, 0));
 			
 		}
 		

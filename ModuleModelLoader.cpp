@@ -254,3 +254,10 @@ void ModuleModelLoader::computeModelBoundingBox()
 
 
 }
+void ModuleModelLoader::ChangeModel(const char* path)
+{
+	texturesLoaded.clear();
+	meshes.clear();
+	directory.clear();
+	LoadModel(path);
+}
