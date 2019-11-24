@@ -32,13 +32,13 @@ public:
 
 	//buttons
 	bool menuButton = false;
-	bool consoleButton = false;
+	bool consoleButton = true;
 	bool aboutButton = false;
 	bool configButton = false;
 	bool windowButton = false;
 	bool propertiesButton = false;
 	bool quit = false;
-
+	bool meshed = false;
 	ImGuiTextBuffer buffer;
 	bool scrollToBottom;
 	vector<float> fps;

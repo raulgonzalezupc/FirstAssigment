@@ -34,6 +34,7 @@ public:
 	SDL_Surface* screen_surface = NULL;
 
 	bool resizable;
+	bool bordered = true;
 	Uint32 flags;
 };
 

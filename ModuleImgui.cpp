@@ -57,7 +57,6 @@ update_status ModuleImgui::Update()
 	//Menu
 	if (ImGui::BeginMainMenuBar())
 	{
-		ImGui::MenuItem("Menu", (const char*)0, &menuButton);
 		ImGui::MenuItem("Window", (const char*)0, &windowButton);
 		ImGui::MenuItem("Console", (const char*)0, &consoleButton);
 		ImGui::MenuItem("About", (const char*)0, &aboutButton);
@@ -112,12 +111,14 @@ update_status ModuleImgui::Update()
 	
 	if (windowButton)
 	{
+		ImGui::Begin("Window Settings");
 		App->window->ShowWindowUI();
 		ImGui::Checkbox("Quit Game", &quit);
 		if (quit)
 		{
 			return UPDATE_STOP;
 		}
+		ImGui::End();
 	}
 	if (propertiesButton)
 	{
@@ -142,15 +143,31 @@ update_status ModuleImgui::Update()
 			ImGui::Text("Texture width: %d", App->modelLoader->textureWidth);
 			ImGui::Text("Texture height: %d", App->modelLoader->textureHeight);
 			ImGui::Text("Texture type: %s", App->modelLoader->textureType);
+
+			//Show the model with only the mesh
+			ImGui::Checkbox("Show Mesh", &meshed);
+			if (meshed) {
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			}
+			else {
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			}
+
+			//texture image
 			ImGui::Image((void*)(intptr_t)App->texture->Texture.id, ImVec2(200 * 0.5f, 200 * 0.5f), ImVec2(0, 1), ImVec2(1, 0));
+			
+			
 			
 		}
 		
 		ImGui::End();
 	}
-	ImGui::Begin("CONSOLE");
-	ImGui::TextUnformatted(buffer.begin());
-	ImGui::End();
+	if (consoleButton)
+	{
+		ImGui::Begin("CONSOLE");
+		ImGui::TextUnformatted(buffer.begin());
+		ImGui::End();
+	}
 	return UPDATE_CONTINUE;
 }
 

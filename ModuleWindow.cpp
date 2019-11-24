@@ -34,8 +34,8 @@ bool ModuleWindow::Init()
 	else {
 		App->imgui->AddLog("Current display loaded correctly \n");
 	}
-	unsigned int width = DM.w;
-	unsigned int height = DM.h;
+	width = DM.w;
+	height = DM.h;
 	
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -94,15 +94,24 @@ bool ModuleWindow::CleanUp()
 
 void ModuleWindow::ShowWindowUI()
 {
+	ImGui::SetScrollHere(1.0f);
 	//ImGui::ShowTestWindow();
 	ImGui::Text("Window Settings:");
 	ImGui::Checkbox("Resizable off:", &resizable); 
-	if (!resizable)
-	{
-		SDL_HideWindow(App->window->window);
+	
+	ImGui::Checkbox("Borderless widow:", &bordered);
+	if (bordered) {
+		SDL_SetWindowBordered(window, SDL_TRUE);
 	}
-
-
+	else {
+		SDL_SetWindowBordered(window, SDL_FALSE);
+	}
+	//Change window size
+	ImGui::SliderFloat("Window Width ", &width, 0.01f, 1980.0F, "%.2f", 2.0f);
+	ImGui::SliderFloat("Window Height ", &height, 0.01f, 1080.0F, "%.2f", 2.0f);
+	SDL_SetWindowSize(window, width, height);
+	
+	//change FOV
 	float f2 = App->camera->frustum.verticalFov;
 	ImGui::SliderFloat("Fov ", &f2, 0.01f, 3.12F, "%.2f", 2.0f);
 	App->camera->setFOV(f2);

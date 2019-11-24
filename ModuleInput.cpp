@@ -64,7 +64,7 @@ update_status ModuleInput::Update()
 				}
 
 			}
-			if (event.motion.state & SDL_BUTTON_LMASK) {
+			if ((event.motion.state & SDL_BUTTON_LMASK) && keyboard[SDL_SCANCODE_LALT]) {
 				if (math::Abs(event.motion.xrel) > 1.5) {
 					App->camera->Orbit('X', event.motion.xrel * 0.03);
 				}

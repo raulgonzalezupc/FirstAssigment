@@ -134,7 +134,7 @@ void ModuleCamera::setFOV(const float fov)
 {
 	frustum.verticalFov = fov;
 	frustum.horizontalFov = 2.0F*atanf(tanf(frustum.verticalFov*0.5F)*aspect);
-	proj = frustum.ProjectionMatrix();
+	generateMatrices();
 }
 
 void ModuleCamera::Position(const float3 position)
