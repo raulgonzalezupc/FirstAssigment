@@ -38,7 +38,7 @@ public:
 	bool windowButton = false;
 	bool propertiesButton = false;
 	bool quit = false;
-	bool meshed = false;
+	
 	ImGuiTextBuffer buffer;
 	bool scrollToBottom;
 	vector<float> fps;

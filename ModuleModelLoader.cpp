@@ -7,6 +7,9 @@
 #include "assimp/include/assimp/scene.h"
 #include "assimp/include/assimp/postprocess.h"
 
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_opengl3.h"
+#include "imgui/imgui_impl_sdl.h"
 
 
 ModuleModelLoader::ModuleModelLoader() 
@@ -86,7 +89,6 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 		vector.y = mesh->mVertices[i].y;
 		vector.z = mesh->mVertices[i].z;
 		vertex.Position = vector;
-		numPolys = (vertices.size())/3;
 		// normals
 		vector.x = mesh->mNormals[i].x;
 		vector.y = mesh->mNormals[i].y;
@@ -132,30 +134,42 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 	// 1. diffuse maps
 	std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-	if (textures[0].type == "texture_diffuse") {
+	if ((textures[0].type == "texture_diffuse") && textures[0].type) {
 		textureType = textures[0].type;
 	}
 	// 2. specular maps
 	std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
 	textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-	if (textures[0].type == "texture_specular") {
+	if ((textures[0].type == "texture_specular") && textures[0].type) {
 		textureType = textures[0].type;
 	}
 	// 3. normal maps
 	std::vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
 	textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
-	if (textures[0].type == "texture_normal") {
+	if ((textures[0].type == "texture_normal") && textures[0].type) {
 		textureType = textures[0].type;
 	}
 	// 4. height maps
 
 	std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
 	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
-	
-	textureWidth = textures[0].width;//TODO, IMPROVE CODE
-	textureHeight = textures[0].height;//TODO, IMPROVE CODE
-	textureId = textures[0].id;//TODO, IMPROVE CODE
-	numPolys /= 3;
+	if ((textures[0].type == "texture_height") && textures[0].type) {
+		textureType = textures[0].type;
+	}
+
+	//texture properties
+	if (textures[0].width)
+	{
+		textureWidth = textures[0].width;//TODO, IMPROVE CODE
+	}
+	if (textures[0].height)
+	{
+		textureHeight = textures[0].height;//TODO, IMPROVE CODE
+	}
+	if (textures[0].id)
+	{
+		textureId = textures[0].id;//TODO, IMPROVE CODE
+	}
 	return Mesh(vertices, indices, textures);
 }
 
@@ -260,4 +274,48 @@ void ModuleModelLoader::ChangeModel(const char* path)
 	meshes.clear();
 	directory.clear();
 	LoadModel(path);
+}
+
+void ModuleModelLoader::ShowModelUI()
+{
+	ImGui::Begin("Properties");
+	if (ImGui::CollapsingHeader("Transformation"))
+	{
+		static float position[3] = { 0.0F, 0.0F, 0.0F };
+		static float rotation[3] = { 0.0F, 0.0F, 0.0F };
+		static float scale[3] = { 1.0F, 1.0F, 1.0F };
+		ImGui::DragFloat3("Position", position);
+		ImGui::DragFloat3("Rotation", rotation);
+		ImGui::DragFloat3("Scale", scale);
+	}
+	if (ImGui::CollapsingHeader("Geometry"))
+	{
+		ImGui::Text("Number of vertices: %d",numVertices);
+		ImGui::Text("Number of meshes: %d", numMeshes);
+		ImGui::Text("Number of triangles: %d", numVertices/3);
+	}
+	if (ImGui::CollapsingHeader("Texture"))
+	{
+		ImGui::Text("Texture id: %d", textureId);
+		ImGui::Text("Texture width: %d", textureWidth);
+		ImGui::Text("Texture height: %d", textureHeight);
+		ImGui::Text("Texture type: %s", textureType);
+
+		//Show the model with only the mesh
+		ImGui::Checkbox("Show Mesh", &meshed);
+		if (meshed) {
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		}
+		else {
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		}
+
+		//texture image
+		ImGui::Image((void*)(intptr_t)App->texture->Texture.id, ImVec2(200 * 0.5f, 200 * 0.5f), ImVec2(0, 1), ImVec2(1, 0));
+
+
+
+	}
+
+	ImGui::End();
 }

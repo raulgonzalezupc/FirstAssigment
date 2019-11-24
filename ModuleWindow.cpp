@@ -94,11 +94,22 @@ bool ModuleWindow::CleanUp()
 
 void ModuleWindow::ShowWindowUI()
 {
-	ImGui::SetScrollHere(1.0f);
 	//ImGui::ShowTestWindow();
 	ImGui::Text("Window Settings:");
-	ImGui::Checkbox("Resizable off:", &resizable); 
-	
+
+	ImGui::Checkbox("Full screen", &fullScreen);
+	if (fullScreen)
+	{
+		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+	}
+
+
+	ImGui::Checkbox("Full screen desktop", &fullScreenDesk);
+	if (fullScreenDesk)
+	{
+		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+	}
+
 	ImGui::Checkbox("Borderless widow:", &bordered);
 	if (bordered) {
 		SDL_SetWindowBordered(window, SDL_TRUE);
@@ -106,6 +117,8 @@ void ModuleWindow::ShowWindowUI()
 	else {
 		SDL_SetWindowBordered(window, SDL_FALSE);
 	}
+
+
 	//Change window size
 	ImGui::SliderFloat("Window Width ", &width, 0.01f, 1980.0F, "%.2f", 2.0f);
 	ImGui::SliderFloat("Window Height ", &height, 0.01f, 1080.0F, "%.2f", 2.0f);

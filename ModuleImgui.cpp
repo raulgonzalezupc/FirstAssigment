@@ -122,45 +122,7 @@ update_status ModuleImgui::Update()
 	}
 	if (propertiesButton)
 	{
-		ImGui::Begin("Properties");
-		if (ImGui::CollapsingHeader("Transformation")) 
-		{
-			static float position[3] = { 0.0F, 0.0F, 0.0F };
-			static float rotation[3] = { 0.0F, 0.0F, 0.0F };
-			static float scale[3] = { 1.0F, 1.0F, 1.0F };
-			ImGui::DragFloat3("Position", position);
-			ImGui::DragFloat3("Rotation", rotation);
-			ImGui::DragFloat3("Scale", scale);
-		}
-		if (ImGui::CollapsingHeader("Geometry")) 
-		{
-			ImGui::Text("Number of vertices: %d", App->modelLoader->numVertices);
-			ImGui::Text("Number of meshes: %d", App->modelLoader->numMeshes);
-		}
-		if (ImGui::CollapsingHeader("Texture")) 
-		{
-			ImGui::Text("Texture id: %d", App->modelLoader->textureId);
-			ImGui::Text("Texture width: %d", App->modelLoader->textureWidth);
-			ImGui::Text("Texture height: %d", App->modelLoader->textureHeight);
-			ImGui::Text("Texture type: %s", App->modelLoader->textureType);
-
-			//Show the model with only the mesh
-			ImGui::Checkbox("Show Mesh", &meshed);
-			if (meshed) {
-				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			}
-			else {
-				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			}
-
-			//texture image
-			ImGui::Image((void*)(intptr_t)App->texture->Texture.id, ImVec2(200 * 0.5f, 200 * 0.5f), ImVec2(0, 1), ImVec2(1, 0));
-			
-			
-			
-		}
-		
-		ImGui::End();
+		App->modelLoader->ShowModelUI();
 	}
 	if (consoleButton)
 	{
