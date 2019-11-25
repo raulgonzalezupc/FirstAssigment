@@ -94,7 +94,7 @@ void Mesh::Draw(unsigned int program) const
 		else if (name == "texture_height")
 			number = std::to_string(++heightNr);
 		glUniform1i(glGetUniformLocation(program, (name + number).c_str()), i);
-		glBindTexture(GL_TEXTURE_2D, App->modelLoader->texturesLoaded[0].id);
+		glBindTexture(GL_TEXTURE_2D, textures[i].id);
 	}
 	// draw mesh
 	glBindVertexArray(VAO);

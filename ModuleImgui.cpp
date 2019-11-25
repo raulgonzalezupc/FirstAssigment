@@ -86,8 +86,6 @@ update_status ModuleImgui::Update()
 	if (propertiesButton)
 	{
 		App->modelLoader->ShowModelUI();
-		
-		
 	}
 	if (consoleButton)
 	{

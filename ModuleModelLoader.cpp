@@ -222,7 +222,10 @@ std::vector<Texture> ModuleModelLoader::loadMaterialTextures(aiMaterial *mat, ai
 				App->imgui->AddLog("Couldn't find a texture to load, loading previous one.\n");
 				finalPath = "";
 			}
-
+			if (finalPath == "")
+			{
+				return textures;
+			}
 			Texture texture = App->texture->LoadTexture(finalPath.c_str());
 			texture.type = typeName;
 			textures.push_back(texture);
