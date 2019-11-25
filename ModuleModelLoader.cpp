@@ -8,7 +8,7 @@
 #include "assimp/include/assimp/postprocess.h"
 #include "assimp/include/assimp/Logger.hpp"
 #include "assimp/include/assimp/DefaultLogger.hpp"
-
+#include <io.h>
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "imgui/imgui_impl_sdl.h"
@@ -177,6 +177,7 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 std::vector<Texture> ModuleModelLoader::loadMaterialTextures(aiMaterial *mat, aiTextureType type, char* typeName) 
 {
 	std::vector<Texture> textures;
+	
 	for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
 	{
 		aiString str;
@@ -193,10 +194,40 @@ std::vector<Texture> ModuleModelLoader::loadMaterialTextures(aiMaterial *mat, ai
 		}
 		if (!skip) 
 		{
-			Texture texture = App->texture->LoadTexture(str.C_Str());
+			if (FileExists(str.C_Str()))
+			{
+				App->imgui->AddLog("Texture loading from: %s\n", str.C_Str());
+				finalPath = str.C_Str();
+				std::size_t found = finalPath.find_last_of("/\\");
+				finalPath = finalPath.substr(found + 1);
+				finalPath = "Textures/"+finalPath;
+			}
+			else if (FileExists(modelPath.c_str()))
+			{
+				modelPath.append(str.C_Str());
+				App->imgui->AddLog("Texture loading from Models Path: %s\n", modelPath.c_str());
+				finalPath = modelPath.c_str();
+			}
+			else if(FileExists(myTexturesPath.c_str()))
+			{
+				myTexturesPath += str.C_Str();
+				if (FileExists(myTexturesPath.c_str()))
+				{
+					App->imgui->AddLog("Texture loading from Textures Path: %s\n", myTexturesPath.c_str());
+					finalPath = myTexturesPath.c_str();
+
+				}
+			}
+			else {
+				App->imgui->AddLog("Couldn't find a texture to load, loading previous one.\n");
+				finalPath = "";
+			}
+
+			Texture texture = App->texture->LoadTexture(finalPath.c_str());
 			texture.type = typeName;
 			textures.push_back(texture);
 			texturesLoaded.push_back(texture);
+			
 		}
 	}
 	return textures;
@@ -207,10 +238,10 @@ void ModuleModelLoader::computeModelBoundingBox()
 {
 
 	//Min values
-	float minX = 1000000000000000.0f, minY = 10000000000000000.0f, minZ = 100000000000000000.0f;
+	float minX = 100000000.0f, minY = 100000000.0f, minZ = 100000000.0f;
 
 	//Max values
-	float maxX = -10000000000000.0f, maxY = -1000000000000000.0f, maxZ = -1000000000000000.0f;
+	float maxX = -100000000.0f, maxY = -100000000.0f, maxZ = -100000000.0f;
 
 	for (auto mesh : meshes)
 	{
@@ -313,4 +344,15 @@ void ModuleModelLoader::ShowModelUI()
 	}
 
 	ImGui::End();
+}
+
+
+bool ModuleModelLoader::FileExists(const char* path)
+{
+	if (access(path, 0) == -1)
+	{
+		App->imgui->AddLog("File does NOT exist in path %s:\n", path);
+		return false;
+	}
+	return true;
 }

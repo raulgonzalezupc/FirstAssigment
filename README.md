@@ -9,6 +9,14 @@ The Engine suports FBX models and the respective textures. When it loads the mod
 This project uses the MIT License.
 
 <hr>
+<h3>Usage:</h3>
+
+- First of all, its going to load the default model with its texture.
+- If you want to load another one, just drag it from anywhere of your hard drive!
+- You can select the texture you want to attach and drag it. 
+- Feel free to explore the engine.
+- Enjoy!
+
 <h3>Camera Controls:</h3>
 
 - To move around the engine, use W/S/A/D to move forwards, backwards, to left and right respectivily. 

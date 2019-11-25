@@ -6,6 +6,7 @@
 #include "Mesh.h"
 #include "assimp/include/assimp/scene.h"
 #include <vector>
+#include <string>
 
 class ModuleModelLoader : public Module
 {
@@ -35,6 +36,7 @@ public:
 	void computeModelBoundingBox();
 	void ChangeModel(const char * path);
 	void ShowModelUI();
+	bool FileExists(const char* path);
 
 public:
 	std::vector<float3> modelBox;
@@ -43,6 +45,9 @@ public:
 	
 private:
 	bool meshed = false;
+	std::string modelPath = "Models/";
+	std::string myTexturesPath = "Textures/";
+	std::string finalPath = "";
 	void processNode(aiNode*, const aiScene*);
 	Mesh processMesh(aiMesh*, const aiScene*);
 	std::vector<Texture> loadMaterialTextures(aiMaterial*, aiTextureType, char*);
