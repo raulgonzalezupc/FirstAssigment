@@ -19,6 +19,9 @@ This project uses the MIT License.
 - In case you want to rotate the model, use Left Alt + left click to orbit. 
 - To camera move, use right click. 
 
+<h3>Links of interest</h3>
 
+[MIT license ](https://github.com/raulgonzalezupc/FirstAssigment/blob/master/LICENSE)
+[GitHub repository](https://github.com/raulgonzalezupc/FirstAssigment)
 
  
