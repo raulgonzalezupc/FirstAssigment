@@ -53,6 +53,7 @@ bool ModuleTexture::CleanUp()
 
 Texture ModuleTexture::LoadTexture(const char* path) 
 {
+	
 	ilLoadImage(path);
 	iluGetImageInfo(&imageInfo);
 	if (imageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
@@ -64,6 +65,7 @@ Texture ModuleTexture::LoadTexture(const char* path)
 	Texture.height = ilGetInteger(IL_IMAGE_HEIGHT);
 	Texture.data = ilGetData();
 	Texture.path = path;
+	
 	App->modelLoader->textureId = Texture.id;
 	App->modelLoader->textureWidth = Texture.width;
 	App->modelLoader->textureHeight = Texture.height;

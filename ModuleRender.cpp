@@ -53,6 +53,7 @@ bool ModuleRender::Init()
 	App->modelLoader->LoadModel("BakerHouse.fbx");
 	
 	
+	
 	return true;
 }
 

@@ -16,7 +16,7 @@ class ModuleImgui : public Module
 {
 public:
 	ModuleImgui();
-	~ModuleImgui();
+	virtual ~ModuleImgui();
 
 	bool Init();
 	update_status PreUpdate();
@@ -39,6 +39,11 @@ public:
 	bool propertiesButton = false;
 	bool google = false;
 	bool quit = false;
+
+
+	int vram_budget, vram_available;
+
+
 	SDL_version compiled;
 	SDL_version linked;
 	

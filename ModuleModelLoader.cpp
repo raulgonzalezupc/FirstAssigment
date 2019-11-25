@@ -16,15 +16,10 @@
 class myStream : public Assimp::LogStream {
 
 public:
-
-	// LOG assimp debug output to GUI console
-
 	void write(const char *message) {
 
 		App->imgui->AddLog("%s", message);
-
 	}
-
 };
 
 ModuleModelLoader::ModuleModelLoader() 
@@ -44,6 +39,9 @@ bool ModuleModelLoader::Init() {
 
 bool ModuleModelLoader::CleanUp() 
 {
+	texturesLoaded.clear();
+	meshes.clear();
+	directory.clear();
 	return true;
 }
 
@@ -250,12 +248,9 @@ void ModuleModelLoader::computeModelBoundingBox()
 	modelBox.push_back(float3(minX, maxY, maxZ));
 
 
-	correctCameraPositionForModel = float3((maxX + minX) / 2, (maxY + minY) / 2, -2 * (maxZ - minZ));
-	App->imgui->AddLog("Compute the camera position depending of model size: (%.3f,%.3f,%.3f)", correctCameraPositionForModel.x, correctCameraPositionForModel.y, correctCameraPositionForModel.z);
-
-	modelCenter = correctCameraPositionForModel;
+	newCameraPos = float3((maxX + minX) / 2, (maxY + minY) / 2, -2 * (maxZ - minZ));
+	modelCenter = newCameraPos;
 	modelCenter.z = (maxZ - minZ) / 2;
-	App->imgui->AddLog("Computing models center: (%.3f,%.3f,%.3f) \n", modelCenter.x, modelCenter.y, modelCenter.z);
 
 
 	float distance = 3 * (maxX - minX);
@@ -267,8 +262,6 @@ void ModuleModelLoader::computeModelBoundingBox()
 	{
 		App->camera->frustum.farPlaneDistance = 100.0f;
 	}
-
-
 }
 void ModuleModelLoader::ChangeModel(const char* path)
 {
@@ -292,8 +285,8 @@ void ModuleModelLoader::ShowModelUI()
 	}
 	if (ImGui::CollapsingHeader("Geometry"))
 	{
-		ImGui::Text("Number of vertices: %d",numVertices);
 		ImGui::Text("Number of meshes: %d", numMeshes);
+		ImGui::Text("Number of vertices: %d",numVertices);
 		ImGui::Text("Number of triangles: %d", numVertices/3);
 	}
 	if (ImGui::CollapsingHeader("Texture"))
@@ -311,7 +304,11 @@ void ModuleModelLoader::ShowModelUI()
 		}
 
 		//texture image
-		ImGui::Image((void*)(intptr_t)App->texture->Texture.id, ImVec2(200 * 0.5f, 200 * 0.5f), ImVec2(0, 1), ImVec2(1, 0));
+		for (int i = 0; i < texturesLoaded.size(); ++i)
+		{
+			ImGui::Image((void*)(intptr_t)texturesLoaded[i].id, ImVec2(200 * 0.5f, 200 * 0.5f), ImVec2(0, 1), ImVec2(1, 0));
+		}
+		
 		
 	}
 

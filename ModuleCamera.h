@@ -25,9 +25,10 @@ public:
 
 	void SetNearPlaneDistance(const float nearDist);
 	void SetFarPlaneDistance(const float farDist);
+	void SetAspectRatio(const float aspect_ratio);
 
 public:
-	void SetAspectRatio(const float aspect_ratio);
+
 	void setFOV(const float fov);
 	void Position(const float3 position);
 	void Rotate(char axis, float movement);
@@ -40,14 +41,12 @@ public:
 	void multSpeed();
 
 	void generateMatrices();
-
+	void ShowCameraUI();
 	void LookAt(const float3 focus);
 	void LookAt(const float x, const float y, const float z);
 	void SetOrientation(const float3 orientation);
 	void focusCameraToNewPoint(const float3 &newPos);
 	void Orbit(char axis, float movement);
-	void FocusAt(float3 target);
-	float4x4 LookAt(float3 eye, float3 target, float3 up);
 
 public:
 

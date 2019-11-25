@@ -14,7 +14,7 @@ class ModuleRender : public Module
 {
 public:
 	ModuleRender();
-	~ModuleRender();
+	virtual ~ModuleRender();
 
 	bool Init();
 	update_status PreUpdate();
@@ -23,6 +23,7 @@ public:
 	bool CleanUp();
 	void WindowResized(unsigned width, unsigned height);
 
+public:
 	void ShowGrid();
 	void ShowAxis();
 	void ShowRenderUI();

@@ -11,7 +11,7 @@ class ModuleTexture : public Module {
 
 public:
 	ModuleTexture();
-	~ModuleTexture();
+	virtual ~ModuleTexture();
 
 	bool Init();
 	update_status PreUpdate();

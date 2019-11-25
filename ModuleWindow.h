@@ -1,5 +1,5 @@
-#ifndef __ModuleWindow_H__
-#define __ModuleWindow_H__
+#ifndef __MODULEWINDOW_H__
+#define __MODULEWINDOW_H__
 
 #include "Module.h"
 #include "Application.h"
@@ -10,27 +10,23 @@ class Application;
 class ModuleWindow : public Module
 {
 public:
-	float width;
-	float height;
+
+
 	ModuleWindow();
-	
-	// Destructor
 	virtual ~ModuleWindow();
 
-	// Called before quitting
 	bool Init();
 	update_status Update();
-
-	// Called before quitting
 	bool CleanUp();
+
+public: 
 	void ShowWindowUI();
 
 public:
-	//The window we'll be rendering to
 	SDL_Window* window = NULL;
 	Uint32 windowID;
-	
-	//The surface contained by the window
+	float width;
+	float height;
 	SDL_Surface* screen_surface = NULL;
 	bool fullScreen = false;
 	bool fullScreenDesk = false;
@@ -39,4 +35,4 @@ public:
 	Uint32 flags;
 };
 
-#endif // __ModuleWindow_H__
+#endif 

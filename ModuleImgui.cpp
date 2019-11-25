@@ -151,12 +151,24 @@ void ModuleImgui::ShowAboutUI()
 	}
 	ImGui::TextWrapped("---------------------------------");
 
+	//License
+	ImGui::Text("Link to License of the project: ");
+	if (ImGui::Button("License")) {
+		ShellExecuteA(nullptr, "open", "https://github.com/raulgonzalezupc/FirstAssigment/blob/master/LICENSE", nullptr, nullptr, SW_SHOWNORMAL);
+	}
+	ImGui::TextWrapped("---------------------------------");
+
 	//LinkedIn
 	ImGui::Text("Link to LinkedIn of the coder: ");
 	if (ImGui::Button("LinkedIn")) {
 		ShellExecuteA(nullptr, "open", "https://www.linkedin.com/in/ra%C3%BAl-gonz%C3%A1lez-cebrian-a6a562180/", nullptr, nullptr, SW_SHOWNORMAL);
 	}
 	ImGui::TextWrapped("---------------------------------");
+
+
+
+
+
 	ImGui::Checkbox("Quit Game", &quit);
 
 	ImGui::End();
@@ -223,9 +235,32 @@ void ModuleImgui::ShowConfigurationUI()
 		ImGui::Text("Mouse wheel: %.1f", io.MouseWheel);
 	}
 	
+
+	//Memory used
+	if (ImGui::CollapsingHeader("Memory"))
+	{
+		glGetIntegerv(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &vram_budget);
+		glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &vram_available);
+
+		ImGui::Text("VRAM Budget:");
+		ImGui::Text("%.2f", vram_budget / 1000.0f);
+
+
+		ImGui::Text("VRAM Usage:");
+		ImGui::Text("%.2f", (vram_budget - vram_available) / 1000.0f);
+
+
+		ImGui::Text("VRAM Available:");
+		ImGui::Text("%.2f", vram_available / 1000.0f);
+	}
+
 	if (ImGui::CollapsingHeader("Render"))
 	{
 		App->renderer->ShowRenderUI();
+	}
+	if (ImGui::CollapsingHeader("Camera"))
+	{
+		App->camera->ShowCameraUI();
 	}
 	ImGui::End();
 

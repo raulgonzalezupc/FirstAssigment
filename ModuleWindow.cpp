@@ -95,10 +95,6 @@ bool ModuleWindow::CleanUp()
 void ModuleWindow::ShowWindowUI()
 {
 
-	//Camera position
-	ImGui::Text("Camera X position: %.2f", App->camera->frustum.pos[0]);
-	ImGui::Text("Camera Y position: %.2f", App->camera->frustum.pos[1]);
-	ImGui::Text("Camera Z position: %.2f", App->camera->frustum.pos[2]);
 	ImGui::Checkbox("Full screen", &fullScreen);
 	if (fullScreen)
 	{
@@ -126,8 +122,5 @@ void ModuleWindow::ShowWindowUI()
 	ImGui::SliderFloat("Window Height ", &height, 0.01f, 1080.0F, "%.2f", 2.0f);
 	SDL_SetWindowSize(window, width, height);
 	
-	//change FOV
-	float f2 = App->camera->frustum.verticalFov;
-	ImGui::SliderFloat("Fov ", &f2, 0.01f, 3.12F, "%.2f", 2.0f);
-	App->camera->setFOV(f2);
+
 }

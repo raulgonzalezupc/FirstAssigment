@@ -11,7 +11,7 @@
 #include "MathGeoLib/include/Geometry/Frustum.h"
 #include "MathGeoLib.h"
 
-#define zoom App->input->GetMouseWheel()->y > 0
+
 
 ModuleCamera::ModuleCamera()
 {
@@ -55,10 +55,6 @@ update_status ModuleCamera::PreUpdate()
 
 update_status ModuleCamera::Update()
 {
-	SDL_PumpEvents();
-	keyboard = SDL_GetKeyboardState(NULL);
-
-	
 	return UPDATE_CONTINUE;
 }
 
@@ -76,7 +72,6 @@ void ModuleCamera::SetAspectRatio(const float aspect_ratio)
 {
 	frustum.horizontalFov = 2.0F*atanf(tanf(frustum.verticalFov*0.5F)*aspect_ratio);
 	proj = frustum.ProjectionMatrix();
-	App->imgui->AddLog("Aspect ratio changed to %.2f\n", aspect_ratio);
 }
 
 void ModuleCamera::setFOV(const float fov)
@@ -84,7 +79,7 @@ void ModuleCamera::setFOV(const float fov)
 	frustum.verticalFov = fov;
 	frustum.horizontalFov = 2.0F*atanf(tanf(frustum.verticalFov*0.5F)*aspect);
 	generateMatrices();
-	App->imgui->AddLog("Fov changed to %.2f\n", fov);
+
 }
 
 void ModuleCamera::Position(const float3 position)
@@ -231,4 +226,17 @@ void ModuleCamera::Orbit(char axis, float movement) {
 		}	
 	}
 	generateMatrices();
+}
+
+void ModuleCamera::ShowCameraUI()
+{
+	//change FOV
+	float f2 = App->camera->frustum.verticalFov;
+	ImGui::SliderFloat("Fov ", &f2, 0.01f, 3.12F, "%.2f", 2.0f);
+	App->camera->setFOV(f2);
+
+	//camera position
+	ImGui::Text("Camera X position: %.2f", App->camera->frustum.pos[0]);
+	ImGui::Text("Camera Y position: %.2f", App->camera->frustum.pos[1]);
+	ImGui::Text("Camera Z position: %.2f", App->camera->frustum.pos[2]);
 }

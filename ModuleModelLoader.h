@@ -14,8 +14,6 @@ public:
 	std::vector<Mesh*> meshes;
 	std::string directory;
 
-
-
 //texture properties 
 public:
 	unsigned int numMeshes = NULL;
@@ -23,7 +21,6 @@ public:
 	int textureWidth =	NULL;
 	int textureHeight = NULL;
 	int textureId = NULL;
-
 
 public:
 
@@ -41,7 +38,7 @@ public:
 
 public:
 	std::vector<float3> modelBox;
-	float3 correctCameraPositionForModel = float3(0.0f, 0.0f, 0.0f);
+	float3 newCameraPos = float3(0.0f, 0.0f, 0.0f);
 	float3 modelCenter = float3(0.0f, 0.0f, 0.0f);
 	
 private:

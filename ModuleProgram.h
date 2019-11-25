@@ -10,7 +10,7 @@ class ModuleProgram : public Module {
 	
 public:
 	ModuleProgram();
-	~ModuleProgram();
+	virtual ~ModuleProgram();
 
 	bool Init();
 	update_status PreUpdate();
