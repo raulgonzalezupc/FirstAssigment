@@ -8,7 +8,7 @@ The Engine suports FBX models and the respective textures. When it loads the mod
 
 This project uses the MIT License.
 
-
+<hr>
 <h3>Camera Controls:</h3>
 
 - To move around the engine, use W/S/A/D to move forwards, backwards, to left and right respectivily. 
@@ -19,6 +19,9 @@ This project uses the MIT License.
 - In case you want to rotate the model, use Left Alt + left click to orbit. 
 - To camera move, use right click. 
 
+<h3>Links of interest</h3>
 
+[MIT license ](https://github.com/raulgonzalezupc/FirstAssigment/blob/master/LICENSE)
+[GitHub repository](https://github.com/raulgonzalezupc/FirstAssigment)
 
  
