@@ -94,9 +94,11 @@ bool ModuleWindow::CleanUp()
 
 void ModuleWindow::ShowWindowUI()
 {
-	//ImGui::ShowTestWindow();
-	ImGui::Text("Window Settings:");
 
+	//Camera position
+	ImGui::Text("Camera X position: %.2f", App->camera->frustum.pos[0]);
+	ImGui::Text("Camera Y position: %.2f", App->camera->frustum.pos[1]);
+	ImGui::Text("Camera Z position: %.2f", App->camera->frustum.pos[2]);
 	ImGui::Checkbox("Full screen", &fullScreen);
 	if (fullScreen)
 	{

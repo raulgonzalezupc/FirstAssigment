@@ -64,7 +64,9 @@ Texture ModuleTexture::LoadTexture(const char* path)
 	Texture.height = ilGetInteger(IL_IMAGE_HEIGHT);
 	Texture.data = ilGetData();
 	Texture.path = path;
-	
-	
+	App->modelLoader->textureId = Texture.id;
+	App->modelLoader->textureWidth = Texture.width;
+	App->modelLoader->textureHeight = Texture.height;
+
 	return Texture;
 }

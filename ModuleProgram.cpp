@@ -16,6 +16,7 @@ ModuleProgram::~ModuleProgram()
 
 bool ModuleProgram::Init()
 {
+	App->imgui->AddLog("\nSHADERS.\n\n");
 	//init vertex shader
 	const char *vertex_shader_file = loadFile(VERTEX_SHADER_PATH);
 	vertex_shader = glCreateShader(GL_VERTEX_SHADER);
@@ -29,6 +30,9 @@ bool ModuleProgram::Init()
 	{
 		glGetShaderInfoLog(vertex_shader, 512, NULL, charV);
 		App->imgui->AddLog("Vertex shader created wrong, code: %s\n", charV);
+	}
+	else {
+		App->imgui->AddLog("Vertex shader created correctly.\n");
 	}
 
 
@@ -45,6 +49,10 @@ bool ModuleProgram::Init()
 	{
 		glGetShaderInfoLog(fragment_shader, 512, NULL, charF);
 		App->imgui->AddLog("Fragment shader created wrong, code: %s\n", charF);
+	}
+	else {
+		App->imgui->AddLog("Fragment shader created correctly.\n");
+
 	}
 
 	return true;

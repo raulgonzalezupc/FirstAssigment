@@ -6,11 +6,26 @@
 #include "assimp/include/assimp/Importer.hpp"
 #include "assimp/include/assimp/scene.h"
 #include "assimp/include/assimp/postprocess.h"
+#include  "assimp/include/assimp/Logger.hpp"
+#include  "assimp/include/assimp/DefaultLogger.hpp"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "imgui/imgui_impl_sdl.h"
 
+class myStream : public Assimp::LogStream {
+
+public:
+
+	// LOG assimp debug output to GUI console
+
+	void write(const char *message) {
+
+		App->imgui->AddLog("%s", message);
+
+	}
+
+};
 
 ModuleModelLoader::ModuleModelLoader() 
 {
@@ -42,6 +57,13 @@ void ModuleModelLoader::Draw(unsigned int program)
 
 void ModuleModelLoader::LoadModel(const char* path) 
 {
+	Assimp::DefaultLogger::create("", Assimp::Logger::VERBOSE);
+
+	Assimp::DefaultLogger::get()->info("this is my info-call");
+
+	const unsigned int severity = Assimp::Logger::Debugging | Assimp::Logger::Info | Assimp::Logger::Err | Assimp::Logger::Warn;
+
+	Assimp::DefaultLogger::get()->attachStream(new myStream, severity);
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
@@ -134,42 +156,22 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 	// 1. diffuse maps
 	std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-	if ((textures[0].type == "texture_diffuse") && textures[0].type) {
-		textureType = textures[0].type;
-	}
+
 	// 2. specular maps
 	std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
 	textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-	if ((textures[0].type == "texture_specular") && textures[0].type) {
-		textureType = textures[0].type;
-	}
+
 	// 3. normal maps
 	std::vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
 	textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
-	if ((textures[0].type == "texture_normal") && textures[0].type) {
-		textureType = textures[0].type;
-	}
+
 	// 4. height maps
 
 	std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
 	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
-	if ((textures[0].type == "texture_height") && textures[0].type) {
-		textureType = textures[0].type;
-	}
 
-	//texture properties
-	if (textures[0].width)
-	{
-		textureWidth = textures[0].width;//TODO, IMPROVE CODE
-	}
-	if (textures[0].height)
-	{
-		textureHeight = textures[0].height;//TODO, IMPROVE CODE
-	}
-	if (textures[0].id)
-	{
-		textureId = textures[0].id;//TODO, IMPROVE CODE
-	}
+
+	
 	return Mesh(vertices, indices, textures);
 }
 
@@ -299,8 +301,6 @@ void ModuleModelLoader::ShowModelUI()
 		ImGui::Text("Texture id: %d", textureId);
 		ImGui::Text("Texture width: %d", textureWidth);
 		ImGui::Text("Texture height: %d", textureHeight);
-		ImGui::Text("Texture type: %s", textureType);
-
 		//Show the model with only the mesh
 		ImGui::Checkbox("Show Mesh", &meshed);
 		if (meshed) {
@@ -312,9 +312,7 @@ void ModuleModelLoader::ShowModelUI()
 
 		//texture image
 		ImGui::Image((void*)(intptr_t)App->texture->Texture.id, ImVec2(200 * 0.5f, 200 * 0.5f), ImVec2(0, 1), ImVec2(1, 0));
-
-
-
+		
 	}
 
 	ImGui::End();

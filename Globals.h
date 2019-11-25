@@ -38,7 +38,7 @@ struct Vertex {
 #define VERTEX_SHADER_PATH "./default.vs"
 #define FRAGMENT_SHADER_PATH "./default.fs"
 #define VSYNC true
-#define TITLE "Super Awesome Engine"
+#define TITLE "Morgoth Engine"
 #define PI 3.1415
 #define IMAGE_NAME "lena.png"
 #define RESIZE true

@@ -43,7 +43,7 @@ bool ModuleCamera::Init()
 	view = frustum.ViewMatrix();
 	float4x4 transform = proj * view * float4x4(model);
 
-
+	App->imgui->AddLog("Setting up the projection, view and model. ");
 
 	return true;
 }
@@ -58,58 +58,6 @@ update_status ModuleCamera::Update()
 	SDL_PumpEvents();
 	keyboard = SDL_GetKeyboardState(NULL);
 
-	if (keyboard[SDL_SCANCODE_Q])
-	{
-		MoveUp();
-	}
-	if (keyboard[SDL_SCANCODE_E])
-	{
-		MoveDown();
-	}
-	if (keyboard[SDL_SCANCODE_W])
-	{
-		MoveForward();
-	}
-	if (keyboard[SDL_SCANCODE_S])
-	{
-		MoveBackwards();
-	}
-	if (keyboard[SDL_SCANCODE_A])
-	{
-		MoveLeft();
-	}
-	if (keyboard[SDL_SCANCODE_D])
-	{
-		MoveRight();
-	}
-	if (keyboard[SDL_SCANCODE_F])
-	{
-		App->modelLoader->computeModelBoundingBox();
-		focusCameraToNewPoint(App->modelLoader->correctCameraPositionForModel);
-	}
-	if (keyboard[SDL_SCANCODE_UP])
-	{
-		Rotate('X', 1.0f);
-	}
-	if (keyboard[SDL_SCANCODE_DOWN])
-	{
-		Rotate('X', -1.0f);
-	}
-	if (keyboard[SDL_SCANCODE_LEFT])
-	{
-		Rotate('Y', -1.0f);
-	}
-	if (keyboard[SDL_SCANCODE_RIGHT])
-	{
-		Rotate('Y', 1.0f);
-	}
-	if (keyboard[SDL_SCANCODE_LSHIFT])
-	{
-		multSpeed();
-	}
-	else {
-		speed = 1.0f;
-	}
 	
 	return UPDATE_CONTINUE;
 }
@@ -128,6 +76,7 @@ void ModuleCamera::SetAspectRatio(const float aspect_ratio)
 {
 	frustum.horizontalFov = 2.0F*atanf(tanf(frustum.verticalFov*0.5F)*aspect_ratio);
 	proj = frustum.ProjectionMatrix();
+	App->imgui->AddLog("Aspect ratio changed to %.2f\n", aspect_ratio);
 }
 
 void ModuleCamera::setFOV(const float fov)
@@ -135,6 +84,7 @@ void ModuleCamera::setFOV(const float fov)
 	frustum.verticalFov = fov;
 	frustum.horizontalFov = 2.0F*atanf(tanf(frustum.verticalFov*0.5F)*aspect);
 	generateMatrices();
+	App->imgui->AddLog("Fov changed to %.2f\n", fov);
 }
 
 void ModuleCamera::Position(const float3 position)
@@ -256,7 +206,6 @@ void ModuleCamera::Orbit(char axis, float movement) {
 	
 
 	if (axis == 'X') {
-		pitch = 0;
 		yaw = rot_speed * speed;
 
 		if (movement < 0) {
@@ -269,7 +218,6 @@ void ModuleCamera::Orbit(char axis, float movement) {
 		}
 	}
 	else if (axis == 'Y') {
-		yaw = 0;
 		pitch = rot_speed * speed;
 
 		if (movement < 0) {

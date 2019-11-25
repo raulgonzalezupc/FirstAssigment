@@ -95,7 +95,7 @@ update_status ModuleInput::Update()
 			}
 			else if (extension == "jpg" || extension == "png" || extension == "dds")
 			{
-				Texture newTexture = App->texture->LoadTexture(path.c_str());
+				App->texture->LoadTexture(path.c_str());
 			}
 			SDL_free(event.drop.file);
 			break;
@@ -105,6 +105,59 @@ update_status ModuleInput::Update()
 	if (keyboard[SDL_SCANCODE_ESCAPE])
 	{
 		return UPDATE_STOP;
+	}
+
+	if (keyboard[SDL_SCANCODE_Q])
+	{
+		App->camera->MoveUp();
+	}
+	if (keyboard[SDL_SCANCODE_E])
+	{
+		App->camera->MoveDown();
+	}
+	if (keyboard[SDL_SCANCODE_W])
+	{
+		App->camera->MoveForward();
+	}
+	if (keyboard[SDL_SCANCODE_S])
+	{
+		App->camera->MoveBackwards();
+	}
+	if (keyboard[SDL_SCANCODE_A])
+	{
+		App->camera->MoveLeft();
+	}
+	if (keyboard[SDL_SCANCODE_D])
+	{
+		App->camera->MoveRight();
+	}
+	if (keyboard[SDL_SCANCODE_F])
+	{
+		App->modelLoader->computeModelBoundingBox();
+		App->camera->focusCameraToNewPoint(App->modelLoader->correctCameraPositionForModel);
+	}
+	if (keyboard[SDL_SCANCODE_UP])
+	{
+		App->camera->Rotate('X', 1.0f);
+	}
+	if (keyboard[SDL_SCANCODE_DOWN])
+	{
+		App->camera->Rotate('X', -1.0f);
+	}
+	if (keyboard[SDL_SCANCODE_LEFT])
+	{
+		App->camera->Rotate('Y', -1.0f);
+	}
+	if (keyboard[SDL_SCANCODE_RIGHT])
+	{
+		App->camera->Rotate('Y', 1.0f);
+	}
+	if (keyboard[SDL_SCANCODE_LSHIFT])
+	{
+		App->camera->multSpeed();
+	}
+	else {
+		App->camera->speed = 1.0f;
 	}
 	return UPDATE_CONTINUE;
 }

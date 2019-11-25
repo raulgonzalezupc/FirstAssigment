@@ -22,7 +22,6 @@ public:
 	unsigned int numVertices = NULL;
 	int textureWidth =	NULL;
 	int textureHeight = NULL;
-	char* textureType = nullptr;
 	int textureId = NULL;
 
 

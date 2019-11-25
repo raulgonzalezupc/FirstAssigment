@@ -24,9 +24,9 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
-	void ShowMainMenu();
 	void AddLog(const char*, ...);
-
+	void ShowAboutUI();
+	void ShowConfigurationUI();
 public: 
 	SDL_GLContext imguiglcontext;
 
@@ -37,7 +37,10 @@ public:
 	bool configButton = false;
 	bool windowButton = false;
 	bool propertiesButton = false;
+	bool google = false;
 	bool quit = false;
+	SDL_version compiled;
+	SDL_version linked;
 	
 	ImGuiTextBuffer buffer;
 	bool scrollToBottom;
