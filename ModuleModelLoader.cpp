@@ -207,10 +207,10 @@ void ModuleModelLoader::computeModelBoundingBox()
 {
 
 	//Min values
-	float minX = 10000000.0f, minY = 10000000.0f, minZ = 10000000.0f;
+	float minX = 1000000000000000.0f, minY = 10000000000000000.0f, minZ = 100000000000000000.0f;
 
 	//Max values
-	float maxX = -1000000.0f, maxY = -1000000.0f, maxZ = -1000000.0f;
+	float maxX = -10000000000000.0f, maxY = -1000000000000000.0f, maxZ = -1000000000000000.0f;
 
 	for (auto mesh : meshes)
 	{

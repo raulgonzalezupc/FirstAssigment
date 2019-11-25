@@ -19,7 +19,6 @@ public:
 	
 	float StartRealTimeClock();
 
-	float StartGameClock();
 
 public: 
 	int realTime = NULL;

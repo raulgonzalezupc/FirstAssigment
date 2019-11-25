@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _MODULEINPUT_H_
+#define _MODULEINPUT_H_
+
 #include "Module.h"
 #include "Globals.h"
 #include "SDL.h"
@@ -20,3 +22,5 @@ public:
 	const Uint8 *keyboard = NULL;
 	SDL_MouseWheelEvent* mouseWheel;
 };
+
+#endif

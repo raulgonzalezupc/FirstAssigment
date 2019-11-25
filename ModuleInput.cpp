@@ -99,7 +99,7 @@ update_status ModuleInput::Update()
 					App->modelLoader->computeModelBoundingBox();
 					App->camera->focusCameraToNewPoint(App->modelLoader->newCameraPos);
 				}
-				else if (extension == "jpg" || extension == "png" || extension == "dds")
+				else if (extension == "jpg" || extension == "png" || extension == "dds" || extension=="jpeg" || extension=="tga")
 				{
 					App->texture->LoadTexture(path.c_str());
 					App->modelLoader->texturesLoaded.insert(App->modelLoader->texturesLoaded.begin(), App->texture->LoadTexture(path.c_str()));
