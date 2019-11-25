@@ -229,7 +229,7 @@ std::vector<Texture> ModuleModelLoader::loadMaterialTextures(aiMaterial *mat, ai
 			Texture texture = App->texture->LoadTexture(finalPath.c_str());
 			texture.type = typeName;
 			textures.push_back(texture);
-			texturesLoaded.push_back(texture);
+			texturesLoaded.push_back(texture); 
 			
 		}
 	}
