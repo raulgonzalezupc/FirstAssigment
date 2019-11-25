@@ -72,8 +72,15 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
-	ShowGrid();
-	ShowAxis();
+	if (showGrid)
+	{
+		ShowGrid();
+	}
+	if (showAxis) {
+
+		ShowAxis();
+	}
+	
 	
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, App->texture->texture);
@@ -145,4 +152,10 @@ void ModuleRender::ShowAxis()
 	glVertex3f(-0.05f, -0.1f, 1.05f); glVertex3f(0.05f, -0.1f, 1.05f);
 	glEnd();
 	glLineWidth(1.0f);
+}
+
+void ModuleRender::ShowRenderUI()
+{
+	ImGui::Checkbox("Show Grid", &showGrid);
+	ImGui::Checkbox("Show Axis", &showAxis);
 }

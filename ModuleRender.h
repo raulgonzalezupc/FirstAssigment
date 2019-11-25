@@ -25,11 +25,13 @@ public:
 
 	void ShowGrid();
 	void ShowAxis();
+	void ShowRenderUI();
 	
 
 public:
 	SDL_GLContext glcontext;
 	int width, height;
+	bool showGrid = true, showAxis = true;
 private:
 	void* context;
 
