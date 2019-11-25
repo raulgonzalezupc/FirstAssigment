@@ -6,8 +6,8 @@
 #include "assimp/include/assimp/Importer.hpp"
 #include "assimp/include/assimp/scene.h"
 #include "assimp/include/assimp/postprocess.h"
-#include  "assimp/include/assimp/Logger.hpp"
-#include  "assimp/include/assimp/DefaultLogger.hpp"
+#include "assimp/include/assimp/Logger.hpp"
+#include "assimp/include/assimp/DefaultLogger.hpp"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_opengl3.h"
