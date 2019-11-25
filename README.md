@@ -8,7 +8,7 @@ The Engine suports FBX models and the respective textures. When it loads the mod
 
 This project uses the MIT License.
 
-
+<hr>
 <h3>Camera Controls:</h3>
 
 - To move around the engine, use W/S/A/D to move forwards, backwards, to left and right respectivily. 
