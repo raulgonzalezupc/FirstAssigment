@@ -1,15 +1,15 @@
-Morgoth Engine
+<h1>Morgoth Engine</h1>
 
 This Engine is a project made by Raúl González, a student of the UPC university (Universitat Politécnica de Catalunya) in 2019. 
 
 The Engine suports FBX models and the respective textures. When it loads the model, the previous one is deleted. 
 
-License: 
+<h3>License: </h3>
 
 This project uses the MIT License.
 
 
-Camera Controls:
+<h3>Camera Controls:</h3>
 
 - To move around the engine, use W/S/A/D to move forwards, backwards, to left and right respectivily. 
 - Press Q to go Up and E to go Down. 
