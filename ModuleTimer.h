@@ -18,10 +18,27 @@ public:
 	bool CleanUp();
 	
 	float StartRealTimeClock();
+	void ShowTimerUI();
 
+	float Stop();
 
-public: 
+	void Resume();
+	float Pause();
+	bool IsPaused() const;
+
+	float Read() const;
+
+private:
+	
+	float pause_start_ticks = 0;
+	float elapsed_while_paused_ticks = 0;
+
+	bool running = false;
+	bool paused = false;
+	float end_time = NULL;
+
 	int realTime = NULL;
+	int gameTime = NULL;
 
 
 

@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "Application.h"
 #include "ModuleRender.h"
+#include "ModuleImgui.h"
 #include "Globals.h"
 
 #include "SDL/include/SDL.h"
@@ -29,23 +30,24 @@ int main(int argc, char ** argv)
 		{
 		case MAIN_CREATION:
 
-			LOG("Application Creation --------------");
+			
 			App = new Application();
 			state = MAIN_START;
+			App->imgui->AddLog("Application Creation --------------");
 			break;
 
 		case MAIN_START:
 
-			LOG("Application Init --------------");
+			App->imgui->AddLog("Application Init --------------");
 			if (App->Init() == false)
 			{
-				LOG("Application Init exits with error -----");
+				App->imgui->AddLog("Application Init exits with error -----");
 				state = MAIN_EXIT;
 			}
 			else
 			{
 				state = MAIN_UPDATE;
-				LOG("Application Update --------------");
+				App->imgui->AddLog("Application Update --------------");
 			}
 
 			break;
@@ -56,7 +58,7 @@ int main(int argc, char ** argv)
 
 			if (update_return == UPDATE_ERROR)
 			{
-				LOG("Application Update exits with error -----");
+				App->imgui->AddLog("Application Update exits with error -----");
 				state = MAIN_EXIT;
 			}
 
@@ -67,10 +69,10 @@ int main(int argc, char ** argv)
 
 		case MAIN_FINISH:
 
-			LOG("Application CleanUp --------------");
+			App->imgui->AddLog("Application CleanUp --------------");
 			if (App->CleanUp() == false)
 			{
-				LOG("Application CleanUp exits with error -----");
+				App->imgui->AddLog("Application CleanUp exits with error -----");
 			}
 			else
 				main_return = EXIT_SUCCESS;
@@ -85,6 +87,6 @@ int main(int argc, char ** argv)
 	}
 
 	delete App;
-	LOG("Bye :)\n");
+	App->imgui->AddLog("Bye :)\n");
 	return main_return;
 }

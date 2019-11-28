@@ -148,19 +148,19 @@ update_status ModuleInput::Update()
 	}
 	if (keyboard[SDL_SCANCODE_UP])
 	{
-		App->camera->Rotate('X', 1.0f);
+		App->camera->Rotate('Y', 1.0f);
 	}
 	if (keyboard[SDL_SCANCODE_DOWN])
 	{
-		App->camera->Rotate('X', -1.0f);
+		App->camera->Rotate('Y', -1.0f);
 	}
 	if (keyboard[SDL_SCANCODE_LEFT])
 	{
-		App->camera->Rotate('Y', -1.0f);
+		App->camera->Rotate('X', 1.0f);
 	}
 	if (keyboard[SDL_SCANCODE_RIGHT])
 	{
-		App->camera->Rotate('Y', 1.0f);
+		App->camera->Rotate('X', -1.0f);
 	}
 	if (keyboard[SDL_SCANCODE_LSHIFT])
 	{

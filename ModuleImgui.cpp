@@ -55,11 +55,9 @@ update_status ModuleImgui::PreUpdate()
 // Called every draw update
 update_status ModuleImgui::Update()
 {
-	int timer = App->timer->StartRealTimeClock();
-	ImGui::Begin("Clock");
-	ImGui::Text("Real time:  %d:%d:%d", (timer / (1000 * 60 * 60)) % 24, (timer / (1000 * 60)) % 60, (timer / 1000) % 60);
-	ImGui::End();
 
+	App->timer->ShowTimerUI();
+	
 	//Menu
 	if (ImGui::BeginMainMenuBar())
 	{
@@ -263,4 +261,9 @@ void ModuleImgui::ShowConfigurationUI()
 	ImGui::End();
 
 
+}
+
+void ModuleImgui::ShowTimerController()
+{
+	
 }

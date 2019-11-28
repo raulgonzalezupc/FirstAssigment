@@ -71,7 +71,7 @@ bool ModuleCamera::CleanUp()
 void ModuleCamera::SetAspectRatio(const float aspect_ratio)
 {
 	frustum.horizontalFov = 2.0F*atanf(tanf(frustum.verticalFov*0.5F)*aspect_ratio);
-	proj = frustum.ProjectionMatrix();
+	//proj = frustum.ProjectionMatrix();
 }
 
 void ModuleCamera::setFOV(const float fov)

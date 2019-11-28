@@ -65,6 +65,7 @@ update_status ModuleRender::PreUpdate()
 	glUniformMatrix4fv(glGetUniformLocation(App->program->shader_program, "proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
 
 	glViewport(0, 0, App->window->width, App->window->height);
+	App->camera->SetAspectRatio(App->window->width/ App->window->height);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	return UPDATE_CONTINUE;

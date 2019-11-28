@@ -28,6 +28,7 @@ public:
 	void AddLog(const char*, ...);
 	void ShowAboutUI();
 	void ShowConfigurationUI();
+	void ShowTimerController();
 public: 
 	SDL_GLContext imguiglcontext;
 
