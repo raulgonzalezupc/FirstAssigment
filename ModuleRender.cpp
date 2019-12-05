@@ -53,19 +53,8 @@ bool ModuleRender::Init()
 	glGenFramebuffers(1, &framebuffer);
 	glGenTextures(1, &texColorBuffer);
 	
-
-
-	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-	glBindTexture(GL_TEXTURE_2D, texColorBuffer);
-
-	//bind to 0
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
 	CatchFrameBufferErrors();
+
 
 	App->imgui->AddLog("Using Glew %s\n", glewGetString(GLEW_VERSION));
 
@@ -103,13 +92,20 @@ update_status ModuleRender::Update()
 	}
 
 
+	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+	glBindTexture(GL_TEXTURE_2D, texColorBuffer);
+
+	//bind to 0
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
+	
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
 	glDrawBuffer(GL_COLOR_ATTACHMENT0);
-	
 
-
-
-	
 
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 800, 600);
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
