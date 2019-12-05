@@ -97,11 +97,7 @@ update_status ModuleRender::Update()
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 	glBindTexture(GL_TEXTURE_2D, texColorBuffer);
 
-	//bind to 0
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
+	
 	
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
 	glDrawBuffer(GL_COLOR_ATTACHMENT0);
@@ -129,13 +125,14 @@ update_status ModuleRender::Update()
 	//generate textures
 	
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		App->imgui->AddLog( "ERROR::FRAMEBUFFER:: Framebuffer is not complete!");
 	
-
+	//bind to 0
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
 
 
 
