@@ -18,6 +18,7 @@ ModuleTimer::~ModuleTimer()
 bool ModuleTimer::Init()
 {
 	App->imgui->AddLog("------- Module Timer Init --------");
+	
 	return true;
 }
 
@@ -52,28 +53,26 @@ float ModuleTimer::StartGameTimeClock()
 	return gameTime;
 }
 
-float ModuleTimer::Read() const
+float ModuleTimer::Read() 
 {
-	float current_time;
 
 	if (running)
 	{
 		if (paused)
 		{
-			current_time = (pause_start_ticks - gameTime) - timePassedWhilePaused;
+			gameTime += (pause_start_ticks - gameTime) - timePassedWhilePaused;
 		}
 		else
 		{
-			current_time = (SDL_GetTicks() - gameTime) - timePassedWhilePaused;
+			gameTime += (SDL_GetTicks() - gameTime) - timePassedWhilePaused;
 		}
-
 	}
 	else
 	{
-		current_time = end_time;
+		gameTime = end_time;
 	}
 
-	return current_time;
+	return gameTime;
 }
 
 void ModuleTimer::Resume()
@@ -130,10 +129,12 @@ void ModuleTimer::ShowTimerUI()
 
 	}
 	
+	
+	ImGui::SliderFloat("Fps Rate ", &fpsrate, 10.0f, 60.0F, "%.2f", 1.0f);
+	SDL_Delay(20); // 500 should make 2 frames per second.
 	ImGui::Text("Real time:  %d:%d:%d", (realTime / (1000 * 60 * 60)) % 24, (realTime / (1000 * 60)) % 60, (realTime / 1000) % 60);
 	ImGui::Text("Game time:  %d:%d:%d", (gameTime / (1000 * 60 * 60)) % 24, (gameTime / (1000 * 60)) % 60, (gameTime / 1000) % 60);
 	
-
 	
 	ImGui::End();
 }

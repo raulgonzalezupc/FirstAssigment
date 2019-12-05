@@ -40,7 +40,6 @@ bool ModuleRender::Init()
 	
 	glFrontFace(GL_CCW);
 	
-
 	App->imgui->AddLog("Creating Renderer context\n");
 	glcontext = SDL_GL_CreateContext(App->window->window);
 
@@ -48,12 +47,33 @@ bool ModuleRender::Init()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
+
+	glGenRenderbuffers(1, &rbo);
+	glGenTextures(1, &texture);
+	glGenFramebuffers(1, &framebuffer);
+	glGenTextures(1, &texColorBuffer);
+	
+
+
+	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+	glBindTexture(GL_TEXTURE_2D, texColorBuffer);
+
+	//bind to 0
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
+	CatchFrameBufferErrors();
+
 	App->imgui->AddLog("Using Glew %s\n", glewGetString(GLEW_VERSION));
 
 	App->modelLoader->LoadModel("BakerHouse.fbx");
 	
-	
-	
+
+
+
 	return true;
 }
 
@@ -81,7 +101,49 @@ update_status ModuleRender::Update()
 
 		ShowAxis();
 	}
+
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
+	glDrawBuffer(GL_COLOR_ATTACHMENT0);
 	
+
+
+
+	
+
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 800, 600);
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // we're not using the stencil buffer now
+	glEnable(GL_DEPTH_TEST);
+	// second pass
+	
+	glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	
+	//textures
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, 800, 600, 0,GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
+
+	//generate textures
+	
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		App->imgui->AddLog( "ERROR::FRAMEBUFFER:: Framebuffer is not complete!");
+	
+
+
+
+
+
 	App->modelLoader->Draw(App->program->shader_program);
 	SDL_GL_MakeCurrent(App->window->window, glcontext);
 
@@ -99,6 +161,7 @@ update_status ModuleRender::PostUpdate()
 // Called before quitting
 bool ModuleRender::CleanUp()
 {
+	glDeleteFramebuffers(1, &fbo);
 	App->imgui->AddLog("Destroying renderer\n");
 	SDL_GL_DeleteContext(glcontext);
 	//Destroy window
@@ -155,4 +218,37 @@ void ModuleRender::ShowRenderUI()
 {
 	ImGui::Checkbox("Show Grid", &showGrid);
 	ImGui::Checkbox("Show Axis", &showAxis);
+}
+
+void ModuleRender::CatchFrameBufferErrors()
+{
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE)
+	{
+		App->imgui->AddLog("--FrameBuffer loaded correctly\n");
+	}
+	else if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_UNDEFINED)
+	{
+		App->imgui->AddLog("--The default framebuffer does not exist. \n");
+	}
+	else if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT)
+	{
+		App->imgui->AddLog("--The framebuffer attachment points are framebuffer incomplete.  \n");
+	}
+	else if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT)
+	{
+		App->imgui->AddLog("--The framebuffer does not have at least one image attached to it.  \n");
+	}
+	else if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT)
+	{
+		App->imgui->AddLog("--The framebuffer does not have at least one image attached to it.  \n");
+	}
+	else if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER)
+	{
+		App->imgui->AddLog("--The value of GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE is GL_NONE for any color attachment point(s) named by GL_DRAW_BUFFERi. \n");
+	}
+	else if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_UNSUPPORTED)
+	{
+		App->imgui->AddLog("--The combination of internal formats of the attached images violates an implementation-dependent set of restrictions. \n");
+	}
+	
 }

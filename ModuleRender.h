@@ -28,12 +28,17 @@ public:
 	void ShowGrid();
 	void ShowAxis();
 	void ShowRenderUI();
-	
+	void CatchFrameBufferErrors();
 
 public:
 	SDL_GLContext glcontext;
 	int width, height;
 	bool showGrid = true, showAxis = true;
+	unsigned int fbo;
+	unsigned int texture;
+	unsigned int rbo;
+	unsigned int framebuffer;
+	unsigned int texColorBuffer;
 private:
 	void* context;
 
