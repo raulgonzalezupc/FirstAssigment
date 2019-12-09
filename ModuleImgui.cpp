@@ -180,6 +180,7 @@ void ModuleImgui::ShowConfigurationUI()
 		char titleMs[25];
 		
 		fps.push_back(io.Framerate);
+
 		fpsms.push_back(1000.0f / io.Framerate);
 		sprintf_s(title, 25, "Framerate %.1f", fps[fps.size() - 1]);
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
@@ -195,8 +196,13 @@ void ModuleImgui::ShowConfigurationUI()
 		{
 			fpsms.erase(fpsms.begin());
 		}
+		
 	}
-	
+	ImGui::Begin("Scene");
+	ImGui::GetWindowDrawList()->AddImage((void *)App->renderer->texture,
+		ImVec2(ImGui::GetCursorScreenPos()),
+		ImVec2(ImGui::GetCursorScreenPos().x + App->window->width / 1.5, ImGui::GetCursorScreenPos().y + App->window->height / 1.5), ImVec2(0, 1), ImVec2(1, 0));
+	ImGui::End();
 
 	// Hardware
 	if (ImGui::CollapsingHeader("Hardware"))
