@@ -55,9 +55,20 @@ update_status ModuleImgui::PreUpdate()
 // Called every draw update
 update_status ModuleImgui::Update()
 {
-	int timer = App->timer->StartRealTimeClock();
-	ImGui::Begin("Clock");
-	ImGui::Text("Real time:  %d:%d:%d", (timer / (1000 * 60 * 60)) % 24, (timer / (1000 * 60)) % 60, (timer / 1000) % 60);
+
+	App->timer->ShowTimerUI();
+	//TODO->Put scene window in function
+	ImGui::Begin("Scene");
+	float sceneWidth = ImGui::GetWindowWidth();
+	float sceneHeight = ImGui::GetWindowHeight();
+	App->renderer->DrawScene(sceneWidth, sceneHeight);
+	ImGui::GetWindowDrawList()->AddImage((void *)App->renderer->texture,
+		ImVec2(ImGui::GetCursorScreenPos()),
+		ImVec2(ImGui::GetCursorScreenPos().x + sceneWidth,
+			ImGui::GetCursorScreenPos().y + sceneHeight),
+		ImVec2(0, 1),
+		ImVec2(1, 0)
+	);
 	ImGui::End();
 
 	//Menu
@@ -182,6 +193,7 @@ void ModuleImgui::ShowConfigurationUI()
 		char titleMs[25];
 		
 		fps.push_back(io.Framerate);
+
 		fpsms.push_back(1000.0f / io.Framerate);
 		sprintf_s(title, 25, "Framerate %.1f", fps[fps.size() - 1]);
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
@@ -197,9 +209,9 @@ void ModuleImgui::ShowConfigurationUI()
 		{
 			fpsms.erase(fpsms.begin());
 		}
+		
 	}
 	
-
 	// Hardware
 	if (ImGui::CollapsingHeader("Hardware"))
 	{

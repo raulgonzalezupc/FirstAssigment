@@ -42,7 +42,7 @@ bool ModuleCamera::Init()
 	model = float4x4::FromTRS(float3(0.0F, -5.0F, 20.0F), float3x3::RotateY(0.0F), float3(1.0F, 1.0F, 1.0F));
 	view = frustum.ViewMatrix();
 	float4x4 transform = proj * view * float4x4(model);
-
+	App->imgui->AddLog("\n------ Module Camera Init ------\n ");
 	App->imgui->AddLog("Setting up the projection, view and model. ");
 
 	return true;
