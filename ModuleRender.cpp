@@ -125,8 +125,7 @@ update_status ModuleRender::Update()
 	//generate textures
 	
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		App->imgui->AddLog( "ERROR::FRAMEBUFFER:: Framebuffer is not complete!");
+
 	
 	//bind to 0
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);

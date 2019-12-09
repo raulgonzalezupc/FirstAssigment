@@ -18,45 +18,29 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 	
-	float StartRealTimeClock();
-	float StartGameTimeClock();
+	void StartRealTimeClock();
+	void StartGameTimeClock();
 	float Read();
-	float Pause();
-	float Stop();
-	void Resume();
+	void Pause();
+	void Stop();
 	void ShowTimerUI();
-
+	bool isStarted();
+	bool isPaused();
+	void Unpause();
 
 public: 
-	float fpsrate = 10.0f;
+	float fpsrate = 60.0f;
 	int gameTime = NULL;
 	int realTime = NULL;
-	bool running = true;
-	float pauseTime = 0;
-	float readTime = 0;
-	float pause_start_ticks = 0;
-	float start_ticks = 0;
-	float timePassedWhilePaused = 0;
-	float end_time =0 ;
-	float timePaused = 0;
-	bool paused = false;
 
+	Uint32 mStartTicks;
 
-	// An array to store frame times:
-	Uint32 frametimes[FRAME_VALUES];
+	//The ticks stored when the timer was paused
+	Uint32 mPausedTicks;
 
-	// Last calculated SDL_GetTicks
-	Uint32 frametimelast;
-
-	// total frames rendered
-	Uint32 framecount;
-
-	// the value you want
-	float framespersecond;
-	float timeStoped = NULL;
-	bool stop = false;
-
-
+	//The timer status
+	bool mPaused;
+	bool mStarted;
 
 };
 

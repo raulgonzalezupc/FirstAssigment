@@ -199,9 +199,15 @@ void ModuleImgui::ShowConfigurationUI()
 		
 	}
 	ImGui::Begin("Scene");
+	float sceneWidth = ImGui::GetWindowWidth();
+	float sceneHeight = ImGui::GetWindowHeight();
 	ImGui::GetWindowDrawList()->AddImage((void *)App->renderer->texture,
 		ImVec2(ImGui::GetCursorScreenPos()),
-		ImVec2(ImGui::GetCursorScreenPos().x + App->window->width / 1.5, ImGui::GetCursorScreenPos().y + App->window->height / 1.5), ImVec2(0, 1), ImVec2(1, 0));
+		ImVec2(ImGui::GetCursorScreenPos().x + sceneWidth / 1.5,
+		ImGui::GetCursorScreenPos().y + sceneHeight / 1.5),
+		ImVec2(0, 1), 
+		ImVec2(1, 0)
+	);
 	ImGui::End();
 
 	// Hardware
