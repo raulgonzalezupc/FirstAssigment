@@ -18,6 +18,7 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 	
+
 	void StartRealTimeClock();
 	void StartGameTimeClock();
 	float Read();
@@ -30,8 +31,30 @@ public:
 
 public: 
 	float fpsrate = 60.0f;
+
+	float StartRealTimeClock();
+	float StartGameTimeClock();
+	float Read() const;
+	float Pause();
+	float Stop();
+	void Resume();
+	void ShowTimerUI();
+
+public: 
+
 	int gameTime = NULL;
 	int realTime = NULL;
+	bool running = true;
+	float pauseTime = 0;
+	float readTime = 0;
+	float pause_start_ticks = 0;
+	float start_ticks = 0;
+	float timePassedWhilePaused = 0;
+	float end_time =0 ;
+	float timePaused = 0;
+	bool paused = false;
+	float timeStoped = NULL;
+	bool stop = false;
 
 	Uint32 mStartTicks;
 

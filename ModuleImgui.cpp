@@ -57,8 +57,9 @@ update_status ModuleImgui::Update()
 {
 
 	App->timer->ShowTimerUI();
+
 	//TODO->Put scene window in function
-	ImGui::Begin("Scene");
+	ImGui::Begin("Scene")
 	float sceneWidth = ImGui::GetWindowWidth();
 	float sceneHeight = ImGui::GetWindowHeight();
 	App->renderer->DrawScene(sceneWidth, sceneHeight);
