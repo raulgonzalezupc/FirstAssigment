@@ -21,11 +21,7 @@ ModuleTimer::~ModuleTimer()
 
 bool ModuleTimer::Init()
 {
-
-	App->imgui->AddLog("\n------- Module Timer Init --------\n");
-	
-
-	App->imgui->AddLog("------- Module Timer Init --------");
+	App->imgui->AddLog("------- Module Timer Init --------\n");
 
 	return true;
 }
@@ -52,8 +48,7 @@ bool ModuleTimer::CleanUp()
 
 void ModuleTimer::StartRealTimeClock()
 {
-	realTime=SDL_GetTicks();
-
+	realTime = SDL_GetTicks();
 }
 void ModuleTimer::StartGameTimeClock()
 {
@@ -68,7 +63,7 @@ void ModuleTimer::StartGameTimeClock()
 	mPausedTicks = 0;
 }
 
-float ModuleTimer::Read() 
+float ModuleTimer::Read()
 {
 	Uint32 time = 0;
 
@@ -145,81 +140,17 @@ bool ModuleTimer::isPaused()
 	//Timer is running and paused
 	return mPaused && mStarted;
 }
-
-	return realTime;
-}
-float ModuleTimer::StartGameTimeClock()
-{
-	gameTime = SDL_GetTicks();
-	return gameTime;
-}
-
-float ModuleTimer::Read() const
-{
-	float current_time;
-
-	if (running)
-	{
-		if (paused)
-		{
-			current_time = (pause_start_ticks - gameTime) - timePassedWhilePaused;
-		}
-		else
-		{
-			current_time = (SDL_GetTicks() - gameTime) - timePassedWhilePaused;
-		}
-
-	}
-	else
-	{
-		current_time = end_time;
-	}
-
-	return current_time;
-}
-
-void ModuleTimer::Resume()
-{
-	if (paused)
-	{
-		timePassedWhilePaused += SDL_GetTicks() - pause_start_ticks;
-		paused = false;
-	}
-}
-
-float ModuleTimer::Pause()
-{
-	if (!paused)
-	{
-		pause_start_ticks = SDL_GetTicks();
-		paused = true;
-	}
-	else {
-		paused = false;
-	}
-	return pause_start_ticks - gameTime - timePassedWhilePaused;
-}
-
-float ModuleTimer::Stop()
-{
-	end_time = SDL_GetTicks() - gameTime - timePassedWhilePaused;
-	running = false;
-
-	return end_time;
-}
-
 void ModuleTimer::ShowTimerUI()
 {
 	StartRealTimeClock();
 	ImGui::Begin("Clock");
-
 	if (ImGui::Button("Start"))
 	{
 		if (!isStarted()) {
 			StartGameTimeClock();
 			App->imgui->AddLog("Start\n");
 		}
-	} ImGui::SameLine();
+	}
 	if (ImGui::Button("Pause"))
 	{
 		if (isPaused())
@@ -233,7 +164,7 @@ void ModuleTimer::ShowTimerUI()
 			App->imgui->AddLog("Pause\n");
 
 		}
-	} ImGui::SameLine();
+	}
 	if (ImGui::Button("Stop"))
 	{
 		if (isStarted())
@@ -241,50 +172,18 @@ void ModuleTimer::ShowTimerUI()
 			Stop();
 			App->imgui->AddLog("Stop\n");
 		}
-	} ImGui::SameLine();
-	
+	}
+
 	if (ImGui::Button("Advance")) {
 
 	}
-	gameTime=Read();
-	
-	ImGui::Text("Real time:  %d:%d:%d", (realTime / (1000 * 60 * 60)) % 24, (realTime / (1000 * 60)) % 60, (realTime / 1000) % 60);
-	ImGui::SameLine();
-	ImGui::Text("Game time:  %d:%d:%d", (gameTime / (1000 * 60 * 60)) % 24, (gameTime / (1000 * 60)) % 60, (gameTime / 1000) % 60); 
+	gameTime = Read();
 
-	//TODO->Put fps rate in configuration fps window
 	ImGui::SliderFloat("Fps Rate ", &fpsrate, 10.0f, 60.0F, "%.2f", 1.0f);
-	SDL_Delay(1000/fpsrate - (SDL_GetTicks() - realTime)); // 500 should make 2 frames per second.
-	
-	
-	
-	ImGui::End();
-}
-
-	if (!paused)
-	{
-		StartGameTimeClock(); 
-		gameTime -= timePaused;
-	}
-	if (ImGui::Button("Pause"))
-	{
-		Pause();
-		timePaused = Stop();
-	}
-
-	if (ImGui::Button("Stop"))
-	{
-		gameTime = 0;
-		stop = true;
-	}
-	if (ImGui::Button("Advance")) {
-
-	}
-	
+	SDL_Delay(1000 / fpsrate - (SDL_GetTicks() - realTime)); // 500 should make 2 frames per second.
 	ImGui::Text("Real time:  %d:%d:%d", (realTime / (1000 * 60 * 60)) % 24, (realTime / (1000 * 60)) % 60, (realTime / 1000) % 60);
 	ImGui::Text("Game time:  %d:%d:%d", (gameTime / (1000 * 60 * 60)) % 24, (gameTime / (1000 * 60)) % 60, (gameTime / 1000) % 60);
-	
 
-	
+
 	ImGui::End();
 }
