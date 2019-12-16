@@ -55,7 +55,7 @@ update_status ModuleImgui::PreUpdate()
 // Called every draw update
 update_status ModuleImgui::Update()
 {
-
+	
 	App->timer->ShowTimerUI();
 
 	//TODO->Put scene window in function
@@ -82,6 +82,7 @@ update_status ModuleImgui::Update()
 		ImGui::MenuItem("Properties", (const char*)0, &propertiesButton);
 		ImGui::EndMainMenuBar();
 	}
+
 	if (configButton)
 	{
 		ShowConfigurationUI();

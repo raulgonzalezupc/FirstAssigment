@@ -99,10 +99,13 @@ bool ModuleRender::Init()
 	glcontext = SDL_GL_CreateContext(App->window->window);
 
 	GLenum err = glewInit();
+
+	//DEBUG
 	glEnable(GL_DEBUG_OUTPUT);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 	glDebugMessageCallback(openglCallbackFunction, nullptr);
 	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, true);
+
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
@@ -159,29 +162,22 @@ bool ModuleRender::CleanUp()
 	return true;
 }
 
-void ModuleRender::WindowResized(unsigned width, unsigned height)
-{
-}
 
-void ModuleRender::GenerateBuffers(float width, float height)
+void ModuleRender::GenerateBuffers(int width, int height)
 {
 	
-	
-
-	if (&texture) {
+	if (texture) {
 		glDeleteTextures(1, &texture);
 	}
 	else {
 		glGenTextures(1, &texture);
 	}
 
-	if (&rbo) {
+	if (rbo) {
 		glDeleteRenderbuffers(1, &rbo);
 	}else{
 		glGenRenderbuffers(1, &rbo);
 	}
-	
-	
 
 	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
@@ -203,20 +199,13 @@ void ModuleRender::GenerateBuffers(float width, float height)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
 }
 
-void ModuleRender::DrawScene(float width, float height)
+void ModuleRender::DrawScene(int width, int height)
 {
 	GenerateBuffers(width, height);
 	
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	
-	if (showGrid)
-	{
-		ShowGrid();
-	}
-	if (showAxis) {
-
-		ShowAxis();
-	}
+	
 
 	glUseProgram(App->program->shader_program);
 	glUniformMatrix4fv(glGetUniformLocation(App->program->shader_program, "model"), 1, GL_TRUE, &App->camera->model[0][0]);
@@ -225,16 +214,22 @@ void ModuleRender::DrawScene(float width, float height)
 	//glDrawBuffer(GL_COLOR_ATTACHMENT0);
 
 	glViewport(0, 0, width, height);
-
-
+	//App->camera->SetAspectRatio(width / height);
 	// second pass
 
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.51f, 0.51f, 0.51f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL);
 
-
+	if (showGrid)
+		{
+			ShowGrid();
+		}
+	if (showAxis) 
+		{
+			ShowAxis();
+		}
 	App->modelLoader->Draw(App->program->shader_program);
 
 	

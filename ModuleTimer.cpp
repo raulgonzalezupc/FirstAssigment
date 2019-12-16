@@ -144,6 +144,7 @@ void ModuleTimer::ShowTimerUI()
 {
 	StartRealTimeClock();
 	ImGui::Begin("Clock");
+	ImGui::SameLine();
 	if (ImGui::Button("Start"))
 	{
 		if (!isStarted()) {
@@ -151,6 +152,7 @@ void ModuleTimer::ShowTimerUI()
 			App->imgui->AddLog("Start\n");
 		}
 	}
+	ImGui::SameLine();
 	if (ImGui::Button("Pause"))
 	{
 		if (isPaused())
@@ -165,6 +167,7 @@ void ModuleTimer::ShowTimerUI()
 
 		}
 	}
+	ImGui::SameLine();
 	if (ImGui::Button("Stop"))
 	{
 		if (isStarted())
@@ -173,7 +176,7 @@ void ModuleTimer::ShowTimerUI()
 			App->imgui->AddLog("Stop\n");
 		}
 	}
-
+	ImGui::SameLine();
 	if (ImGui::Button("Advance")) {
 
 	}

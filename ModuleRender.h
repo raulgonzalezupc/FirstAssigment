@@ -23,9 +23,8 @@ public:
 	update_status Update();
 	update_status PostUpdate();
 	bool CleanUp();
-	void WindowResized(unsigned width, unsigned height);
-	void GenerateBuffers(float width, float height);
-	void DrawScene(float width, float height);
+	void GenerateBuffers(int width, int height);
+	void DrawScene(int width, int height);
 	int loadCubemap(std::vector<std::string> faces);
 public:
 	void ShowGrid();
