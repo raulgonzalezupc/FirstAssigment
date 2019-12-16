@@ -32,13 +32,6 @@ public:
 public: 
 	float fpsrate = 60.0f;
 
-	float StartRealTimeClock();
-	float StartGameTimeClock();
-	float Read() const;
-	float Pause();
-	float Stop();
-	void Resume();
-	void ShowTimerUI();
 
 public: 
 
