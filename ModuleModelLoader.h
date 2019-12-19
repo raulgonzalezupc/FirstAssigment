@@ -49,7 +49,7 @@ private:
 	std::string myTexturesPath = "Textures/";
 	std::string finalPath = "";
 	void processNode(aiNode*, const aiScene*);
-	Mesh processMesh(aiMesh*, const aiScene*);
+	Mesh* processMesh(aiMesh*, const aiScene*);
 	std::vector<Texture> loadMaterialTextures(aiMaterial*, aiTextureType, char*);
 	
 };

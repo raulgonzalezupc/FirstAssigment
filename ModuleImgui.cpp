@@ -71,7 +71,7 @@ update_status ModuleImgui::Update()
 		ImVec2(1, 0)
 	);
 	ImGui::End();
-
+	
 	//Menu
 	if (ImGui::BeginMainMenuBar())
 	{

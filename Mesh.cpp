@@ -14,6 +14,11 @@ Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, st
 	setupMesh();
 }
 
+Mesh::Mesh()
+{
+
+}
+
 
 Mesh::~Mesh()
 {

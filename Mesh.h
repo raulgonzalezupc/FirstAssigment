@@ -19,14 +19,16 @@ public:
 
 	Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, std::vector<Texture>& textures);
 	~Mesh();
+	Mesh();
 	/*  Functions  */
 	void Init();
 	
 	void Draw(unsigned int program) const;
+	void setupMesh();
 private:
 	/*  Render data  */
 	unsigned int VAO, VBO, EBO;
 	/*  Functions    */
-	void setupMesh();
+	
 };
 #endif __Mesh_H__

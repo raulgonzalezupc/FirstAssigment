@@ -81,7 +81,7 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene)
 	for (unsigned int i = 0; i < node->mNumMeshes; i++) 
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		meshes.push_back(new Mesh(processMesh(mesh, scene)));
+		meshes.push_back(processMesh(mesh, scene));
 		++numMeshes;
 	}
 
@@ -93,11 +93,12 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene)
 
 
 
-Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene) 
+Mesh* ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene) 
 {
-	std::vector<Vertex> vertices;
-	std::vector<unsigned int> indices;
-	std::vector<Texture> textures;
+	Mesh* res = new Mesh;
+	//std::vector<Vertex> vertices;
+	//std::vector<unsigned int> indices;
+	//std::vector<Texture> textures;
 	numVertices += mesh->mNumVertices;
 	for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
 	{
@@ -137,7 +138,7 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 		vector.y = mesh->mBitangents[i].y;
 		vector.z = mesh->mBitangents[i].z;
 		vertex.Bitangent = vector;
-		vertices.push_back(vertex);
+		res->vertices.push_back(vertex);
 	}
 
 
@@ -145,7 +146,7 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 	{
 		aiFace face = mesh->mFaces[i];
 		for (unsigned int j = 0; j < face.mNumIndices; j++)
-			indices.push_back(face.mIndices[j]);
+			res->indices.push_back(face.mIndices[j]);
 	}
 
 	// process materials
@@ -153,24 +154,24 @@ Mesh ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 
 	// 1. diffuse maps
 	std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+	res->textures.insert(res->textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
 	// 2. specular maps
 	std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
-	textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+	res->textures.insert(res->textures.end(), specularMaps.begin(), specularMaps.end());
 
 	// 3. normal maps
 	std::vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
-	textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
+	res->textures.insert(res->textures.end(), normalMaps.begin(), normalMaps.end());
 
 	// 4. height maps
 
 	std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
-	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
+	res->textures.insert(res->textures.end(), heightMaps.begin(), heightMaps.end());
 
-
+	res->setupMesh();
 	
-	return Mesh(vertices, indices, textures);
+	return res;
 }
 
 

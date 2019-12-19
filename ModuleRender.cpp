@@ -109,20 +109,20 @@ bool ModuleRender::Init()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_BLEND);
+	//glEnable(GL_BLEND);
 
 	
 	glGenFramebuffers(1, &fbo);
 	
 	CatchFrameBufferErrors();
-
+	
 
 
 	App->imgui->AddLog("Using Glew %s\n", glewGetString(GLEW_VERSION));
 
 	App->modelLoader->LoadModel("BakerHouse.fbx");
 	
-
+	
 
 
 	return true;
@@ -179,6 +179,7 @@ void ModuleRender::GenerateBuffers(int width, int height)
 		glGenRenderbuffers(1, &rbo);
 	}
 
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
@@ -191,7 +192,6 @@ void ModuleRender::GenerateBuffers(int width, int height)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo);
 
@@ -218,7 +218,7 @@ void ModuleRender::DrawScene(int width, int height)
 	// second pass
 
 	glClearColor(0.51f, 0.51f, 0.51f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL);
 

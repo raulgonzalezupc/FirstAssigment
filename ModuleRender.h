@@ -37,10 +37,11 @@ public:
 	int width, height;
 	bool showGrid = true, showAxis = true;
 	unsigned int fbo;
+	unsigned int msfb_depth;
+	unsigned int msfb_color;
 	unsigned int texture;
 	unsigned int rbo;
 	unsigned int framebuffer;
-	unsigned int texColorBuffer;
 
 	std::vector<std::string> faces
 	{
