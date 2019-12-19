@@ -5,14 +5,6 @@
 #include "glew/include/GL/glew.h"
 #include <string>
 
-Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, std::vector<Texture>& textures)
-{
-	this->vertices = vertices;
-	this->indices = indices;
-	this->textures = textures;
-
-	setupMesh();
-}
 
 Mesh::Mesh()
 {
