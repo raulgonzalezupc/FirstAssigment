@@ -18,8 +18,8 @@ public :
 	std::vector<Component*> components;
 
 
-	GameObject() {}
-	~GameObject() {}
+	GameObject();
+	~GameObject();
 	update_status Update();
 
 
