@@ -52,6 +52,8 @@
     <ClCompile Include="ModuleTexture.cpp" />
     <ClCompile Include="ModuleTimer.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
+    <ClCompile Include="Components\Material.cpp" />
+    <ClCompile Include="GameObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -176,6 +178,9 @@
     <ClInclude Include="ModuleTexture.h" />
     <ClInclude Include="ModuleTimer.h" />
     <ClInclude Include="ModuleWindow.h" />
+    <ClInclude Include="Components\Component.h" />
+    <ClInclude Include="Components\Material.h" />
+    <ClInclude Include="GameObject.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assimp\include\assimp\color4.inl" />

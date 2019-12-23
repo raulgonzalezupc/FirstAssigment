@@ -214,7 +214,7 @@ void ModuleRender::DrawScene(int width, int height)
 	//glDrawBuffer(GL_COLOR_ATTACHMENT0);
 
 	glViewport(0, 0, width, height);
-	//App->camera->SetAspectRatio(width / height);
+
 	// second pass
 
 	glClearColor(0.51f, 0.51f, 0.51f, 1.0f);

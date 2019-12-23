@@ -124,6 +124,9 @@
     <ClInclude Include="assimp\include\assimp\vector2.h" />
     <ClInclude Include="assimp\include\assimp\vector3.h" />
     <ClInclude Include="assimp\include\assimp\version.h" />
+    <ClInclude Include="Components\Component.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Components\Material.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_opengl3.h" />
@@ -211,6 +214,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Components\Material.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
