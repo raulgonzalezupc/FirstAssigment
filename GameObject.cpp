@@ -8,6 +8,7 @@ GameObject::~GameObject()
 {
 
 }
+  
 
 update_status GameObject::Update()
 {
