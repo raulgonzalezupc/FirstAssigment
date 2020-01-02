@@ -21,11 +21,8 @@ public:
 	//constructors + destructors
 	GameObject() {}
 
-	//GameObject(const std::string& name) : name(name) {
-	//	CreateComponent(ComponentType::Transform);
-	//}
-	GameObject(const std::string& name, const float3& pos, const Quat& rot) : name(name) {
-		CreateTransform(pos, rot);
+	GameObject(const std::string& name) : name(name) {
+		CreateComponent(ComponentType::Transform);
 	}
 
 	~GameObject() {}
@@ -35,7 +32,7 @@ public:
 
 public:
 	//components
-	//Component* CreateComponent(const ComponentType);
+	Component* CreateComponent(const ComponentType);
 	Component* FindComponent(const ComponentType);
 
 	void DeleteChild(const GameObject*);

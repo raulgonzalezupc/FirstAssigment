@@ -20,7 +20,7 @@ Camera::Camera(GameObject* owner) : Component(owner, ComponentType::Camera)
 	camPos = float3{ 0.0f,0.0f, 100.0f };
 	proj = frustum.ProjectionMatrix();
 	view = frustum.ViewMatrix();
-	glGenFramebuffers(1, &fbo);
+	/*glGenFramebuffers(1, &fbo);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	glGenTextures(1, &fb_tex);
@@ -44,7 +44,7 @@ Camera::Camera(GameObject* owner) : Component(owner, ComponentType::Camera)
 	glDrawBuffer(GL_COLOR_ATTACHMENT0);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);*/
 }
 Camera::~Camera()
 {

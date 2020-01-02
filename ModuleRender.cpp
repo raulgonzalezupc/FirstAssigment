@@ -6,6 +6,8 @@
 #include "ModuleImgui.h"
 #include "ModuleModelLoader.h"
 #include "ModuleCamera.h"
+#include "Components/Camera.h"
+#include "GameObject.h"
 #include "glew/include/GL/glew.h"
 #include "SDL.h"
 #include "stbi/stb_image.h"
@@ -111,7 +113,10 @@ bool ModuleRender::Init()
 	glEnable(GL_TEXTURE_2D);
 	//glEnable(GL_BLEND);
 
-	
+	GameObject* test = new GameObject("test");
+	Camera* cam = new Camera(test);
+	test->components.push_back(cam);
+
 	glGenFramebuffers(1, &fbo);
 	
 	CatchFrameBufferErrors();
@@ -201,6 +206,9 @@ void ModuleRender::GenerateBuffers(int width, int height)
 
 void ModuleRender::DrawScene(int width, int height)
 {
+	GameObject* test = new GameObject("test");
+	Camera* cam = new Camera(test);
+	test->components.push_back(cam);
 	GenerateBuffers(width, height);
 	
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
@@ -208,9 +216,9 @@ void ModuleRender::DrawScene(int width, int height)
 	
 
 	glUseProgram(App->program->shader_program);
-	glUniformMatrix4fv(glGetUniformLocation(App->program->shader_program, "model"), 1, GL_TRUE, &App->camera->model[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(App->program->shader_program, "view"), 1, GL_TRUE, &App->camera->view[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(App->program->shader_program, "proj"), 1, GL_TRUE, &App->camera->proj[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->program->shader_program, "model"), 1, GL_TRUE, &(cam->model[0][0]));
+	glUniformMatrix4fv(glGetUniformLocation(App->program->shader_program, "view"), 1, GL_TRUE, &(cam->view[0][0]));
+	glUniformMatrix4fv(glGetUniformLocation(App->program->shader_program, "proj"), 1, GL_TRUE, &(cam->proj[0][0]));
 	//glDrawBuffer(GL_COLOR_ATTACHMENT0);
 
 	glViewport(0, 0, width, height);
