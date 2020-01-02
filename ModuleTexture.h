@@ -3,9 +3,12 @@
 
 #include "Module.h"
 #include "Mesh.h"
+#include "Globals.h"
 #include "glew/include/GL/glew.h"
 #include "DevIL/include/IL/il.h"
 #include "DevIL/include/IL/ilu.h"
+#include "Components/Material.h"
+
 
 class ModuleTexture : public Module {
 
@@ -19,13 +22,17 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 	Texture LoadTexture(const char* path);
-	std::vector<Texture> loadedTextures;
+	Material* CreateMaterial();
+	void DrawTexture(unsigned&);
+	void DrawTextureSelector(unsigned&);
 public:
+	std::vector<Texture> loadedTextures;
 	int newTexture;
 	Texture Texture;
 	ILuint imageName;
 	GLuint texture;
 	ILinfo imageInfo;
+	bool drawSelector = false;
 };
 
 #endif

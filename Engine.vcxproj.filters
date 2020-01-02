@@ -54,6 +54,8 @@
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="Components\Material.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Components\Camera.cpp" />
+    <ClCompile Include="Components\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -181,6 +183,8 @@
     <ClInclude Include="Components\Component.h" />
     <ClInclude Include="Components\Material.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Components\Camera.h" />
+    <ClInclude Include="Components\Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assimp\include\assimp\color4.inl" />

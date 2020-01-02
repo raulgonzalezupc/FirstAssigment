@@ -8,12 +8,21 @@
 
 void log(const char file[], int line, const char* format, ...);
 
+enum class ComponentType 
+{ 
+	Transform, 
+	Mesh, 
+	Material, 
+	Camera 
+};
+
 enum update_status
 {
 	UPDATE_CONTINUE = 1,
 	UPDATE_STOP,
 	UPDATE_ERROR
 };
+
 struct Texture {
 	unsigned int id;
 	char*  type;

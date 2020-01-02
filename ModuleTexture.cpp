@@ -1,5 +1,4 @@
 #include "ModuleTexture.h"
-#include "Globals.h"
 #include "ModuleModelLoader.h"
 #include "ModuleImgui.h"
 #include "Application.h"
@@ -71,4 +70,35 @@ Texture ModuleTexture::LoadTexture(const char* path)
 	App->modelLoader->textureHeight = Texture.height;
 
 	return Texture;
+}
+
+void ModuleTexture::DrawTexture(unsigned& id) {
+	if (drawSelector) {
+		DrawTextureSelector(id);
+	}
+	for (unsigned int i = 0; i < loadedTextures.size(); i++) {
+		if (loadedTextures[i].id == id) {
+			//DrawTexture(loadedTextures[i]);
+		}
+	}
+	if (ImGui::ImageButton((void*)(intptr_t)id, ImVec2(128, 128))) {
+		drawSelector = true;
+	}
+
+}
+
+
+void ModuleTexture::DrawTextureSelector(unsigned& id) {
+	ImGui::Begin("Textures");
+	for (unsigned int i = 0; i < loadedTextures.size(); i++) {
+		//DrawTexture(loadedTextures[i]);
+		if (ImGui::ImageButton((void*)(intptr_t)loadedTextures[i].id, ImVec2(128, 128))) {
+			id = loadedTextures[i].id;
+			drawSelector = false;
+		}
+	}
+	ImGui::End();
+}
+Material* ModuleTexture::CreateMaterial() {
+	return new Material(nullptr);
 }

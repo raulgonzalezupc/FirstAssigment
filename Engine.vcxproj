@@ -124,7 +124,9 @@
     <ClInclude Include="assimp\include\assimp\vector2.h" />
     <ClInclude Include="assimp\include\assimp\vector3.h" />
     <ClInclude Include="assimp\include\assimp\version.h" />
+    <ClInclude Include="Components\Camera.h" />
     <ClInclude Include="Components\Component.h" />
+    <ClInclude Include="Components\Transform.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Components\Material.h" />
     <ClInclude Include="imgui\imconfig.h" />
@@ -214,6 +216,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Components\Camera.cpp" />
+    <ClCompile Include="Components\Transform.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Components\Material.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
