@@ -1,6 +1,7 @@
 #include "ModuleCamera.h"
 #include "Globals.h"
 #include "ModuleWindow.h"
+#include "ModuleRender.h"
 #include "ModuleImgui.h"
 #include "ModuleInput.h"
 #include "ModuleModelLoader.h"
@@ -236,7 +237,7 @@ void ModuleCamera::ShowCameraUI()
 	App->camera->setFOV(f2);
 
 	//camera position
-	ImGui::Text("Camera X position: %.2f", App->camera->frustum.pos[0]);
-	ImGui::Text("Camera Y position: %.2f", App->camera->frustum.pos[1]);
-	ImGui::Text("Camera Z position: %.2f", App->camera->frustum.pos[2]);
+	ImGui::Text("Camera X position: %.2f", App->renderer->cam->frustum.pos[0]);
+	ImGui::Text("Camera Y position: %.2f", App->renderer->cam->frustum.pos[1]);
+	ImGui::Text("Camera Z position: %.2f", App->renderer->cam->frustum.pos[2]);
 }

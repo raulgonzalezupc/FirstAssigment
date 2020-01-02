@@ -1,6 +1,8 @@
 #include "Camera.h"
 #include "../GameObject.h"
 #include "Component.h"
+#include "../Application.h"
+#include "../ModuleRender.h"
 #include <math.h>
 #include "../imgui/imgui.h"
 #include "GL/glew.h"
@@ -20,7 +22,7 @@ Camera::Camera(GameObject* owner) : Component(owner, ComponentType::Camera)
 	camPos = float3{ 0.0f,0.0f, 100.0f };
 	proj = frustum.ProjectionMatrix();
 	view = frustum.ViewMatrix();
-	/*glGenFramebuffers(1, &fbo);
+	glGenFramebuffers(1, &fbo);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	glGenTextures(1, &fb_tex);
@@ -44,7 +46,7 @@ Camera::Camera(GameObject* owner) : Component(owner, ComponentType::Camera)
 	glDrawBuffer(GL_COLOR_ATTACHMENT0);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);*/
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 Camera::~Camera()
 {
@@ -111,23 +113,24 @@ void Camera::SetFrustum()
 	nbr = nCenter - (frustum.up * (Hnear / 2)) + (frustum.WorldRight()* (Wnear / 2));
 }
 
-void Camera::Draw()
+void Camera::Draw(const char* name)
 {
+	
+
+	ImGui::Begin(name);
 	ImGui::SetNextWindowPos(ImVec2(256.0f, 0.0f), ImGuiCond_FirstUseEver);
 	ImGui::SetNextWindowSize(ImVec2(800.0f, 600.0f), ImGuiCond_FirstUseEver);
-
-	ImGui::Begin("Viewport");
 	width = ImGui::GetWindowContentRegionWidth();
 	height = ImGui::GetContentRegionAvail().y;
-
+	App->renderer->DrawScene(width, height);
 	ImGui::GetWindowDrawList()->AddImage(
 		(void*)fb_tex,
 		ImVec2(ImGui::GetCursorScreenPos()),
-		ImVec2(ImGui::GetCursorScreenPos().x + fb_width,
-			ImGui::GetCursorScreenPos().y + fb_height),
+		ImVec2(ImGui::GetCursorScreenPos().x + width,
+			ImGui::GetCursorScreenPos().y + height),
 		ImVec2(0, 1), ImVec2(1, 0));
 
-	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	
 	ImGui::End();
 }
 

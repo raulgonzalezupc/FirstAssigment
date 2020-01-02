@@ -74,22 +74,9 @@ update_status ModuleImgui::Update()
 		ImVec2(1, 0)
 	);
 	ImGui::End();
-	ImGui::Begin("Game");
-	ImGui::SetNextWindowPos(ImVec2(256.0f, 0.0f), ImGuiCond_FirstUseEver);
-	ImGui::SetNextWindowSize(ImVec2(800.0f, 600.0f), ImGuiCond_FirstUseEver);
-	sceneWidth = ImGui::GetWindowContentRegionWidth();
-	sceneHeight = ImGui::GetContentRegionAvail().y;
-	App->camera->SetAspectRatio(sceneWidth / sceneHeight);
-	App->renderer->DrawScene(sceneWidth, sceneHeight);
-	ImGui::GetWindowDrawList()->AddImage((void *)App->renderer->texture,
-		ImVec2(ImGui::GetCursorScreenPos()),
-		ImVec2(ImGui::GetCursorScreenPos().x + sceneWidth,
-			ImGui::GetCursorScreenPos().y + sceneHeight),
-		ImVec2(0, 1),
-		ImVec2(1, 0)
-	);
-	ImGui::End();
+
 	
+	App->renderer->cam->Draw("viewport");
 	
 	//Menu
 	if (ImGui::BeginMainMenuBar())

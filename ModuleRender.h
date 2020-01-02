@@ -3,6 +3,8 @@
 
 #include "Module.h"
 #include "Globals.h"
+#include "Components/Camera.h"
+#include "GameObject.h"
 
 #include "MathGeoLib/include/Math/float4x4.h"
 #include "SDL.h"
@@ -31,6 +33,11 @@ public:
 	void ShowAxis();
 	void ShowRenderUI();
 	void CatchFrameBufferErrors();
+
+public:
+	GameObject* test;
+	Camera* cam;
+
 
 public:
 	SDL_GLContext glcontext;

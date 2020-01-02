@@ -16,7 +16,7 @@ public:
 
 	void SetFrustum();
 	
-	void Draw();
+	void Draw(const char*);
 	void GenerateFBOTexture(unsigned w, unsigned h);
 
 
@@ -52,7 +52,8 @@ public:
 
 	float height = 600;
 	float width = 800;
-private:
+
+public:
 	float movementSpeed = cameraSpeed;
 	float3 cameraTarget = float3::zero;
 	bool orbit = false;

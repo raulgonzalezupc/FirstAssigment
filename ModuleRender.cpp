@@ -6,8 +6,7 @@
 #include "ModuleImgui.h"
 #include "ModuleModelLoader.h"
 #include "ModuleCamera.h"
-#include "Components/Camera.h"
-#include "GameObject.h"
+
 #include "glew/include/GL/glew.h"
 #include "SDL.h"
 #include "stbi/stb_image.h"
@@ -113,10 +112,9 @@ bool ModuleRender::Init()
 	glEnable(GL_TEXTURE_2D);
 	//glEnable(GL_BLEND);
 
-	GameObject* test = new GameObject("test");
-	Camera* cam = new Camera(test);
+	test = new GameObject("test");
+	cam = new Camera(test);
 	test->components.push_back(cam);
-
 	glGenFramebuffers(1, &fbo);
 	
 	CatchFrameBufferErrors();
@@ -206,14 +204,12 @@ void ModuleRender::GenerateBuffers(int width, int height)
 
 void ModuleRender::DrawScene(int width, int height)
 {
-	GameObject* test = new GameObject("test");
-	Camera* cam = new Camera(test);
-	test->components.push_back(cam);
 	GenerateBuffers(width, height);
 	
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-	
-	
+	glBindFramebuffer(GL_FRAMEBUFFER, cam->fbo);
+
+	/*cam->GenerateFBOTexture(cam->width, cam->height);
+	glBindFramebuffer(GL_FRAMEBUFFER, cam->fbo);*/
 
 	glUseProgram(App->program->shader_program);
 	glUniformMatrix4fv(glGetUniformLocation(App->program->shader_program, "model"), 1, GL_TRUE, &(cam->model[0][0]));
@@ -229,7 +225,6 @@ void ModuleRender::DrawScene(int width, int height)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL);
-
 	if (showGrid)
 		{
 			ShowGrid();
