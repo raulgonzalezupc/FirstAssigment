@@ -28,6 +28,7 @@ public:
 	GLuint fragment_shader;
 	GLuint shader_program;
 	GLuint skyboxProgram;
+	GLuint sceneProgram;
 	unsigned int vs;
 	unsigned int fs;
 	unsigned int skyboxFragmentShader;

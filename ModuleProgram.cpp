@@ -28,6 +28,9 @@ bool ModuleProgram::Init()
 
 	skyboxProgram = CreateProgram(skyboxVertexShader, skyboxFragmentShader);
 	defaultProgram = CreateProgram(vs, fs);
+
+	sceneProgram = CreateProgram(vs, fs);
+
 	setUniformsBuffer();
 	return true;
 }

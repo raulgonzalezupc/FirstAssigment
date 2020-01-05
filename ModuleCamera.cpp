@@ -85,8 +85,8 @@ void ModuleCamera::setFOV(const float fov)
 
 void ModuleCamera::Position(const float3 position)
 {
-	App->renderer->cam->frustum.pos = position;
-	App->renderer->cam->proj = App->renderer->cam->frustum.ProjectionMatrix();
+	App->renderer->cam->frustum->pos = position;
+	App->renderer->cam->proj = App->renderer->cam->frustum->ProjectionMatrix();
 }
 
 
@@ -102,8 +102,8 @@ void ModuleCamera::SetFarPlaneDistance(const float farDist)
 
 void ModuleCamera::MoveUp()
 {
-	App->renderer->cam->frustum.pos.y += distance * speed;
-	App->renderer->cam->view = App->renderer->cam->frustum.ViewMatrix();
+	App->renderer->cam->frustum->pos.y += distance * speed;
+	App->renderer->cam->view = App->renderer->cam->frustum->ViewMatrix();
 }
 void ModuleCamera::MoveDown()
 {
@@ -237,7 +237,7 @@ void ModuleCamera::ShowCameraUI()
 	App->camera->setFOV(f2);
 
 	//camera position
-	ImGui::Text("Camera X position: %.2f", App->renderer->cam->frustum.pos[0]);
-	ImGui::Text("Camera Y position: %.2f", App->renderer->cam->frustum.pos[1]);
-	ImGui::Text("Camera Z position: %.2f", App->renderer->cam->frustum.pos[2]);
+	ImGui::Text("Camera X position: %.2f", App->renderer->cam->frustum->pos[0]);
+	ImGui::Text("Camera Y position: %.2f", App->renderer->cam->frustum->pos[1]);
+	ImGui::Text("Camera Z position: %.2f", App->renderer->cam->frustum->pos[2]);
 }

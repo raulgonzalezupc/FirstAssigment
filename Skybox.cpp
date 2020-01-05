@@ -111,27 +111,27 @@ unsigned int Skybox::LoadCubeMap(const std::vector<std::string> &faces)
 
 void Skybox::DrawSkybox() const
 {
-	glDepthFunc(GL_LEQUAL);
-	unsigned int skyboxProg = App->program->skyboxProgram;
-	glUseProgram(skyboxProg);
-
-	// ... set view and projection matrix
-	glUniformMatrix4fv(glGetUniformLocation(skyboxProg,
-		"projection"), 1, GL_TRUE, &(App->renderer->cam->proj[0][0]));
-
-	float4x4 view = App->renderer->cam->view;
-	view.SetRow(3, float4::zero);
-	view.SetCol(3, float4::zero);
-
-	glUniformMatrix4fv(glGetUniformLocation(skyboxProg,
-		"view"), 1, GL_TRUE, &view[0][0]);
-
-	glBindVertexArray(skyboxVAO);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-	glDrawArrays(GL_TRIANGLES, 0, 36);
-	glBindVertexArray(0);
-
-	glDepthFunc(GL_LESS);
-	glUseProgram(0);
+//	glDepthFunc(GL_LEQUAL);
+//	unsigned int skyboxProg = App->program->skyboxProgram;
+//	glUseProgram(skyboxProg);
+//
+//	// ... set view and projection matrix
+//	glUniformMatrix4fv(glGetUniformLocation(skyboxProg,
+//		"projection"), 1, GL_TRUE, &(App->renderer->cam->proj[0][0]));
+//
+//	float4x4 view = App->renderer->cam->view;
+//	view.SetRow(3, float4::zero);
+//	view.SetCol(3, float4::zero);
+//
+//	glUniformMatrix4fv(glGetUniformLocation(skyboxProg,
+//		"view"), 1, GL_TRUE, &view[0][0]);
+//
+//	glBindVertexArray(skyboxVAO);
+//	glActiveTexture(GL_TEXTURE0);
+//	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+//	glDrawArrays(GL_TRIANGLES, 0, 36);
+//	glBindVertexArray(0);
+//
+//	glDepthFunc(GL_LESS);
+//	glUseProgram(0);
 }

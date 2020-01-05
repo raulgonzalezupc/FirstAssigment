@@ -18,11 +18,11 @@ public:
 
 	void SetFrustum();
 	
-	void Draw(const char*);
+	void Draw(const char*,int);
 	void GenerateFBOTexture(unsigned w, unsigned h);
 	
-	void GenerateBuffers(int width, int height);
-	void DrawScene(int width, int height);
+	void GenerateBuffers(int width, int height, int);
+	void DrawScene(int width, int height, int);
 	int isCollidingFrustum(const AABB& aabb) const;
 
 	unsigned int fbo;
@@ -32,17 +32,19 @@ public:
 	unsigned int rbo;
 	unsigned int framebuffer;
 
+	unsigned int fboGame, rboGame, textureGame;
+
 	GLuint program;
 
 
 	Skybox* skybox;
+	bool scene = true;
 
-
-
+	GLuint sceneProgram;
 
 	float4x4 proj, view, model;
 	float cameraSpeed = 0.05f;
-
+	float4x4 proj2, view2, model2;
 	float3 camPos;
 
 	float Hnear;
@@ -77,7 +79,8 @@ public:
 	float yaw = 0.0f;
 	float pitch = -90.0f;
 	bool hovered = false;
-	Frustum frustum;
+	Frustum* frustum;
+	Frustum frustum2;
 	float aspect = 1.f;
 
 	unsigned fb_depth = 0;
