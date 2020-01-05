@@ -12,7 +12,7 @@ class GameObject {
 public :
 
 	int uuid;
-	std::string name;
+	const char* name;
 	std::vector<Component*> components;
 	GameObject* parent;
 	std::vector<GameObject*> children;
@@ -21,7 +21,7 @@ public:
 	//constructors + destructors
 	GameObject() {}
 
-	GameObject(const std::string& name) : name(name) {
+	GameObject(const char* name) : name(name) {
 		CreateComponent(ComponentType::Transform);
 	}
 

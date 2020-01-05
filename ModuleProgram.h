@@ -18,12 +18,17 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 	const char* loadFile(const char* file_name);
+	GLuint CreateProgram(const unsigned int, const unsigned int);
+	unsigned int createVertexShader(const char* filename);
+	unsigned int createFragmentShader(const char* filename);
 
 public:
 	GLuint vertex_shader;
 	GLuint fragment_shader;
 	GLuint shader_program;
-
+	GLuint skyboxProg;
+	unsigned int vs;
+	unsigned int fs;
 };
 
 

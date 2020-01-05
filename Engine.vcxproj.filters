@@ -56,6 +56,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Components\Camera.cpp" />
     <ClCompile Include="Components\Transform.cpp" />
+    <ClCompile Include="Skybox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -185,6 +186,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Components\Camera.h" />
     <ClInclude Include="Components\Transform.h" />
+    <ClInclude Include="Skybox.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assimp\include\assimp\color4.inl" />
@@ -212,5 +214,7 @@
     <None Include="MathGeoLib\include\Geometry\TriangleMesh_IntersectRay_CPP.inl" />
     <None Include="MathGeoLib\include\Geometry\TriangleMesh_IntersectRay_SSE.inl" />
     <None Include="MathGeoLib\include\Math\Matrix.inl" />
+    <None Include="Game\skybox.fs" />
+    <None Include="Game\skybox.vs" />
   </ItemGroup>
 </Project>

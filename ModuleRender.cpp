@@ -6,6 +6,7 @@
 #include "ModuleImgui.h"
 #include "ModuleModelLoader.h"
 #include "ModuleCamera.h"
+#include "Skybox.h"
 
 #include "glew/include/GL/glew.h"
 #include "SDL.h"
@@ -113,9 +114,18 @@ bool ModuleRender::Init()
 	//glEnable(GL_BLEND);
 
 	test = new GameObject("test");
-	cam = new Camera(test);
+	test2 = new GameObject("test2");
+	cam = new Camera(test,1);
+	cam2 = new Camera(test2,2);
 	test->components.push_back(cam);
-	glGenFramebuffers(1, &fbo);
+	test2->components.push_back(cam2);
+
+	skybox = new Skybox();
+
+
+	//Scene w, h
+	int widthScene = static_cast<int>(App->window->width );
+	int heightScene = static_cast<int>(App->window->height );
 	
 	CatchFrameBufferErrors();
 	
@@ -134,7 +144,6 @@ bool ModuleRender::Init()
 update_status ModuleRender::PreUpdate()
 {
 	
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	return UPDATE_CONTINUE;
@@ -143,6 +152,7 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
+	skybox->DrawSkybox();
 	return UPDATE_CONTINUE;
 }
 
@@ -155,9 +165,9 @@ update_status ModuleRender::PostUpdate()
 // Called before quitting
 bool ModuleRender::CleanUp()
 {
-	glDeleteFramebuffers(1, &fbo);
+	/*glDeleteFramebuffers(1, &fbo);
 	glDeleteTextures(1, &texture);
-	glDeleteRenderbuffers(1, &rbo);
+	glDeleteRenderbuffers(1, &rbo);*/
 	App->imgui->AddLog("Destroying renderer\n");
 	SDL_GL_DeleteContext(glcontext);
 	//Destroy window
@@ -168,75 +178,75 @@ bool ModuleRender::CleanUp()
 
 void ModuleRender::GenerateBuffers(int width, int height)
 {
-	
-	if (texture) {
-		glDeleteTextures(1, &texture);
-	}
-	else {
-		glGenTextures(1, &texture);
-	}
+	//
+	//if (texture) {
+	//	glDeleteTextures(1, &texture);
+	//}
+	//else {
+	//	glGenTextures(1, &texture);
+	//}
 
-	if (rbo) {
-		glDeleteRenderbuffers(1, &rbo);
-	}else{
-		glGenRenderbuffers(1, &rbo);
-	}
+	//if (rbo) {
+	//	glDeleteRenderbuffers(1, &rbo);
+	//}else{
+	//	glGenRenderbuffers(1, &rbo);
+	//}
 
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+	//glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+	//glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+	//glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+	//glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
-	//textures
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	////textures
+	//glBindTexture(GL_TEXTURE_2D, texture);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	//glBindTexture(GL_TEXTURE_2D, 0);
 
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
+	//glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo);
 
-	//bind to 0
-	glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
+	////bind to 0
+	//glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
 }
 
 void ModuleRender::DrawScene(int width, int height)
 {
-	GenerateBuffers(width, height);
+	/*GenerateBuffers(width, height);*/
 	
-	glBindFramebuffer(GL_FRAMEBUFFER, cam->fbo);
+	//glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 
-	/*cam->GenerateFBOTexture(cam->width, cam->height);
-	glBindFramebuffer(GL_FRAMEBUFFER, cam->fbo);*/
+	///*cam->GenerateFBOTexture(cam->width, cam->height);
+	//glBindFramebuffer(GL_FRAMEBUFFER, cam->fbo);*/
 
-	glUseProgram(App->program->shader_program);
-	glUniformMatrix4fv(glGetUniformLocation(App->program->shader_program, "model"), 1, GL_TRUE, &(cam->model[0][0]));
-	glUniformMatrix4fv(glGetUniformLocation(App->program->shader_program, "view"), 1, GL_TRUE, &(cam->view[0][0]));
-	glUniformMatrix4fv(glGetUniformLocation(App->program->shader_program, "proj"), 1, GL_TRUE, &(cam->proj[0][0]));
-	//glDrawBuffer(GL_COLOR_ATTACHMENT0);
+	//glUseProgram(App->program->shader_program);
+	///*glUniformMatrix4fv(glGetUniformLocation(App->program->shader_program, "model"), 1, GL_TRUE, &(cam->model[0][0]));
+	//glUniformMatrix4fv(glGetUniformLocation(App->program->shader_program, "view"), 1, GL_TRUE, &(cam->view[0][0]));
+	//glUniformMatrix4fv(glGetUniformLocation(App->program->shader_program, "proj"), 1, GL_TRUE, &(cam->proj[0][0]));*/
+	////glDrawBuffer(GL_COLOR_ATTACHMENT0);
+	//
+	//glViewport(0, 0, width, height);
 
-	glViewport(0, 0, width, height);
+	//// second pass
 
-	// second pass
+	//glClearColor(0.51f, 0.51f, 0.51f, 1.0f);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glClearColor(0.51f, 0.51f, 0.51f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	////glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL);
+	//if (showGrid)
+	//	{
+	//		ShowGrid();
+	//	}
+	//if (showAxis) 
+	//	{
+	//		ShowAxis();
+	//	}
+	//App->modelLoader->Draw(App->program->shader_program);
 
-	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL);
-	if (showGrid)
-		{
-			ShowGrid();
-		}
-	if (showAxis) 
-		{
-			ShowAxis();
-		}
-	App->modelLoader->Draw(App->program->shader_program);
-
-	
-	glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
+	//
+	//glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
 
 	//SDL_GL_MakeCurrent(App->window->window, glcontext);
 }

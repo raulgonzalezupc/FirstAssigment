@@ -5,7 +5,7 @@
 #include "Globals.h"
 #include "Components/Camera.h"
 #include "GameObject.h"
-
+#include "Skybox.h"
 #include "MathGeoLib/include/Math/float4x4.h"
 #include "SDL.h"
 #include <vector>
@@ -36,8 +36,10 @@ public:
 
 public:
 	GameObject* test;
+	GameObject* test2;
 	Camera* cam;
-
+	Camera* cam2;
+	Skybox* skybox;
 
 public:
 	SDL_GLContext glcontext;

@@ -213,6 +213,7 @@
     <ClInclude Include="ModuleTexture.h" />
     <ClInclude Include="ModuleTimer.h" />
     <ClInclude Include="ModuleWindow.h" />
+    <ClInclude Include="Skybox.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -270,6 +271,7 @@
     <ClCompile Include="ModuleTexture.cpp" />
     <ClCompile Include="ModuleTimer.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
+    <ClCompile Include="Skybox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assimp\include\assimp\color4.inl" />
@@ -281,6 +283,8 @@
     <None Include="assimp\include\assimp\vector3.inl" />
     <None Include="Game\default.fs" />
     <None Include="Game\default.vs" />
+    <None Include="Game\skybox.fs" />
+    <None Include="Game\skybox.vs" />
     <None Include="glew\doc\advanced.html" />
     <None Include="glew\doc\basic.html" />
     <None Include="glew\doc\build.html" />

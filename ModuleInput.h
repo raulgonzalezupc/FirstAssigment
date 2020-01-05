@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Globals.h"
+#include "Components/Camera.h"
 #include "SDL.h"
 #include <SDL_scancode.h>
 typedef unsigned __int8 Uint8;
@@ -19,6 +20,7 @@ public:
 	bool CleanUp();
 	
 public:	
+	Camera* camHovered;
 	const Uint8 *keyboard = NULL;
 	SDL_MouseWheelEvent* mouseWheel;
 };

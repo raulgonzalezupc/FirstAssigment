@@ -25,6 +25,8 @@ public:
 	Material* CreateMaterial();
 	void DrawTexture(unsigned&);
 	void DrawTextureSelector(unsigned&);
+	void LoadSkybox(const char* path, const std::string &directory, int index) const;
+	bool isLoaded;
 public:
 	std::vector<Texture> loadedTextures;
 	int newTexture;

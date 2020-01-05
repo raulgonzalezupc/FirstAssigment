@@ -85,8 +85,8 @@ void ModuleCamera::setFOV(const float fov)
 
 void ModuleCamera::Position(const float3 position)
 {
-	frustum.pos = position;
-	proj = frustum.ProjectionMatrix();
+	App->renderer->cam->frustum.pos = position;
+	App->renderer->cam->proj = App->renderer->cam->frustum.ProjectionMatrix();
 }
 
 
@@ -102,8 +102,8 @@ void ModuleCamera::SetFarPlaneDistance(const float farDist)
 
 void ModuleCamera::MoveUp()
 {
-	frustum.pos.y += distance * speed;
-	view = frustum.ViewMatrix();
+	App->renderer->cam->frustum.pos.y += distance * speed;
+	App->renderer->cam->view = App->renderer->cam->frustum.ViewMatrix();
 }
 void ModuleCamera::MoveDown()
 {

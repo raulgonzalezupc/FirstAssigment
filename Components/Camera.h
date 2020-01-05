@@ -3,29 +3,39 @@
 
 #include "MathGeoLib.h"
 #include "Component.h"
-
+#include "GL/glew.h"
 const int IS_IN = 0;
 const int IS_OUT = 1;
 const int INTERSECT = 2;
 
 class Camera : public Component {
+
 public:
 
-	Camera(GameObject* owner);
+	Camera(GameObject* owner, int number);
 	~Camera();
 
 	void SetFrustum();
 	
 	void Draw(const char*);
 	void GenerateFBOTexture(unsigned w, unsigned h);
-
-
+	
+	void GenerateBuffers(int width, int height);
+	void DrawScene(int width, int height);
 	int isCollidingFrustum(const AABB& aabb) const;
 
+	unsigned int fbo;
+	unsigned int msfb_depth;
+	unsigned int msfb_color;
+	unsigned int texture;
+	unsigned int rbo;
+	unsigned int framebuffer;
+
+	GLuint program;
 
 	float4x4 proj, view, model;
 	float cameraSpeed = 0.05f;
-	unsigned fbo = 0;
+
 	float3 camPos;
 
 	float Hnear;
@@ -59,7 +69,7 @@ public:
 	bool orbit = false;
 	float yaw = 0.0f;
 	float pitch = -90.0f;
-
+	bool hovered = false;
 	Frustum frustum;
 	float aspect = 1.f;
 
