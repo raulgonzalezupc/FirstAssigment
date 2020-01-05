@@ -22,7 +22,7 @@ Camera::Camera(GameObject* owner, int number) : Component(owner, ComponentType::
 		frustum.pos = float3{ 0.0F, 0.0F, 120.0F };
 	}
 		
-
+	skybox = new Skybox();
 	
 	frustum.front = float3::unitZ;
 	frustum.up = float3::unitY;
@@ -205,11 +205,12 @@ void Camera::DrawScene(int width, int height)
 
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	
-	program = App->program->CreateProgram(App->program->vs, App->program->fs);
-	glUseProgram(App->program->skyboxProg);
-	glUniformMatrix4fv(glGetUniformLocation(App->program->skyboxProg, "model"), 1, GL_TRUE, &(model[0][0]));
-	glUniformMatrix4fv(glGetUniformLocation(App->program->skyboxProg, "view"), 1, GL_TRUE, &(view[0][0]));
-	glUniformMatrix4fv(glGetUniformLocation(App->program->skyboxProg, "proj"), 1, GL_TRUE, &(proj[0][0]));
+	program = App->program->defaultProgram;
+	
+	glUseProgram(program);
+	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &(model[0][0]));
+	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &(view[0][0]));
+	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &(proj[0][0]));
 	glViewport(0, 0, width, height);
 
 	// second pass
@@ -223,7 +224,7 @@ void Camera::DrawScene(int width, int height)
 	App->renderer->ShowAxis();
 	
 	App->modelLoader->Draw(App->program->shader_program);
-
+	skybox->DrawSkybox();
 	
 	glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
 

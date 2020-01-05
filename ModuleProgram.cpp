@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleImgui.h"
 #include "Globals.h"
+#include "MathGeoLib/include/Math/float4x4.h"
 #include "SDL.h"
 
 ModuleProgram::ModuleProgram()
@@ -22,12 +23,12 @@ bool ModuleProgram::Init()
 	vs = createVertexShader(VERTEX_SHADER_PATH);
 	fs = createFragmentShader(FRAGMENT_SHADER_PATH);
 
-	unsigned int vs3 = App->program->createVertexShader("Game/Skybox.vs");
-	unsigned int fs3 = App->program->createFragmentShader("Game/Skybox.fs");
+	skyboxVertexShader = App->program->createVertexShader("Game/Skybox.vs");
+	skyboxFragmentShader = App->program->createFragmentShader("Game/Skybox.fs");
 
-	skyboxProg = CreateProgram(vs3, fs3);
-
-
+	skyboxProgram = CreateProgram(skyboxVertexShader, skyboxFragmentShader);
+	defaultProgram = CreateProgram(vs, fs);
+	setUniformsBuffer();
 	return true;
 }
 
@@ -145,4 +146,24 @@ unsigned int ModuleProgram::createFragmentShader(const char * filename)
 	}
 
 	return fragment_shader;
+}
+
+
+void ModuleProgram::setUniformsBuffer()
+{
+	
+	unsigned int uniformBlockIndexDefault = glGetUniformBlockIndex(defaultProgram, "Matrices");
+	glUniformBlockBinding(defaultProgram, uniformBlockIndexDefault, 0);
+
+	unsigned int uniformSkybox = glGetUniformBlockIndex(skyboxProgram, "Skybox");
+	glUniformBlockBinding(skyboxProgram, uniformSkybox, 0);
+
+	glGenBuffers(1, &uniformsBuffer);
+
+	glBindBuffer(GL_UNIFORM_BUFFER, uniformsBuffer);
+	glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(float4x4), NULL, GL_STATIC_DRAW);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+	glBindBufferRange(GL_UNIFORM_BUFFER, 0, uniformsBuffer, 0, 2 * sizeof(float4x4));
+
 }

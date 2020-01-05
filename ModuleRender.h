@@ -52,63 +52,53 @@ public:
 	unsigned int rbo;
 	unsigned int framebuffer;
 
-	std::vector<std::string> faces
-	{
-			"right.jpg",
-			"left.jpg",
-			"top.jpg",
-			"bottom.jpg",
-			"front.jpg",
-			"back.jpg"
-	};
-	 int cubemapTexture = loadCubemap(faces);
 
-	 float skyboxVertices[108] = {
-		 // positions          
-		 -1.0f,  1.0f, -1.0f,
-		 -1.0f, -1.0f, -1.0f,
-		  1.0f, -1.0f, -1.0f,
-		  1.0f, -1.0f, -1.0f,
-		  1.0f,  1.0f, -1.0f,
-		 -1.0f,  1.0f, -1.0f,
 
-		 -1.0f, -1.0f,  1.0f,
-		 -1.0f, -1.0f, -1.0f,
-		 -1.0f,  1.0f, -1.0f,
-		 -1.0f,  1.0f, -1.0f,
-		 -1.0f,  1.0f,  1.0f,
-		 -1.0f, -1.0f,  1.0f,
-
-		  1.0f, -1.0f, -1.0f,
-		  1.0f, -1.0f,  1.0f,
-		  1.0f,  1.0f,  1.0f,
-		  1.0f,  1.0f,  1.0f,
-		  1.0f,  1.0f, -1.0f,
-		  1.0f, -1.0f, -1.0f,
-
-		 -1.0f, -1.0f,  1.0f,
-		 -1.0f,  1.0f,  1.0f,
-		  1.0f,  1.0f,  1.0f,
-		  1.0f,  1.0f,  1.0f,
-		  1.0f, -1.0f,  1.0f,
-		 -1.0f, -1.0f,  1.0f,
-
-		 -1.0f,  1.0f, -1.0f,
-		  1.0f,  1.0f, -1.0f,
-		  1.0f,  1.0f,  1.0f,
-		  1.0f,  1.0f,  1.0f,
-		 -1.0f,  1.0f,  1.0f,
-		 -1.0f,  1.0f, -1.0f,
-
-		 -1.0f, -1.0f, -1.0f,
-		 -1.0f, -1.0f,  1.0f,
-		  1.0f, -1.0f, -1.0f,
-		  1.0f, -1.0f, -1.0f,
-		 -1.0f, -1.0f,  1.0f,
-		  1.0f, -1.0f,  1.0f
-	 };
 private:
 	void* context;
+
+
+
+
+
+
+public: 
+	void DrawGame();
+
+	//If scene create buffer for scene else create buffer for game window
+	void CreateFrameBuffer(int width, int height, bool scene = true);
+	void GenerateTexture(int width, int height);
+	void GenerateTextureGame(int width, int height);
+	void DrawSceneBuffer();
+	void DrawGameBuffer();
+	//Quadtree variables
+	bool showQuadTree = false;
+	bool showAABBTree = true;
+	bool showFrustum = true;
+	bool antialiasing = false;
+
+	//Windows size
+	int heightScene, widthScene;
+	int heightGame, widthGame;
+	bool firstTimeCreatingBuffer = true;
+
+	//Framebuffer windows variables
+	unsigned int frameBufferObject = 0; // FBO
+	unsigned int renderBufferObject = 0; // RBO
+
+	//Framebuffer windows variables
+	unsigned int frameBufferObjectGame = 0; // FBO
+	unsigned int renderBufferObjectGame = 0; // RBO
+
+	unsigned int multiSampledAntiAliasingDepth = 0; //MSAAD
+	unsigned int multiSampledAntiAliasingColor = 0; //MSAAC
+
+	unsigned int sceneTexture = 0;
+	unsigned int gameTexture = 0;
+
+
+
+
 
 };
 

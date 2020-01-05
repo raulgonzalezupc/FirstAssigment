@@ -21,17 +21,7 @@ Skybox::Skybox()
 			"front.jpg",
 			"back.jpg"
 	};
-	/*
-	std::vector<std::string> faces
-	{
-			"bluefreeze_lf.tga",
-			"bluefreeze_rt.tga",
-			"bluefreeze_up.tga",
-			"bluefreeze_dn.tga",
-			"bluefreeze_ft.tga",
-			"bluefreeze_bk.tga"
-	};
-	*/
+
 	//Load default Skybox
 	cubemapTexture = LoadCubeMap(faces);
 
@@ -82,8 +72,6 @@ Skybox::Skybox()
 	};
 
 
-
-
 	glGenVertexArrays(1, &skyboxVAO);
 	glGenBuffers(1, &skyboxVBO);
 	glBindVertexArray(skyboxVAO);
@@ -124,7 +112,7 @@ unsigned int Skybox::LoadCubeMap(const std::vector<std::string> &faces)
 void Skybox::DrawSkybox() const
 {
 	glDepthFunc(GL_LEQUAL);
-	unsigned int skyboxProg = App->program->skyboxProg;
+	unsigned int skyboxProg = App->program->skyboxProgram;
 	glUseProgram(skyboxProg);
 
 	// ... set view and projection matrix

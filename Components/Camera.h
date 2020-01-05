@@ -3,6 +3,7 @@
 
 #include "MathGeoLib.h"
 #include "Component.h"
+#include "../Skybox.h"
 #include "GL/glew.h"
 const int IS_IN = 0;
 const int IS_OUT = 1;
@@ -32,6 +33,12 @@ public:
 	unsigned int framebuffer;
 
 	GLuint program;
+
+
+	Skybox* skybox;
+
+
+
 
 	float4x4 proj, view, model;
 	float cameraSpeed = 0.05f;
