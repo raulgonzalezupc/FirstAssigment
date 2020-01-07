@@ -38,6 +38,7 @@ Component* GameObject::CreateComponent(ComponentType type) {
 update_status GameObject::Update() {
 	return UPDATE_CONTINUE;
 }
+
 Component* GameObject::FindComponent(ComponentType type) {
 	for (unsigned int i = 0; i < components.size(); i++) {
 		if (components[i]->type == type) {

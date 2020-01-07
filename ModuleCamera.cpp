@@ -107,30 +107,30 @@ void ModuleCamera::MoveUp()
 }
 void ModuleCamera::MoveDown()
 {
-	frustum.pos.y -= distance * speed;
-	view = frustum.ViewMatrix();
+	App->renderer->cam->frustum->pos.y -= distance * speed;
+	App->renderer->cam->view = App->renderer->cam->frustum->ViewMatrix();
 }
 void ModuleCamera::MoveForward()
 {
-	frustum.pos += frustum.front.ScaledToLength(distance)*speed;
-	view = frustum.ViewMatrix();
+	App->renderer->cam->frustum->pos += App->renderer->cam->frustum->front.ScaledToLength(distance)*speed;
+	App->renderer->cam->view = App->renderer->cam->frustum->ViewMatrix();
 }
 void ModuleCamera::MoveBackwards()
 {
-	frustum.pos -= frustum.front.ScaledToLength(distance)*speed;
-	view = frustum.ViewMatrix();
+	App->renderer->cam->frustum->pos -= App->renderer->cam->frustum->front.ScaledToLength(distance)*speed;
+	App->renderer->cam->view = App->renderer->cam->frustum->ViewMatrix();
 }
 
 void ModuleCamera::MoveLeft()
 {
-	frustum.pos -= frustum.WorldRight().ScaledToLength(distance)*speed;
-	view = frustum.ViewMatrix();
+	App->renderer->cam->frustum->pos -= App->renderer->cam->frustum->WorldRight().ScaledToLength(distance)*speed;
+	App->renderer->cam->view = App->renderer->cam->frustum->ViewMatrix();
 }
 
 void ModuleCamera::MoveRight()
 {
-	frustum.pos += frustum.WorldRight().ScaledToLength(distance*speed);
-	view = frustum.ViewMatrix();
+	App->renderer->cam->frustum->pos += App->renderer->cam->frustum->WorldRight().ScaledToLength(distance*speed);
+	App->renderer->cam->view = App->renderer->cam->frustum->ViewMatrix();
 
 }
 void ModuleCamera::Rotate(char axis, float movement)
@@ -138,27 +138,27 @@ void ModuleCamera::Rotate(char axis, float movement)
 	if (axis=='X')
 	{
 		rotation_matrix = float3x3::RotateY(movement * rot_speed);
-		frustum.up = rotation_matrix * frustum.up;
-		frustum.front = rotation_matrix * frustum.front;
+		App->renderer->cam->frustum->up = rotation_matrix * App->renderer->cam->frustum->up;
+		App->renderer->cam->frustum->front = rotation_matrix * App->renderer->cam->frustum->front;
 
 	}
 	if (axis == 'Y')
 	{
-		const float current_angle = asinf(frustum.front.y / frustum.front.Length());
+		const float current_angle = asinf(App->renderer->cam->frustum->front.y / App->renderer->cam->frustum->front.Length());
 		if (abs(current_angle + movement * rot_speed) >= math::pi / 2) {
 			return;
 		}
 		rotation_matrix = float3x3::identity;
 		rotation_matrix.SetRotatePart(frustum.WorldRight(), movement * rot_speed);
-		frustum.up = rotation_matrix * frustum.up;
-		frustum.front = rotation_matrix * frustum.front;
+		App->renderer->cam->frustum->up = rotation_matrix * App->renderer->cam->frustum->up;
+		App->renderer->cam->frustum->front = rotation_matrix * App->renderer->cam->frustum->front;
 	}
 	generateMatrices();
 }
 
 void ModuleCamera::LookAt(const float3 focus)
 {
-	float3 look_direction = (focus - frustum.pos).Normalized();
+	float3 look_direction = (focus - App->renderer->cam->frustum->pos).Normalized();
 	SetOrientation(look_direction);
 
 	generateMatrices();
@@ -169,10 +169,10 @@ void ModuleCamera::LookAt(const float x, const float y, const float z)
 }
 void ModuleCamera::SetOrientation(const float3 orientation)
 {
-	float3 direction = (orientation - frustum.pos).Normalized();
-	float3x3 rotation = float3x3::LookAt(frustum.front, direction, frustum.up, float3::unitY);
-	frustum.front = rotation.Transform(frustum.front).Normalized();
-	frustum.up = rotation.Transform(frustum.up).Normalized();
+	float3 direction = (orientation - App->renderer->cam->frustum->pos).Normalized();
+	float3x3 rotation = float3x3::LookAt(App->renderer->cam->frustum->front, direction, App->renderer->cam->frustum->up, float3::unitY);
+	App->renderer->cam->frustum->front = rotation.Transform(App->renderer->cam->frustum->front).Normalized();
+	App->renderer->cam->frustum->up = rotation.Transform(App->renderer->cam->frustum->up).Normalized();
 	generateMatrices();
 }
 
@@ -184,14 +184,14 @@ void ModuleCamera::multSpeed()
 
 void ModuleCamera::generateMatrices()
 {
-	proj = frustum.ProjectionMatrix();
-	view = frustum.ViewMatrix();
+	proj = App->renderer->cam->frustum->ProjectionMatrix();
+	view = App->renderer->cam->frustum->ViewMatrix();
 }
 
 
 void ModuleCamera::focusCameraToNewPoint(const float3 & newPos)
 {
-	frustum.pos = newPos;
+	App->renderer->cam->frustum->pos = newPos;
 	LookAt(App->modelLoader->modelCenter);
 	generateMatrices();
 
@@ -217,13 +217,13 @@ void ModuleCamera::Orbit(char axis, float movement) {
 		pitch = rot_speed * speed;
 
 		if (movement < 0) {
-			model = model * math::float3x3::RotateAxisAngle(frustum.WorldRight(), pitch);
-			frustum.pos = frustum.pos *math::float3x3::RotateAxisAngle(frustum.WorldRight(), pitch);
+			model = model * math::float3x3::RotateAxisAngle(App->renderer->cam->frustum->WorldRight(), pitch);
+			App->renderer->cam->frustum->pos = App->renderer->cam->frustum->pos *math::float3x3::RotateAxisAngle(App->renderer->cam->frustum->WorldRight(), pitch);
 		
 		}
 		else {
-			model = model * math::float3x3::RotateAxisAngle(frustum.WorldRight(), -pitch);
-			frustum.pos = frustum.pos * math::float3x3::RotateAxisAngle(frustum.WorldRight(), -pitch);
+			model = model * math::float3x3::RotateAxisAngle(App->renderer->cam->frustum->WorldRight(), -pitch);
+			App->renderer->cam->frustum->pos = App->renderer->cam->frustum->pos * math::float3x3::RotateAxisAngle(App->renderer->cam->frustum->WorldRight(), -pitch);
 		}	
 	}
 	generateMatrices();
@@ -232,7 +232,7 @@ void ModuleCamera::Orbit(char axis, float movement) {
 void ModuleCamera::ShowCameraUI()
 {
 	//change FOV
-	float f2 = App->camera->frustum.verticalFov;
+	float f2 = App->renderer->cam->frustum->verticalFov;
 	ImGui::SliderFloat("Fov ", &f2, 0.01f, 3.12F, "%.2f", 2.0f);
 	App->camera->setFOV(f2);
 

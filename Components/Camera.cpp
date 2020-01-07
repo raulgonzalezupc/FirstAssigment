@@ -262,9 +262,9 @@ void Camera::DrawScene(int width, int height,int type)
 		program = App->program->defaultProgram;
 
 		glUseProgram(program);
-		glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &(App->renderer->cam->model[0][0]));
-		glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &(App->renderer->cam->view[0][0]));
-		glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &(App->renderer->cam->proj[0][0]));
+		glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &model[0][0]);
+		glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &view[0][0]);
+		glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &proj[0][0]);
 
 		glViewport(0, 0, width, height);
 
