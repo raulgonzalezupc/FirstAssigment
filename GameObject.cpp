@@ -40,9 +40,12 @@ update_status GameObject::Update() {
 }
 
 Component* GameObject::FindComponent(ComponentType type) {
+	Component* res;
+
 	for (unsigned int i = 0; i < components.size(); i++) {
 		if (components[i]->type == type) {
-			return components[i];
+			res = components[i];
+			return res;
 		}
 	}
 	return nullptr;

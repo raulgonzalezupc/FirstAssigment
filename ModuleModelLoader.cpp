@@ -3,6 +3,7 @@
 #include "ModuleTexture.h"
 #include "ModuleImgui.h"
 #include "ModuleCamera.h"
+#include "ModuleRender.h"
 #include "assimp/include/assimp/Importer.hpp"
 #include "assimp/include/assimp/scene.h"
 #include "assimp/include/assimp/postprocess.h"
@@ -155,7 +156,10 @@ Mesh* ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene)
 	// 1. diffuse maps
 	std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 	res->textures.insert(res->textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-
+	Material* diffuse = new Material(App->renderer->test);
+	App->renderer->test->components.push_back(diffuse);
+	Component* resmat =App->renderer->test->FindComponent(ComponentType::Material);
+	
 	// 2. specular maps
 	std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
 	res->textures.insert(res->textures.end(), specularMaps.begin(), specularMaps.end());

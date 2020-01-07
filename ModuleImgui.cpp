@@ -78,7 +78,6 @@ update_status ModuleImgui::Update()
 	App->renderer->cam2->Draw(App->renderer->test2->name,2);
 	App->renderer->cam->Draw(App->renderer->test->name, 1);
 
-	
 	//Menu
 	if (ImGui::BeginMainMenuBar())
 	{

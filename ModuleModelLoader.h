@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Mesh.h"
+#include "Components/Material.h"
 #include "assimp/include/assimp/scene.h"
 #include <vector>
 #include <string>
@@ -51,6 +52,9 @@ private:
 	void processNode(aiNode*, const aiScene*);
 	Mesh* processMesh(aiMesh*, const aiScene*);
 	std::vector<Texture> loadMaterialTextures(aiMaterial*, aiTextureType, char*);
+	Material* diffuse;
+	Material* specular;
+	Material* normal;
 	
 };
 

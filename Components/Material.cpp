@@ -4,7 +4,7 @@
 #include "../imgui/imgui.h"
 
 void Material::DrawView() {
-
+	ImGui::Begin("Mat info");
 	if (ImGui::TreeNode("Material")) {
 		if (ImGui::TreeNode("Ambient")) {
 			App->texture->DrawTexture(occlusionMap);
@@ -31,4 +31,5 @@ void Material::DrawView() {
 		}
 		ImGui::TreePop();
 	}
+	ImGui::End();
 }
