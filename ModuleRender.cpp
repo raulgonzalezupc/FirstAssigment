@@ -118,9 +118,10 @@ bool ModuleRender::Init()
 	test2 = new GameObject("test2");
 	cam = new Camera(test,1);
 	cam2 = new Camera(test2,2);
-	cam2->frustum->pos = float3{ 0.0F,0.0F, 120.0F };
 	test->components.push_back(cam);
 	test2->components.push_back(cam2);
+
+	cam2->frustum->pos = float3{ 0.0F,0.0F, 120.0F };
 
 	skybox = new Skybox();
 
