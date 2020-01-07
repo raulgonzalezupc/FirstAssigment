@@ -48,10 +48,10 @@ private:
 	std::string modelPath = "Models/";
 	std::string myTexturesPath = "Textures/";
 	std::string finalPath = "";
-	void processNode(aiNode*, const aiScene*);
+	void processNode(aiNode*, const aiScene*, GameObject* parent);
 	Mesh* processMesh(aiMesh*, const aiScene*);
 	std::vector<Texture> loadMaterialTextures(aiMaterial*, aiTextureType, char*);
-	
+	float* onething;
 };
 
 #endif

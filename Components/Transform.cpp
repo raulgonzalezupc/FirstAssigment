@@ -1,4 +1,5 @@
 #include "Transform.h"
+#include "../GameObject.h"
 #include "../imgui/imgui.h"
 
 void Transform::DrawView() {
@@ -15,4 +16,16 @@ void Transform::CalculateWorldTransform(const float4x4& trans) {
 		trans = trans *
 		transformation = transformation * ((Transform*) owner->parent->FindComponent(ComponentType::Transform))->transformation;
 	}*/
+}
+
+void Transform::SetTransform(const aiMatrix4x4& trans) {
+	localTransform.SetRow(0, float4(trans.a1, trans.a2, trans.a3, trans.a4));
+	localTransform.SetRow(1, float4(trans.b1, trans.b2, trans.b3, trans.d4));
+	localTransform.SetRow(2, float4(trans.c1, trans.c2, trans.c3, trans.c4));
+	localTransform.SetRow(3, float4(trans.d1, trans.d2, trans.d3, trans.d4));
+	if (owner->parent) {
+		worldTransform = ((Transform*)owner->parent->FindComponent(ComponentType::Transform))->localTransform * localTransform;
+	}
+	//localTransform.Decompose(position, rotation, scale);
+	worldTransform.Decompose(position, rotation, scaling);
 }

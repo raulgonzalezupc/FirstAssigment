@@ -18,21 +18,23 @@ ModuleProgram::~ModuleProgram()
 bool ModuleProgram::Init()
 {
 	App->imgui->AddLog("\nSHADERS.\n\n");
+	
 	//init vertex shader
 	
 	vs = createVertexShader(VERTEX_SHADER_PATH);
 	fs = createFragmentShader(FRAGMENT_SHADER_PATH);
 
+	defaultProgram = CreateProgram(vs, fs);
+	sceneProgram = CreateProgram(vs, fs);
+
+
+	//init skybox shader
 	skyboxVertexShader = App->program->createVertexShader("Game/Skybox.vs");
 	skyboxFragmentShader = App->program->createFragmentShader("Game/Skybox.fs");
 
 	skyboxProgram = CreateProgram(skyboxVertexShader, skyboxFragmentShader);
 
-	defaultProgram = CreateProgram(vs, fs);
-	sceneProgram = CreateProgram(vs, fs);
-
-	
-
+	//set up the uniforms
 	setUniformsBuffer();
 	return true;
 }
@@ -62,6 +64,7 @@ bool ModuleProgram::CleanUp()
 	glDeleteShader(fragment_shader);
 	return true;
 }
+
 GLuint ModuleProgram::CreateProgram(unsigned int vs, unsigned int fs)
 {
 	//Creating shader program

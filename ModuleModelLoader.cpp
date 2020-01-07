@@ -1,9 +1,11 @@
 #include "Application.h"
 #include "ModuleModelLoader.h"
 #include "ModuleTexture.h"
+#include "ModuleRender.h"
 #include "ModuleImgui.h"
 #include "ModuleCamera.h"
 #include "assimp/include/assimp/Importer.hpp"
+#include "assimp/include/assimp/matrix4x4.h"
 #include "assimp/include/assimp/scene.h"
 #include "assimp/include/assimp/postprocess.h"
 #include "assimp/include/assimp/Logger.hpp"
@@ -12,6 +14,10 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "imgui/imgui_impl_sdl.h"
+
+#include "Components/Transform.h"
+
+
 
 class myStream : public Assimp::LogStream {
 
@@ -71,23 +77,28 @@ void ModuleModelLoader::LoadModel(const char* path)
 	else {
 		App->imgui->AddLog("Path of the geometry correct.\n");
 	}
-	processNode(scene->mRootNode, scene);
+	processNode(scene->mRootNode, scene, App->renderer->test);
 }
 
 
 
-void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene) 
+void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene, GameObject* parent)
 {
+	GameObject* model = new GameObject(node->mName.C_Str());
+	model->parent = parent;
+	((Transform*)model->FindComponent(ComponentType::Transform))->SetTransform(node->mTransformation);
 	for (unsigned int i = 0; i < node->mNumMeshes; i++) 
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		meshes.push_back(processMesh(mesh, scene));
 		++numMeshes;
+		
 	}
 
 	for (unsigned int i = 0; i < node->mNumChildren; i++) 
 	{
-		processNode(node->mChildren[i], scene);
+		processNode(node->mChildren[i], scene,model);
+		
 	}
 }
 
@@ -308,13 +319,29 @@ void ModuleModelLoader::ChangeModel(const char* path)
 
 void ModuleModelLoader::ShowModelUI()
 {
+
+	float positionObject[3] = { 
+		((Transform*)App->renderer->test->FindComponent(ComponentType::Transform))->position.x, 
+		((Transform*)App->renderer->test->FindComponent(ComponentType::Transform))->position.y, 
+		((Transform*)App->renderer->test->FindComponent(ComponentType::Transform))->position.z 
+	};
+	float rotationObject[3] = {
+		((Transform*)App->renderer->test->FindComponent(ComponentType::Transform))->rotation.x,
+		((Transform*)App->renderer->test->FindComponent(ComponentType::Transform))->rotation.y,
+		((Transform*)App->renderer->test->FindComponent(ComponentType::Transform))->rotation.z
+	};
+	float scaleObject[3] = {
+		((Transform*)App->renderer->test->FindComponent(ComponentType::Transform))->scaling.x,
+		((Transform*)App->renderer->test->FindComponent(ComponentType::Transform))->scaling.y,
+		((Transform*)App->renderer->test->FindComponent(ComponentType::Transform))->scaling.z
+	};
+	
 	ImGui::Begin("Properties");
 	if (ImGui::CollapsingHeader("Transformation"))
 	{
-		static float position[3] = { 0.0F, 0.0F, 0.0F };
 		static float rotation[3] = { 0.0F, 0.0F, 0.0F };
 		static float scale[3] = { 1.0F, 1.0F, 1.0F };
-		ImGui::DragFloat3("Position", position);
+		ImGui::DragFloat3("Position", positionObject);
 		ImGui::DragFloat3("Rotation", rotation);
 		ImGui::DragFloat3("Scale", scale);
 	}
