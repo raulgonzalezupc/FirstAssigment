@@ -77,7 +77,7 @@ void ModuleModelLoader::LoadModel(const char* path)
 	else {
 		App->imgui->AddLog("Path of the geometry correct.\n");
 	}
-	processNode(scene->mRootNode, scene, App->renderer->test);
+	processNode(scene->mRootNode, scene, App->renderer->scene);
 }
 
 
@@ -321,19 +321,19 @@ void ModuleModelLoader::ShowModelUI()
 {
 
 	float positionObject[3] = { 
-		((Transform*)App->renderer->test->FindComponent(ComponentType::Transform))->position.x, 
-		((Transform*)App->renderer->test->FindComponent(ComponentType::Transform))->position.y, 
-		((Transform*)App->renderer->test->FindComponent(ComponentType::Transform))->position.z 
+		((Transform*)App->renderer->scene->FindComponent(ComponentType::Transform))->position.x, 
+		((Transform*)App->renderer->scene->FindComponent(ComponentType::Transform))->position.y,
+		((Transform*)App->renderer->scene->FindComponent(ComponentType::Transform))->position.z
 	};
 	float rotationObject[3] = {
-		((Transform*)App->renderer->test->FindComponent(ComponentType::Transform))->rotation.x,
-		((Transform*)App->renderer->test->FindComponent(ComponentType::Transform))->rotation.y,
-		((Transform*)App->renderer->test->FindComponent(ComponentType::Transform))->rotation.z
+		((Transform*)App->renderer->scene->FindComponent(ComponentType::Transform))->rotation.x,
+		((Transform*)App->renderer->scene->FindComponent(ComponentType::Transform))->rotation.y,
+		((Transform*)App->renderer->scene->FindComponent(ComponentType::Transform))->rotation.z
 	};
 	float scaleObject[3] = {
-		((Transform*)App->renderer->test->FindComponent(ComponentType::Transform))->scaling.x,
-		((Transform*)App->renderer->test->FindComponent(ComponentType::Transform))->scaling.y,
-		((Transform*)App->renderer->test->FindComponent(ComponentType::Transform))->scaling.z
+		((Transform*)App->renderer->scene->FindComponent(ComponentType::Transform))->scaling.x,
+		((Transform*)App->renderer->scene->FindComponent(ComponentType::Transform))->scaling.y,
+		((Transform*)App->renderer->scene->FindComponent(ComponentType::Transform))->scaling.z
 	};
 	
 	ImGui::Begin("Properties");

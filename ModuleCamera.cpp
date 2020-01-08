@@ -69,136 +69,136 @@ bool ModuleCamera::CleanUp()
 	return true;
 }
 
-void ModuleCamera::SetAspectRatio(const float aspect_ratio)
+void ModuleCamera::SetAspectRatio(const float aspect_ratio, Camera* cam)
 {
-	frustum.horizontalFov = 2.0F*atanf(tanf(frustum.verticalFov*0.5F)*aspect_ratio);
-	proj = frustum.ProjectionMatrix();
+	cam->frustum.horizontalFov = 2.0F*atanf(tanf(cam->frustum.verticalFov*0.5F)*aspect_ratio);
+	cam->proj = cam->frustum.ProjectionMatrix();
 }
 
-void ModuleCamera::setFOV(const float fov)
+void ModuleCamera::setFOV(const float fov, Camera* cam)
 {
-	frustum.verticalFov = fov;
-	frustum.horizontalFov = 2.0F*atanf(tanf(frustum.verticalFov*0.5F)*aspect);
-	generateMatrices();
+	cam->frustum.verticalFov = fov;
+	cam->frustum.horizontalFov = 2.0F*atanf(tanf(cam->frustum.verticalFov*0.5F)*aspect);
+	generateMatrices(cam);
 
 }
 
-void ModuleCamera::Position(const float3 position)
+void ModuleCamera::Position(const float3 position, Camera* cam)
 {
-	App->renderer->cam->frustum->pos = position;
-	App->renderer->cam->proj = App->renderer->cam->frustum->ProjectionMatrix();
+	cam->frustum.pos = position;
+	cam->proj = cam->frustum.ProjectionMatrix();
 }
 
 
-void ModuleCamera::SetNearPlaneDistance(const float nearDist)
+void ModuleCamera::SetNearPlaneDistance(const float nearDist, Camera* cam)
 {
-	frustum.nearPlaneDistance = nearDist;
+	cam->frustum.nearPlaneDistance = nearDist;
 }
 
-void ModuleCamera::SetFarPlaneDistance(const float farDist)
+void ModuleCamera::SetFarPlaneDistance(const float farDist, Camera* cam)
 {
-	frustum.farPlaneDistance = farDist;
+	cam->frustum.farPlaneDistance = farDist;
 }
 
-void ModuleCamera::MoveUp()
+void ModuleCamera::MoveUp(Camera* cam)
 {
-	App->renderer->cam->frustum->pos.y += distance * speed;
-	App->renderer->cam->view = App->renderer->cam->frustum->ViewMatrix();
+	cam->frustum.pos.y += distance * speed;
+	cam->view = cam->frustum.ViewMatrix();
 }
-void ModuleCamera::MoveDown()
+void ModuleCamera::MoveDown(Camera* cam)
 {
-	App->renderer->cam->frustum->pos.y -= distance * speed;
-	App->renderer->cam->view = App->renderer->cam->frustum->ViewMatrix();
+	cam->frustum.pos.y -= distance * speed;
+	cam->view = cam->frustum.ViewMatrix();
 }
-void ModuleCamera::MoveForward()
+void ModuleCamera::MoveForward(Camera* cam)
 {
-	App->renderer->cam->frustum->pos += App->renderer->cam->frustum->front.ScaledToLength(distance)*speed;
-	App->renderer->cam->view = App->renderer->cam->frustum->ViewMatrix();
+	cam->frustum.pos += cam->frustum.front.ScaledToLength(distance)*speed;
+	cam->view = cam->frustum.ViewMatrix();
 }
-void ModuleCamera::MoveBackwards()
+void ModuleCamera::MoveBackwards(Camera* cam)
 {
-	App->renderer->cam->frustum->pos -= App->renderer->cam->frustum->front.ScaledToLength(distance)*speed;
-	App->renderer->cam->view = App->renderer->cam->frustum->ViewMatrix();
-}
-
-void ModuleCamera::MoveLeft()
-{
-	App->renderer->cam->frustum->pos -= App->renderer->cam->frustum->WorldRight().ScaledToLength(distance)*speed;
-	App->renderer->cam->view = App->renderer->cam->frustum->ViewMatrix();
+	cam->frustum.pos -= cam->frustum.front.ScaledToLength(distance)*speed;
+	cam->view = cam->frustum.ViewMatrix();
 }
 
-void ModuleCamera::MoveRight()
+void ModuleCamera::MoveLeft(Camera* cam)
 {
-	App->renderer->cam->frustum->pos += App->renderer->cam->frustum->WorldRight().ScaledToLength(distance*speed);
-	App->renderer->cam->view = App->renderer->cam->frustum->ViewMatrix();
+	cam->frustum.pos -= cam->frustum.WorldRight().ScaledToLength(distance)*speed;
+	cam->view = cam->frustum.ViewMatrix();
+}
+
+void ModuleCamera::MoveRight(Camera* cam)
+{
+	cam->frustum.pos += cam->frustum.WorldRight().ScaledToLength(distance*speed);
+	cam->view = cam->frustum.ViewMatrix();
 
 }
-void ModuleCamera::Rotate(char axis, float movement)
+void ModuleCamera::Rotate(char axis, float movement, Camera* cam)
 {
 	if (axis=='X')
 	{
 		rotation_matrix = float3x3::RotateY(movement * rot_speed);
-		App->renderer->cam->frustum->up = rotation_matrix * App->renderer->cam->frustum->up;
-		App->renderer->cam->frustum->front = rotation_matrix * App->renderer->cam->frustum->front;
+		cam->frustum.up = rotation_matrix * cam->frustum.up;
+		cam->frustum.front = rotation_matrix * cam->frustum.front;
 
 	}
 	if (axis == 'Y')
 	{
-		const float current_angle = asinf(App->renderer->cam->frustum->front.y / App->renderer->cam->frustum->front.Length());
+		const float current_angle = asinf(cam->frustum.front.y / cam->frustum.front.Length());
 		if (abs(current_angle + movement * rot_speed) >= math::pi / 2) {
 			return;
 		}
 		rotation_matrix = float3x3::identity;
-		rotation_matrix.SetRotatePart(frustum.WorldRight(), movement * rot_speed);
-		App->renderer->cam->frustum->up = rotation_matrix * App->renderer->cam->frustum->up;
-		App->renderer->cam->frustum->front = rotation_matrix * App->renderer->cam->frustum->front;
+		rotation_matrix.SetRotatePart(cam->frustum.WorldRight(), movement * rot_speed);
+		cam->frustum.up = rotation_matrix * cam->frustum.up;
+		cam->frustum.front = rotation_matrix * cam->frustum.front;
 	}
-	generateMatrices();
+	generateMatrices(cam);
 }
 
-void ModuleCamera::LookAt(const float3 focus)
+void ModuleCamera::LookAt(const float3 focus, Camera* cam)
 {
-	float3 look_direction = (focus - App->renderer->cam->frustum->pos).Normalized();
-	SetOrientation(look_direction);
+	float3 look_direction = (focus - cam->frustum.pos).Normalized();
+	SetOrientation(look_direction,cam);
 
-	generateMatrices();
+	generateMatrices(cam);
 }
-void ModuleCamera::LookAt(const float x, const float y, const float z)
+void ModuleCamera::LookAt(const float x, const float y, const float z,Camera* cam)
 {
-	LookAt(float3(x, y, z));
+	LookAt(float3(x, y, z), cam);
 }
-void ModuleCamera::SetOrientation(const float3 orientation)
+void ModuleCamera::SetOrientation(const float3 orientation, Camera* cam)
 {
-	float3 direction = (orientation - App->renderer->cam->frustum->pos).Normalized();
-	float3x3 rotation = float3x3::LookAt(App->renderer->cam->frustum->front, direction, App->renderer->cam->frustum->up, float3::unitY);
-	App->renderer->cam->frustum->front = rotation.Transform(App->renderer->cam->frustum->front).Normalized();
-	App->renderer->cam->frustum->up = rotation.Transform(App->renderer->cam->frustum->up).Normalized();
-	generateMatrices();
+	float3 direction = (orientation - cam->frustum.pos).Normalized();
+	float3x3 rotation = float3x3::LookAt(cam->frustum.front, direction, cam->frustum.up, float3::unitY);
+	cam->frustum.front = rotation.Transform(cam->frustum.front).Normalized();
+	cam->frustum.up = rotation.Transform(cam->frustum.up).Normalized();
+	generateMatrices(cam);
 }
 
 
-void ModuleCamera::multSpeed()
+void ModuleCamera::multSpeed(Camera* cam)
 {
 	speed = 2.0f;
 }
 
-void ModuleCamera::generateMatrices()
+void ModuleCamera::generateMatrices(Camera* cam)
 {
-	proj = App->renderer->cam->frustum->ProjectionMatrix();
-	view = App->renderer->cam->frustum->ViewMatrix();
+	cam->proj = cam->frustum.ProjectionMatrix();
+	cam->view = cam->frustum.ViewMatrix();
 }
 
 
-void ModuleCamera::focusCameraToNewPoint(const float3 & newPos)
+void ModuleCamera::focusCameraToNewPoint(const float3 & newPos, Camera* cam)
 {
-	App->renderer->cam->frustum->pos = newPos;
-	LookAt(App->modelLoader->modelCenter);
-	generateMatrices();
+	cam->frustum.pos = newPos;
+	LookAt(App->modelLoader->modelCenter,cam);
+	generateMatrices(cam);
 
 }
 
 
-void ModuleCamera::Orbit(char axis, float movement) {
+void ModuleCamera::Orbit(char axis, float movement, Camera* cam) {
 	
 
 	if (axis == 'X') {
@@ -206,38 +206,38 @@ void ModuleCamera::Orbit(char axis, float movement) {
 
 		if (movement < 0) {
 			model = model * math::float3x3::RotateY(-yaw);
-			frustum.pos = frustum.pos * math::float3x3::RotateY(-yaw);
+			cam->frustum.pos = cam->frustum.pos * math::float3x3::RotateY(-yaw);
 		}
 		else {
-			model = model * math::float3x3::RotateY(yaw);
-			frustum.pos = frustum.pos * math::float3x3::RotateY(yaw);
+			cam->model = cam->model * math::float3x3::RotateY(yaw);
+			cam->frustum.pos = cam->frustum.pos * math::float3x3::RotateY(yaw);
 		}
 	}
 	else if (axis == 'Y') {
 		pitch = rot_speed * speed;
 
 		if (movement < 0) {
-			model = model * math::float3x3::RotateAxisAngle(App->renderer->cam->frustum->WorldRight(), pitch);
-			App->renderer->cam->frustum->pos = App->renderer->cam->frustum->pos *math::float3x3::RotateAxisAngle(App->renderer->cam->frustum->WorldRight(), pitch);
+			cam->model = cam->model * math::float3x3::RotateAxisAngle(cam->frustum.WorldRight(), pitch);
+			cam->frustum.pos = cam->frustum.pos *math::float3x3::RotateAxisAngle(cam->frustum.WorldRight(), pitch);
 		
 		}
 		else {
-			model = model * math::float3x3::RotateAxisAngle(App->renderer->cam->frustum->WorldRight(), -pitch);
-			App->renderer->cam->frustum->pos = App->renderer->cam->frustum->pos * math::float3x3::RotateAxisAngle(App->renderer->cam->frustum->WorldRight(), -pitch);
+			cam->model = cam->model * math::float3x3::RotateAxisAngle(cam->frustum.WorldRight(), -pitch);
+			cam->frustum.pos = cam->frustum.pos * math::float3x3::RotateAxisAngle(cam->frustum.WorldRight(), -pitch);
 		}	
 	}
-	generateMatrices();
+	generateMatrices(cam);
 }
 
 void ModuleCamera::ShowCameraUI()
 {
 	//change FOV
-	float f2 = App->renderer->cam->frustum->verticalFov;
+	float f2 = frustum.verticalFov;
 	ImGui::SliderFloat("Fov ", &f2, 0.01f, 3.12F, "%.2f", 2.0f);
-	App->camera->setFOV(f2);
+	//App->camera->setFOV(f2,cam);
 
 	//camera position
-	ImGui::Text("Camera X position: %.2f", App->renderer->cam->frustum->pos[0]);
-	ImGui::Text("Camera Y position: %.2f", App->renderer->cam->frustum->pos[1]);
-	ImGui::Text("Camera Z position: %.2f", App->renderer->cam->frustum->pos[2]);
+	ImGui::Text("Camera X position: %.2f", frustum.pos[0]);
+	ImGui::Text("Camera Y position: %.2f", frustum.pos[1]);
+	ImGui::Text("Camera Z position: %.2f", frustum.pos[2]);
 }

@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Globals.h"
+#include "Components/Camera.h"
 #include "MathGeoLib/include/Math/float4x4.h"
 #include "MathGeoLib/include/Math/float3x3.h"
 #include "MathGeoLib/include/Geometry/Frustum.h"
@@ -23,30 +24,30 @@ public:
 	bool CleanUp();
 
 
-	void SetNearPlaneDistance(const float nearDist);
-	void SetFarPlaneDistance(const float farDist);
-	void SetAspectRatio(const float aspect_ratio);
+	void SetNearPlaneDistance(const float nearDist,Camera* cam);
+	void SetFarPlaneDistance(const float farDist, Camera* cam);
+	void SetAspectRatio(const float aspect_ratio, Camera* cam);
 
 public:
 
-	void setFOV(const float fov);
-	void Position(const float3 position);
-	void Rotate(char axis, float movement);
-	void MoveUp();
-	void MoveDown();
-	void MoveForward();
-	void MoveBackwards();
-	void MoveLeft();
-	void MoveRight();
-	void multSpeed();
+	void setFOV(const float fov, Camera* cam);
+	void Position(const float3 position, Camera* cam);
+	void Rotate(char axis, float movement, Camera* cam);
+	void MoveUp(Camera* cam);
+	void MoveDown(Camera* cam);
+	void MoveForward(Camera* cam);
+	void MoveBackwards(Camera* cam);
+	void MoveLeft(Camera* cam);
+	void MoveRight(Camera* cam);
+	void multSpeed(Camera* cam);
 
-	void generateMatrices();
+	void generateMatrices(Camera* cam);
 	void ShowCameraUI();
-	void LookAt(const float3 focus);
-	void LookAt(const float x, const float y, const float z);
-	void SetOrientation(const float3 orientation);
-	void focusCameraToNewPoint(const float3 &newPos);
-	void Orbit(char axis, float movement);
+	void LookAt(const float3 focus, Camera* cam);
+	void LookAt(const float x, const float y, const float z, Camera* cam);
+	void SetOrientation(const float3 orientation, Camera* cam);
+	void focusCameraToNewPoint(const float3 &newPos, Camera* cam);
+	void Orbit(char axis, float movement, Camera* cam);
 
 public:
 

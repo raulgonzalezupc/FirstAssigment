@@ -76,8 +76,8 @@ update_status ModuleImgui::Update()
 	//ImGui::End();
 	
 	
-	App->renderer->cam2->Draw(App->renderer->test2->name, 2);
-	App->renderer->cam->Draw(App->renderer->test->name, 1);
+	App->renderer->camGame->Draw(App->renderer->game->name);
+	App->renderer->camScene->Draw(App->renderer->scene->name);
 	
 	//Menu
 	if (ImGui::BeginMainMenuBar())
