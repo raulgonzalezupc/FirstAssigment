@@ -114,15 +114,13 @@ bool ModuleRender::Init()
 	glEnable(GL_TEXTURE_2D);
 	//glEnable(GL_BLEND);
 
-	test = new GameObject("test");
-	test2 = new GameObject("test2");
-	cam = new Camera(test,1);
-	cam->frustum.pos = float3{ 0.0F, 0.0F, 120.0F };
-	cam2 = new Camera(test2,2);
-	test->components.push_back(cam);
-	test2->components.push_back(cam2);
+	game = new GameObject("Game");
+	scene = new GameObject("Scene");
+	camGame = new Camera(game,1);
+	camScene = new Camera(scene,2);
+	game->components.push_back(camGame);
+	scene->components.push_back(camScene);
 
-	cam2->frustum.pos = float3{ 0.0F,0.0F, 120.0F };
 
 	skybox = new Skybox();
 
@@ -152,10 +150,10 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
-	Camera* cam2 = (Camera*)App->renderer->test->FindComponent(ComponentType::Camera);
+	Camera* cam2 = (Camera*)App->renderer->scene->FindComponent(ComponentType::Camera);
 	cam2->GenerateFBOTexture(cam2->width, cam2->height);
 	
-	Camera* cam3 = (Camera*)App->renderer->test2->FindComponent(ComponentType::Camera);
+	Camera* cam3 = (Camera*)App->renderer->game->FindComponent(ComponentType::Camera);
 	cam3->GenerateFBOTexture(cam3->width, cam3->height);
 
 

@@ -18,6 +18,9 @@ public:
 	bool Init();
 	update_status Update();
 	bool CleanUp();
+	update_status SetInputsWithCam(Camera* cam);
+	SDL_Event event;
+
 	
 public:	
 	Camera* camHovered;

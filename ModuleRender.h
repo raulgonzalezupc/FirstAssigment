@@ -33,25 +33,16 @@ public:
 	void CatchFrameBufferErrors();
 
 public:
-	GameObject* test;
-	GameObject* test2;
-	Camera* cam;
-	Camera* cam2;
+	GameObject* game;
+	GameObject* scene;
+	Camera* camScene;
+	Camera* camGame;
 	Skybox* skybox;
 
 public:
 	SDL_GLContext glcontext;
 	int width, height;
-	bool showGrid = true, showAxis = true;
-	unsigned int fbo;
-	unsigned int msfb_depth;
-	unsigned int msfb_color;
-	unsigned int texture;
-	unsigned int rbo;
-	unsigned int framebuffer;
-
-
-
+	bool showAxis, showGrid;
 private:
 	void* context;
 

@@ -16,9 +16,13 @@ Camera::Camera(GameObject* owner, int number) : Component(owner, ComponentType::
 	
 	aspect = App->window->width / App->window->height;
 
-	
 	frustum.type = FrustumType::PerspectiveFrustum;
-	frustum.pos = float3::unitX;
+	if (number == 1) {
+		frustum.pos = float3::unitX;
+	}
+	else {
+		frustum.pos = float3{ 6.0F, 0.0F, -10.0F };
+	}
 	skybox = new Skybox();
 
 	frustum.front = float3::unitZ;
@@ -122,7 +126,7 @@ void Camera::Draw(const char* name)
 	ImGui::SetNextWindowPos(ImVec2(256.0f, 0.0f), ImGuiCond_FirstUseEver);
 	ImGui::SetNextWindowSize(ImVec2(800.0f, 600.0f), ImGuiCond_FirstUseEver);
 	BindBuffers(width, height);
-	App->camera->SetAspectRatio(width/height);
+	App->camera->SetAspectRatio(width/height, this);
 	ImGui::GetWindowDrawList()->AddImage(
 		(void*)fb_tex,
 		ImVec2(ImGui::GetCursorScreenPos()),
