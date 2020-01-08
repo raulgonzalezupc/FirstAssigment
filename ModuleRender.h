@@ -35,6 +35,7 @@ public:
 public:
 	GameObject* game;
 	GameObject* scene;
+	GameObject* bakerHouse;
 	Camera* camScene;
 	Camera* camGame;
 	Skybox* skybox;

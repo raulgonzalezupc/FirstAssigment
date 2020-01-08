@@ -116,10 +116,14 @@ bool ModuleRender::Init()
 
 	game = new GameObject("Game");
 	scene = new GameObject("Scene");
+	bakerHouse = new GameObject("BakerHouse");
+
 	camGame = new Camera(game,1);
 	camScene = new Camera(scene,2);
 	game->components.push_back(camGame);
 	scene->components.push_back(camScene);
+
+	
 
 
 	skybox = new Skybox();

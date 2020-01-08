@@ -16,6 +16,7 @@ public :
 	std::vector<Component*> components;
 	GameObject* parent;
 	std::vector<GameObject*> children;
+	bool staticGO = false;
 
 public:
 	//constructors + destructors

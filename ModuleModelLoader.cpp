@@ -77,7 +77,7 @@ void ModuleModelLoader::LoadModel(const char* path)
 	else {
 		App->imgui->AddLog("Path of the geometry correct.\n");
 	}
-	processNode(scene->mRootNode, scene, App->renderer->scene);
+	processNode(scene->mRootNode, scene, App->renderer->bakerHouse);
 }
 
 
@@ -87,7 +87,7 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene, GameObje
 	GameObject* model = new GameObject(node->mName.C_Str());
 	model->parent = parent;
 	((Transform*)model->FindComponent(ComponentType::Transform))->SetTransform(node->mTransformation);
-	for (unsigned int i = 0; i < node->mNumMeshes; i++) 
+	for (unsigned int i = 0; i < node->mNumMeshes; ++i) 
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		meshes.push_back(processMesh(mesh, scene));
@@ -95,7 +95,7 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene, GameObje
 		
 	}
 
-	for (unsigned int i = 0; i < node->mNumChildren; i++) 
+	for (unsigned int i = 0; i < node->mNumChildren; ++i) 
 	{
 		processNode(node->mChildren[i], scene,model);
 		
@@ -107,9 +107,6 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene, GameObje
 Mesh* ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene) 
 {
 	Mesh* res = new Mesh;
-	//std::vector<Vertex> vertices;
-	//std::vector<unsigned int> indices;
-	//std::vector<Texture> textures;
 	numVertices += mesh->mNumVertices;
 	for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
 	{
@@ -319,21 +316,20 @@ void ModuleModelLoader::ChangeModel(const char* path)
 
 void ModuleModelLoader::ShowModelUI()
 {
-
 	float positionObject[3] = { 
-		((Transform*)App->renderer->scene->FindComponent(ComponentType::Transform))->position.x, 
-		((Transform*)App->renderer->scene->FindComponent(ComponentType::Transform))->position.y,
-		((Transform*)App->renderer->scene->FindComponent(ComponentType::Transform))->position.z
+		((Transform*)App->renderer->bakerHouse->FindComponent(ComponentType::Transform))->position.x, 
+		((Transform*)App->renderer->bakerHouse->FindComponent(ComponentType::Transform))->position.y,
+		((Transform*)App->renderer->bakerHouse->FindComponent(ComponentType::Transform))->position.z
 	};
 	float rotationObject[3] = {
-		((Transform*)App->renderer->scene->FindComponent(ComponentType::Transform))->rotation.x,
-		((Transform*)App->renderer->scene->FindComponent(ComponentType::Transform))->rotation.y,
-		((Transform*)App->renderer->scene->FindComponent(ComponentType::Transform))->rotation.z
+		((Transform*)App->renderer->bakerHouse->FindComponent(ComponentType::Transform))->rotation.x,
+		((Transform*)App->renderer->bakerHouse->FindComponent(ComponentType::Transform))->rotation.y,
+		((Transform*)App->renderer->bakerHouse->FindComponent(ComponentType::Transform))->rotation.z
 	};
 	float scaleObject[3] = {
-		((Transform*)App->renderer->scene->FindComponent(ComponentType::Transform))->scaling.x,
-		((Transform*)App->renderer->scene->FindComponent(ComponentType::Transform))->scaling.y,
-		((Transform*)App->renderer->scene->FindComponent(ComponentType::Transform))->scaling.z
+		((Transform*)App->renderer->bakerHouse->FindComponent(ComponentType::Transform))->scaling.x,
+		((Transform*)App->renderer->bakerHouse->FindComponent(ComponentType::Transform))->scaling.y,
+		((Transform*)App->renderer->bakerHouse->FindComponent(ComponentType::Transform))->scaling.z
 	};
 	
 	ImGui::Begin("Properties");

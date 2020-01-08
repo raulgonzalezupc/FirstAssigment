@@ -5,6 +5,7 @@
 #include "Component.h"
 #include "../Skybox.h"
 #include "GL/glew.h"
+
 const int IS_IN = 0;
 const int IS_OUT = 1;
 const int INTERSECT = 2;
