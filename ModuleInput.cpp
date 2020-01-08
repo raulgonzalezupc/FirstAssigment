@@ -42,7 +42,7 @@ update_status ModuleInput::Update()
 	keyboard = SDL_GetKeyboardState(NULL);
 
 	SDL_Event event;
-	if (App->renderer->cam->hovered) {
+	if (App->renderer->cam->isHovered) {
 
 	
 		while (SDL_PollEvent(&event)) {

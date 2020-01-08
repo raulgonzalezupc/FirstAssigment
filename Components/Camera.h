@@ -18,12 +18,10 @@ public:
 
 	void SetFrustum();
 	
-	void Draw(const char*,int);
+	void Draw(const char*);
 	void GenerateFBOTexture(unsigned w, unsigned h);
-	
-	void GenerateBuffers(int width, int height, int);
-	void DrawScene(int width, int height, int);
 	int isCollidingFrustum(const AABB& aabb) const;
+	void BindBuffers(unsigned, unsigned);
 
 	unsigned int fbo;
 	unsigned int msfb_depth;
@@ -78,9 +76,8 @@ public:
 	bool orbit = false;
 	float yaw = 0.0f;
 	float pitch = -90.0f;
-	bool hovered = false;
-	Frustum* frustum;
-	Frustum frustum2;
+	bool isHovered = false;
+	Frustum frustum;
 	float aspect = 1.f;
 
 	unsigned fb_depth = 0;
