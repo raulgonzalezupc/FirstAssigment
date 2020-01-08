@@ -22,7 +22,7 @@ public:
 	int textureWidth =	NULL;
 	int textureHeight = NULL;
 	int textureId = NULL;
-
+	GameObject* model;
 public:
 
 	ModuleModelLoader();

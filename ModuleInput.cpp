@@ -40,7 +40,10 @@ update_status ModuleInput::Update()
 	SDL_PumpEvents();
 
 	keyboard = SDL_GetKeyboardState(NULL);
-	
+	if (keyboard[SDL_SCANCODE_ESCAPE])
+	{
+		return UPDATE_STOP;
+	}
 	if (App->renderer->camGame->isHovered) {
 		update_status resCam = SetInputsWithCam(App->renderer->camGame);
 		if (resCam == UPDATE_STOP) 

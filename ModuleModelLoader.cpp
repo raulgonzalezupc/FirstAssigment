@@ -84,7 +84,7 @@ void ModuleModelLoader::LoadModel(const char* path)
 
 void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene, GameObject* parent)
 {
-	GameObject* model = new GameObject(node->mName.C_Str());
+	model = new GameObject(node->mName.C_Str());
 	model->parent = parent;
 	((Transform*)model->FindComponent(ComponentType::Transform))->SetTransform(node->mTransformation);
 	for (unsigned int i = 0; i < node->mNumMeshes; ++i) 
@@ -100,6 +100,7 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene, GameObje
 		processNode(node->mChildren[i], scene,model);
 		
 	}
+	int i;
 }
 
 
@@ -317,29 +318,28 @@ void ModuleModelLoader::ChangeModel(const char* path)
 void ModuleModelLoader::ShowModelUI()
 {
 	float positionObject[3] = { 
-		((Transform*)App->renderer->bakerHouse->FindComponent(ComponentType::Transform))->position.x, 
-		((Transform*)App->renderer->bakerHouse->FindComponent(ComponentType::Transform))->position.y,
-		((Transform*)App->renderer->bakerHouse->FindComponent(ComponentType::Transform))->position.z
+		((Transform*)model->FindComponent(ComponentType::Transform))->position.x, 
+		((Transform*)model->FindComponent(ComponentType::Transform))->position.y,
+		((Transform*)model->FindComponent(ComponentType::Transform))->position.z
 	};
 	float rotationObject[3] = {
-		((Transform*)App->renderer->bakerHouse->FindComponent(ComponentType::Transform))->rotation.x,
-		((Transform*)App->renderer->bakerHouse->FindComponent(ComponentType::Transform))->rotation.y,
-		((Transform*)App->renderer->bakerHouse->FindComponent(ComponentType::Transform))->rotation.z
+		((Transform*)model->FindComponent(ComponentType::Transform))->rotation.x,
+		((Transform*)model->FindComponent(ComponentType::Transform))->rotation.y,
+		((Transform*)model->FindComponent(ComponentType::Transform))->rotation.z
 	};
 	float scaleObject[3] = {
-		((Transform*)App->renderer->bakerHouse->FindComponent(ComponentType::Transform))->scaling.x,
-		((Transform*)App->renderer->bakerHouse->FindComponent(ComponentType::Transform))->scaling.y,
-		((Transform*)App->renderer->bakerHouse->FindComponent(ComponentType::Transform))->scaling.z
+		((Transform*)model->FindComponent(ComponentType::Transform))->scaling.x,
+		((Transform*)model->FindComponent(ComponentType::Transform))->scaling.y,
+		((Transform*)model->FindComponent(ComponentType::Transform))->scaling.z
 	};
 	
 	ImGui::Begin("Properties");
 	if (ImGui::CollapsingHeader("Transformation"))
 	{
-		static float rotation[3] = { 0.0F, 0.0F, 0.0F };
-		static float scale[3] = { 1.0F, 1.0F, 1.0F };
+		
 		ImGui::DragFloat3("Position", positionObject);
-		ImGui::DragFloat3("Rotation", rotation);
-		ImGui::DragFloat3("Scale", scale);
+		ImGui::DragFloat3("Rotation", rotationObject);
+		ImGui::DragFloat3("Scale", scaleObject);
 	}
 	if (ImGui::CollapsingHeader("Geometry"))
 	{
