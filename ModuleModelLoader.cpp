@@ -87,7 +87,8 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene, GameObje
 {
 	model = new GameObject(node->mName.C_Str());
 	model->parent = parent;
-	((Transform*)model->FindComponent(ComponentType::Transform))->SetTransform(node->mTransformation);
+	//parent->children.push_back(model);
+	((Transform*)parent->FindComponent(ComponentType::Transform))->SetTransform(node->mTransformation);
 	for (unsigned int i = 0; i < node->mNumMeshes; ++i) 
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
@@ -318,7 +319,7 @@ void ModuleModelLoader::ChangeModel(const char* path)
 
 void ModuleModelLoader::ShowModelUI()
 {
-	float positionObject[3] = { 
+	/*float positionObject[3] = { 
 		((Transform*)model->FindComponent(ComponentType::Transform))->position.x, 
 		((Transform*)model->FindComponent(ComponentType::Transform))->position.y,
 		((Transform*)model->FindComponent(ComponentType::Transform))->position.z
@@ -332,15 +333,15 @@ void ModuleModelLoader::ShowModelUI()
 		((Transform*)model->FindComponent(ComponentType::Transform))->scaling.x,
 		((Transform*)model->FindComponent(ComponentType::Transform))->scaling.y,
 		((Transform*)model->FindComponent(ComponentType::Transform))->scaling.z
-	};
+	};*/
 	
 	ImGui::Begin("Properties");
 	if (ImGui::CollapsingHeader("Transformation"))
 	{
 		
-		ImGui::DragFloat3("Position", positionObject);
+		/*ImGui::DragFloat3("Position", positionObject);
 		ImGui::DragFloat3("Rotation", rotationObject);
-		ImGui::DragFloat3("Scale", scaleObject);
+		ImGui::DragFloat3("Scale", scaleObject);*/
 	}
 	if (ImGui::CollapsingHeader("Geometry"))
 	{

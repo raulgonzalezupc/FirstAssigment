@@ -27,5 +27,5 @@ void Transform::SetTransform(const aiMatrix4x4& trans) {
 		worldTransform = ((Transform*)owner->parent->FindComponent(ComponentType::Transform))->localTransform * localTransform;
 	}
 	//localTransform.Decompose(position, rotation, scale);
-	worldTransform.Decompose(position, rotation, scaling);
+	localTransform.Decompose(position, rotation, scaling);
 }
