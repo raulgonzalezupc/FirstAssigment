@@ -39,7 +39,7 @@ public:
 	bool aboutButton = false;
 	bool configButton = false;
 	bool windowButton = false;
-	bool propertiesButton = false;
+	bool propertiesButton = true;
 	bool google = false;
 	GameObject* sourceGO = nullptr;
 	bool quit = false;

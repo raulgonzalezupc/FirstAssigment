@@ -52,8 +52,10 @@ Component* GameObject::FindComponent(ComponentType type) {
 
 GameObject* GameObject::FindChild(const char* childName) 
 {
+	
 	for (unsigned int i = 0; i < children.size(); i++) {
-		if (children[i]->name == childName) {
+		
+		if (strcmp(children[i]->name, childName)) {
 			GameObject* res = children[i];
 			return res;
 		}

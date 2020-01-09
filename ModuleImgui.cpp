@@ -63,13 +63,19 @@ update_status ModuleImgui::Update()
 	
 	GameObject* game = App->scene->root->FindChild("Game");
 	GameObject* scene = App->scene->root->FindChild("Scene");
-	/*App->scene->camGame->Draw(game->name);
-	App->scene->camScene->Draw(scene->name);*/
+
+	App->scene->camGame->Draw(game->name);
+	App->scene->camScene->Draw(scene->name);
 
 	if (showHierarchy) {
 		ImGui::Begin("GameObjects Hierarchy", &showHierarchy);
 		if (ImGui::TreeNode(App->scene->root->name)) {
 			int root = 0;
+			if (ImGui::Button("Create Empty Game Object")) {
+				GameObject* newGO = new GameObject("New game object");
+				App->scene->root->children.push_back(newGO);
+				newGO->parent = App->scene->root;
+			}
 			DrawHierarchy(App->scene->root->children, root);
 			ImGui::TreePop();
 		}
@@ -136,33 +142,20 @@ const void ModuleImgui::DrawHierarchy(const std::vector<GameObject*>& objects, i
 			}
 			if (ImGui::IsItemClicked()) {
 				selected = index;
-			}
-			if (ImGui::BeginDragDropTarget()) {
-				if (ImGui::AcceptDragDropPayload("ITEM")) {
-					// TODO check for firts item error
-					LOG("New: %d", sourceGO);
-					sourceGO->parent->DeleteChild(sourceGO);
-					sourceGO->parent = objects[i];
-					objects[i]->children.push_back(sourceGO);
-					sourceGO = nullptr;
-				}
-				ImGui::EndDragDropTarget();
-			}
-			if (ImGui::Button("Create Empty Game Object")) {
-				GameObject* newGO = new GameObject("new game object");
-				objects[i]->children.push_back(newGO);
-				newGO->parent = objects[i];
-			}
-			if (ImGui::BeginDragDropSource()) {
-				LOG("Source: %d", objects[i]);
-				sourceGO = objects[i];
-				ImGui::SetDragDropPayload("ITEM", nullptr, 0);
-				ImGui::EndDragDropSource();
-			}
-			
+			}						
 			DrawHierarchy(objects[i]->children, index);
+			if (ImGui::Button("Create Empty Game Object")) {
+			GameObject* newGO = new GameObject("New game object");
+			objects[i]->children.push_back(newGO);
+			newGO->parent = objects[i];
+		}
+		if (ImGui::Button("Delete this game object")) {
+			GameObject* parent = objects[i]->parent;
+			parent->DeleteChild(objects[i]);
+		}
 			ImGui::TreePop();
 		}
+		
 	}
 }
 update_status ModuleImgui::PostUpdate()
