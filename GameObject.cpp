@@ -50,6 +50,16 @@ Component* GameObject::FindComponent(ComponentType type) {
 	return nullptr;
 }
 
+GameObject* GameObject::FindChild(const char* childName) 
+{
+	for (unsigned int i = 0; i < children.size(); i++) {
+		if (children[i]->name == childName) {
+			GameObject* res = children[i];
+			return res;
+		}
+	}
+	return nullptr;
+}
 
 void GameObject::ShowProperties() {
 	ImGui::Begin("Properties Test");

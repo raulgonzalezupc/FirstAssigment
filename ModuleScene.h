@@ -15,9 +15,7 @@ public:
 	virtual ~ModuleScene();
 	bool Init();
 public :
-	GameObject* game;
-	GameObject* scene;
-	GameObject* bakerHouse;
+	GameObject* root;
 	Camera* camScene;
 	Camera* camGame;
 

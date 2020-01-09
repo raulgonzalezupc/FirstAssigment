@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Globals.h"
+#include "GameObject.h"
 #include "Application.h"
 #include "SDL.h"
 
@@ -22,6 +23,7 @@ public:
 	bool Init();
 	update_status PreUpdate();
 	update_status Update();
+	const void DrawHierarchy(const std::vector<GameObject*>& objects, int & index);
 	update_status PostUpdate();
 	bool CleanUp();
 
@@ -39,9 +41,10 @@ public:
 	bool windowButton = false;
 	bool propertiesButton = false;
 	bool google = false;
+	GameObject* sourceGO = nullptr;
 	bool quit = false;
-
-
+	unsigned selected = 0;
+	bool showHierarchy = true;
 	int vram_budget, vram_available;
 
 
