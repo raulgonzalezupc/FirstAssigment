@@ -5,6 +5,7 @@
 #include "ModuleImgui.h"
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
+#include "ModuleScene.h"
 #include "ModuleModelLoader.h"
 #include "MathGeoLib.h"
 #include "SDL/include/SDL.h"
@@ -44,15 +45,15 @@ update_status ModuleInput::Update()
 	{
 		return UPDATE_STOP;
 	}
-	if (App->renderer->camGame->isHovered) {
-		update_status resCam = SetInputsWithCam(App->renderer->camGame);
+	if (App->scene->camGame->isHovered) {
+		update_status resCam = SetInputsWithCam(App->scene->camGame);
 		if (resCam == UPDATE_STOP) 
 		{
 			return UPDATE_STOP;
 		}
 	}
-	if (App->renderer->camScene->isHovered) {
-		update_status resScene = SetInputsWithCam(App->renderer->camScene);
+	if (App->scene->camScene->isHovered) {
+		update_status resScene = SetInputsWithCam(App->scene->camScene);
 		if (resScene == UPDATE_STOP)
 		{
 			return UPDATE_STOP;

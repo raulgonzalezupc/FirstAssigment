@@ -24,7 +24,8 @@ public:
 	int isCollidingFrustum(const AABB& aabb) const;
 	void BindBuffers(unsigned, unsigned);
 
-	unsigned int fbo;
+	unsigned int fbo ;
+
 	unsigned int msfb_depth;
 	unsigned int msfb_color;
 	unsigned int texture;

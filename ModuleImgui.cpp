@@ -5,6 +5,7 @@
 #include "ModuleCamera.h"
 #include "ModuleTexture.h"
 #include "ModuleModelLoader.h"
+#include "ModuleScene.h"
 #include "ModuleRender.h"
 #include "ModuleTimer.h"
 #include "glew/include/GL/glew.h"
@@ -76,8 +77,8 @@ update_status ModuleImgui::Update()
 	//ImGui::End();
 	
 	
-	App->renderer->camGame->Draw(App->renderer->game->name);
-	App->renderer->camScene->Draw(App->renderer->scene->name);
+	App->scene->camGame->Draw(App->scene->game->name);
+	App->scene->camScene->Draw(App->scene->scene->name);
 	
 	//Menu
 	if (ImGui::BeginMainMenuBar())

@@ -86,7 +86,7 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene, GameObje
 {
 	model = new GameObject(node->mName.C_Str());
 	model->parent = parent;
-	((Transform*)model->FindComponent(ComponentType::Transform))->SetTransform(node->mTransformation);
+	//((Transform*)model->FindComponent(ComponentType::Transform))->SetTransform(node->mTransformation);
 	for (unsigned int i = 0; i < node->mNumMeshes; ++i) 
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];

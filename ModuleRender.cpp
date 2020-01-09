@@ -3,6 +3,7 @@
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
 #include "ModuleProgram.h"
+#include "ModuleScene.h"
 #include "ModuleImgui.h"
 #include "ModuleModelLoader.h"
 #include "ModuleCamera.h"
@@ -114,7 +115,7 @@ bool ModuleRender::Init()
 	glEnable(GL_TEXTURE_2D);
 	//glEnable(GL_BLEND);
 
-	game = new GameObject("Game");
+	/*game = new GameObject("Game");
 	scene = new GameObject("Scene");
 	bakerHouse = new GameObject("BakerHouse");
 
@@ -122,11 +123,11 @@ bool ModuleRender::Init()
 	camScene = new Camera(scene,2);
 	game->components.push_back(camGame);
 	scene->components.push_back(camScene);
-
+*/
 	
 
 
-	skybox = new Skybox();
+	//skybox = new Skybox();
 
 	
 	CatchFrameBufferErrors();
@@ -135,7 +136,7 @@ bool ModuleRender::Init()
 
 	App->imgui->AddLog("Using Glew %s\n", glewGetString(GLEW_VERSION));
 
-	App->modelLoader->LoadModel("BakerHouse.fbx");
+	//App->modelLoader->LoadModel("BakerHouse.fbx");
 	
 	
 
@@ -154,10 +155,10 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
-	Camera* cam2 = (Camera*)App->renderer->scene->FindComponent(ComponentType::Camera);
+	Camera* cam2 = (Camera*)App->scene->game->FindComponent(ComponentType::Camera);
 	cam2->GenerateFBOTexture(cam2->width, cam2->height);
 	
-	Camera* cam3 = (Camera*)App->renderer->game->FindComponent(ComponentType::Camera);
+	Camera* cam3 = (Camera*)App->scene->scene->FindComponent(ComponentType::Camera);
 	cam3->GenerateFBOTexture(cam3->width, cam3->height);
 
 
