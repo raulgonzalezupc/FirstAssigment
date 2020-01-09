@@ -47,6 +47,10 @@ public:
 	void LookAt(const float x, const float y, const float z, Camera* cam);
 	void SetOrientation(const float3 orientation, Camera* cam);
 	void focusCameraToNewPoint(const float3 &newPos, Camera* cam);
+	void OrbitX(float angle, Camera * cam);
+	void OrbitY(float angle, Camera * cam);
+	float4x4 LookAt(float3 eye, float3 target, float3 up);
+	void FocusAt(float3 target, Camera * cam);
 	void Orbit(char axis, float movement, Camera* cam);
 
 public:

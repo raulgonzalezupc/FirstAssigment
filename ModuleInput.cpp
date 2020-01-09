@@ -101,11 +101,11 @@ update_status ModuleInput::SetInputsWithCam(Camera* cam)
 				}
 				if ((event.motion.state & SDL_BUTTON_LMASK) && keyboard[SDL_SCANCODE_LALT]) {
 					if (math::Abs(event.motion.xrel) > 1.5) {
-						App->camera->Orbit('X', event.motion.xrel * 0.03, cam);
+						App->camera->OrbitX(event.motion.xrel * 0.03, cam);
 					}
 
 					if (math::Abs(event.motion.yrel) > 1.5) {
-						App->camera->Orbit('Y', event.motion.yrel * 0.03, cam);
+						App->camera->OrbitY(event.motion.yrel * 0.03, cam);
 					}
 				}
 				break;

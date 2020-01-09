@@ -198,6 +198,69 @@ void ModuleCamera::focusCameraToNewPoint(const float3 & newPos, Camera* cam)
 }
 
 
+void ModuleCamera::OrbitX(float angle, Camera* cam)
+{
+	float3x3 rotation_matrix;
+
+	rotation_matrix = float3x3::RotateY(-angle * rot_speed);
+	cam->frustum.pos = rotation_matrix * cam->frustum.pos;
+	//TODO: FocusAT should focus at the transform of the active GameObject
+	FocusAt((float3::zero - cam->frustum.pos).Normalized(), cam);
+	cam->view = LookAt(cam->frustum.pos, cam->frustum.pos + cam->frustum.front, cam->frustum.up);
+
+}
+void ModuleCamera::OrbitY(float angle, Camera* cam){
+	float3x3 rotation_matrix;
+		const float current_angle = asinf(cam->frustum.front.y / cam->frustum.front.Length());
+		if (abs(current_angle + angle * rot_speed) >= math::pi / 2) {
+			return;
+		}
+		rotation_matrix = float3x3::identity;
+		rotation_matrix.SetRotatePart(cam->frustum.WorldRight(), -angle * rot_speed);
+
+		cam->frustum.pos = rotation_matrix * cam->frustum.pos;
+		FocusAt((float3::zero - cam->frustum.pos).Normalized(), cam);
+		//TODO: FocusAT should focus at the transform of the active GameObject
+		view = LookAt(cam->frustum.pos, cam->frustum.pos + cam->frustum.front, cam->frustum.up);
+
+
+
+}
+
+float4x4 ModuleCamera::LookAt(float3 eye, float3 target, float3 up) {
+	float4x4 matrix;
+	math::float3 f(target - eye);
+	f.Normalize();
+	math::float3 s(f.Cross(up));
+	s.Normalize();
+	math::float3 u(s.Cross(f));
+	matrix[0][0] = s.x;
+	matrix[0][1] = s.y;
+	matrix[0][2] = s.z;
+	matrix[1][0] = u.x;
+	matrix[1][1] = u.y;
+	matrix[1][2] = u.z;
+	matrix[2][0] = -f.x;
+	matrix[2][1] = -f.y;
+	matrix[2][2] = -f.z;
+	matrix[0][3] = -s.Dot(eye);
+	matrix[1][3] = -u.Dot(eye);
+	matrix[2][3] = f.Dot(eye);
+	matrix[3][0] = 0.0f;
+	matrix[3][1] = 0.0f;
+	matrix[3][2] = 0.0f;
+	matrix[3][3] = 1.0f;
+	return matrix;
+}
+
+
+void ModuleCamera::FocusAt(float3 target, Camera* cam)
+{
+	float3x3 rotation_matrix = float3x3::LookAt(cam->frustum.front, target, cam->frustum.up, float3::unitY);
+	cam->frustum.front = rotation_matrix * cam->frustum.front;
+	cam->frustum.up = rotation_matrix * cam->frustum.up;
+}
+
 void ModuleCamera::Orbit(char axis, float movement, Camera* cam) {
 	
 
