@@ -5,6 +5,7 @@
 #include "../ModuleRender.h"
 #include "../ModuleWindow.h"
 #include "../ModuleCamera.h"
+#include "../ModuleScene.h"
 #include "../ModuleProgram.h"
 #include "../ModuleModelLoader.h"
 #include <math.h>
@@ -23,7 +24,7 @@ Camera::Camera(GameObject* owner, int number) : Component(owner, ComponentType::
 	else {
 		frustum.pos = float3{ 6.0F, 0.0F, -10.0F };
 	}
-	skybox = new Skybox();
+	//skybox = new Skybox();
 
 	frustum.front = float3::unitZ;
 	frustum.up = float3::unitY;

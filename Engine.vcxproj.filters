@@ -57,6 +57,7 @@
     <ClCompile Include="Components\Camera.cpp" />
     <ClCompile Include="Components\Transform.cpp" />
     <ClCompile Include="Skybox.cpp" />
+    <ClCompile Include="ModuleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -187,6 +188,7 @@
     <ClInclude Include="Components\Camera.h" />
     <ClInclude Include="Components\Transform.h" />
     <ClInclude Include="Skybox.h" />
+    <ClInclude Include="ModuleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assimp\include\assimp\color4.inl" />
