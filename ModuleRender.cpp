@@ -155,10 +155,12 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
-	Camera* cam2 = (Camera*)App->scene->game->FindComponent(ComponentType::Camera);
+	GameObject* game = App->scene->root->FindChild("Game");
+	GameObject* scene = App->scene->root->FindChild("Scene");
+	Camera* cam2 = (Camera*)game->FindComponent(ComponentType::Camera);
 	cam2->GenerateFBOTexture(cam2->width, cam2->height);
 	
-	Camera* cam3 = (Camera*)App->scene->scene->FindComponent(ComponentType::Camera);
+	Camera* cam3 = (Camera*)scene->FindComponent(ComponentType::Camera);
 	cam3->GenerateFBOTexture(cam3->width, cam3->height);
 
 

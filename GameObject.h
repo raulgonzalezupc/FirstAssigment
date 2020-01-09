@@ -36,6 +36,8 @@ public:
 	Component* CreateComponent(const ComponentType);
 	Component* FindComponent(const ComponentType);
 
+	GameObject* FindChild(const char * name);
+
 	void DeleteChild(const GameObject*);
 	void ShowProperties();
 

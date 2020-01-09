@@ -4,6 +4,7 @@
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
 #include "ModuleTexture.h"
+#include "GameObject.h"
 #include "ModuleModelLoader.h"
 #include "ModuleScene.h"
 #include "ModuleRender.h"
@@ -59,27 +60,28 @@ update_status ModuleImgui::Update()
 	
 	App->timer->ShowTimerUI();
 
-	//TODO->Put scene window in function
-	//ImGui::Begin("Scene");
-	//ImGui::SetNextWindowPos(ImVec2(256.0f, 0.0f), ImGuiCond_FirstUseEver);
-	//ImGui::SetNextWindowSize(ImVec2(800.0f, 600.0f), ImGuiCond_FirstUseEver);
-	//float sceneWidth = ImGui::GetWindowContentRegionWidth();
-	//float sceneHeight = ImGui::GetContentRegionAvail().y;
-	//App->camera->SetAspectRatio(sceneWidth / sceneHeight);
-	//App->renderer->DrawScene(sceneWidth, sceneHeight);
-	//ImGui::GetWindowDrawList()->AddImage((void *)App->renderer->texture,
-	//	ImVec2(ImGui::GetCursorScreenPos()),
-	//	ImVec2(ImGui::GetCursorScreenPos().x + sceneWidth,
-	//		ImGui::GetCursorScreenPos().y + sceneHeight),
-	//	ImVec2(0, 1),
-	//	ImVec2(1, 0)
-	//);
-	//ImGui::End();
 	
-	
-	App->scene->camGame->Draw(App->scene->game->name);
-	App->scene->camScene->Draw(App->scene->scene->name);
-	
+	GameObject* game = App->scene->root->FindChild("Game");
+	GameObject* scene = App->scene->root->FindChild("Scene");
+
+	App->scene->camGame->Draw(game->name);
+	App->scene->camScene->Draw(scene->name);
+
+	if (showHierarchy) {
+		ImGui::Begin("GameObjects Hierarchy", &showHierarchy);
+		if (ImGui::TreeNode(App->scene->root->name)) {
+			int root = 0;
+			if (ImGui::Button("Create Empty Game Object")) {
+				GameObject* newGO = new GameObject("New game object");
+				App->scene->root->children.push_back(newGO);
+				newGO->parent = App->scene->root;
+			}
+			DrawHierarchy(App->scene->root->children, root);
+			ImGui::TreePop();
+		}
+		ImGui::End();
+	}
+
 	//Menu
 	if (ImGui::BeginMainMenuBar())
 	{
@@ -125,6 +127,37 @@ update_status ModuleImgui::Update()
 	return UPDATE_CONTINUE;
 }
 
+const void ModuleImgui::DrawHierarchy(const std::vector<GameObject*>& objects, int& index) {
+	for (unsigned i = 0; i < objects.size(); ++i)
+	{
+		++index;
+		unsigned flags = ImGuiTreeNodeFlags_None;
+		if (objects[i]->children.size() == 0) {
+			flags = ImGuiTreeNodeFlags_Leaf;
+		}
+		flags |= index == selected ? ImGuiTreeNodeFlags_Selected : 0;
+		if (ImGui::TreeNodeEx(objects[i]->name, flags)) {
+			if (selected == index) {
+				objects[i]->ShowProperties();
+			}
+			if (ImGui::IsItemClicked()) {
+				selected = index;
+			}						
+			DrawHierarchy(objects[i]->children, index);
+			if (ImGui::Button("Create Empty Game Object")) {
+			GameObject* newGO = new GameObject("New game object");
+			objects[i]->children.push_back(newGO);
+			newGO->parent = objects[i];
+		}
+		if (ImGui::Button("Delete this game object")) {
+			GameObject* parent = objects[i]->parent;
+			parent->DeleteChild(objects[i]);
+		}
+			ImGui::TreePop();
+		}
+		
+	}
+}
 update_status ModuleImgui::PostUpdate()
 {
 	//update a window with OpenGL rendering

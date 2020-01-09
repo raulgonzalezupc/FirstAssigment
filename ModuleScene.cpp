@@ -14,9 +14,18 @@ ModuleScene::~ModuleScene()
 
 bool ModuleScene::Init()
 {
-	game = new GameObject("game");
-	scene = new GameObject("Scene");
-	bakerHouse = new GameObject("BakerHouse");
+	root = new GameObject("root");
+	GameObject* game = new GameObject("Game");
+	root->children.push_back(game);
+	game->parent = root;
+
+	GameObject* scene = new GameObject("Scene");
+	root->children.push_back(scene);
+	scene->parent = root;
+
+	GameObject* bakerHouse = new GameObject("BakerHouse");
+	root->children.push_back(bakerHouse);
+	bakerHouse->parent = root;
 
 	camGame = new Camera(game, 1);
 	game->components.push_back(camGame);
@@ -25,6 +34,7 @@ bool ModuleScene::Init()
 	scene->components.push_back(camScene);
 
 	App->modelLoader->LoadModel("BakerHouse.fbx");
+
 	return true;
 }
 

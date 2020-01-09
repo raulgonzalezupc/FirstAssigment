@@ -191,13 +191,12 @@ void Camera::GenerateFBOTexture(unsigned w, unsigned h)
 	BindBuffers(w, h);
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 
-	//unsigned program = App->program->programs[int(ProgramType::Default)];
+	
 	unsigned int program = App->program->defaultProgram;
 	glUseProgram(program);
 	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &(model[0][0]));
 	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &(view[0][0]));
 	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &(proj[0][0]));
-	//DrawGameObject(App->scene->mainCamera, cam2);
 	glViewport(0, 0, width, height);
 	glClearColor(0.2f, 0.2f, 0.2f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
