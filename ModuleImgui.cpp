@@ -92,10 +92,9 @@ update_status ModuleImgui::Update()
 			{
 				//TODO: Rename gameobjects
 			}
-			if (ImGui::IsWindowHovered() && GetMouseButtonDown(SDL_BUTTON_RIGHT) != KEY_DOWN) 
-			{
-				ImGui::EndPopup();
-			}
+			
+			ImGui::EndPopup();
+			
 			
 		}
 		if (ImGui::TreeNode(App->scene->root->name)) {

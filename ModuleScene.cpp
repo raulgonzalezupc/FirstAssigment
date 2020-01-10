@@ -57,3 +57,11 @@ void ModuleScene::LoadDefaultScene(const char* path)
 		//TODO: Read a json file and load the scene
 	}
 }
+
+void ModuleScene::DrawAllBoundingBoxes()
+{
+	for (unsigned int i = 0; i < root->children.size(); i++)
+	{
+		root->children[i]->DrawAABB();
+	}
+}

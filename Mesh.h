@@ -22,7 +22,7 @@ public:
 	Mesh();
 	/*  Functions  */
 	void Init();
-	
+	Mesh* myMesh = nullptr;
 	void Draw(unsigned int program) const;
 	void setupMesh();
 private:
