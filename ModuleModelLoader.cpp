@@ -77,20 +77,25 @@ void ModuleModelLoader::LoadModel(const char* path)
 	}
 	else {
 		App->imgui->AddLog("Path of the geometry correct.\n");
-	}
-	processNode(scene->mRootNode, scene, App->scene->root->children[2]);
+	}	
+
+	GameObject* modelLoaded = App->scene->CreateGameObjectByName(path);
+	modelLoaded->parent = App->scene->root;
+	App->scene->root->children.push_back(modelLoaded);
+	processNode(scene->mRootNode, scene, modelLoaded);
 }
 
 
 
 void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene, GameObject* parent)
 {
-	model = new GameObject(node->mName.C_Str());
-	model->parent = parent;
-	//parent->children.push_back(model);
-	((Transform*)parent->FindComponent(ComponentType::Transform))->SetTransform(node->mTransformation);
+	
 	for (unsigned int i = 0; i < node->mNumMeshes; ++i) 
 	{
+		model = new GameObject(node->mName.C_Str());
+		model->parent = parent;
+		
+		((Transform*)parent->FindComponent(ComponentType::Transform))->SetTransform(node->mTransformation);
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		meshes.push_back(processMesh(mesh, scene));
 		++numMeshes;
@@ -99,7 +104,7 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene, GameObje
 
 	for (unsigned int i = 0; i < node->mNumChildren; ++i) 
 	{
-		processNode(node->mChildren[i], scene,model);
+		processNode(node->mChildren[i], scene,parent);
 		
 	}
 	int i;

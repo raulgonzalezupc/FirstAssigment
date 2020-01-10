@@ -32,7 +32,9 @@ public:
 	GameObject(const char* name) : name(name) {
 		CreateComponent(ComponentType::Transform);
 	}
-
+	GameObject(const char* name, const float3& pos, const Quat& rot) : name(name) {
+		CreateTransform(pos, rot);
+	}
 	~GameObject() {}
 
 public: 

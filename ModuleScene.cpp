@@ -65,3 +65,11 @@ void ModuleScene::DrawAllBoundingBoxes()
 		root->children[i]->DrawAABB();
 	}
 }
+
+GameObject* ModuleScene::CreateGameObject(const char* name, const float3& pos, const Quat& rot) const {
+	return new GameObject(name, pos, rot);
+}
+
+GameObject* ModuleScene::CreateGameObjectByName(const char* name) const {
+	return new GameObject(name);
+}
