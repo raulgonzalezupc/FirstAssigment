@@ -21,6 +21,8 @@ public :
 
 	void LoadDefaultScene(const char * path);
 
+	void DrawAllBoundingBoxes();
+
 private:
 	GameObject* CreateGameObject(const char * name);
 	std::vector<GameObject*> game_objects;

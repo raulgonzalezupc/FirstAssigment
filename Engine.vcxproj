@@ -127,6 +127,7 @@
     <ClInclude Include="Components\Camera.h" />
     <ClInclude Include="Components\Component.h" />
     <ClInclude Include="Components\Transform.h" />
+    <ClInclude Include="DebugDraw.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Components\Material.h" />
     <ClInclude Include="imgui\imconfig.h" />
@@ -215,6 +216,8 @@
     <ClInclude Include="ModuleTimer.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="Skybox.h" />
+    <ClInclude Include="Utils\debug_draw.hpp" />
+    <ClInclude Include="Utils\par_shapes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />

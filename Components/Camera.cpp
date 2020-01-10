@@ -207,7 +207,7 @@ void Camera::GenerateFBOTexture(unsigned w, unsigned h)
 
 	
 		App->renderer->ShowGrid();
-	
+	App->scene->DrawAllBoundingBoxes();
 	App->modelLoader->Draw(program);
 
 

@@ -3,8 +3,12 @@
 
 #include "Globals.h"
 #include <string>
+#include "MathGeoLib/include/Geometry/AABB.h"
 #include <vector>
 #include "Components/Component.h"
+#include "Components/Transform.h"
+#include "Components/Camera.h"
+#include "Mesh.h"
 
 class Component;
 class GameObject {
@@ -13,11 +17,14 @@ public :
 
 	int uuid;
 	const char* name;
+	Mesh* myMesh = nullptr;
 	std::vector<Component*> components;
 	GameObject* parent;
 	std::vector<GameObject*> children;
 	bool staticGO = false;
-
+	Transform* myTransform = nullptr;
+	AABB* boundingBox = nullptr;
+	AABB* globalBoundingBox = nullptr;
 public:
 	//constructors + destructors
 	GameObject() {}
@@ -39,6 +46,8 @@ public:
 	GameObject* FindChild(const char * name);
 
 	void DeleteChild(const GameObject*);
+	void ComputeAABB();
+	void DrawAABB();
 	void ShowProperties();
 
 private:

@@ -189,6 +189,9 @@
     <ClInclude Include="Components\Transform.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="ModuleScene.h" />
+    <ClInclude Include="DebugDraw.h" />
+    <ClInclude Include="Utils\debug_draw.hpp" />
+    <ClInclude Include="Utils\par_shapes.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assimp\include\assimp\color4.inl" />
