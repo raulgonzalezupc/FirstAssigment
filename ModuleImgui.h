@@ -12,8 +12,13 @@
 #include "imgui/imgui_impl_sdl.h"
 #include <vector>
 using namespace std;
-
-
+enum KeyState
+{
+	KEY_IDLE = 0,
+	KEY_DOWN,
+	KEY_REPEAT,
+	KEY_UP
+};
 class ModuleImgui : public Module
 {
 public:
@@ -47,10 +52,19 @@ public:
 	bool showHierarchy = true;
 	int vram_budget, vram_available;
 
+	KeyState GetMouseButtonDown(int id) const
+	{
+		return mouse_buttons[id - 1];
+	}
+
 
 	SDL_version compiled;
 	SDL_version linked;
-	
+
+	bool MouseClick(SDL_MouseButtonEvent& b);
+
+	KeyState	mouse_buttons[5];
+
 	ImGuiTextBuffer buffer;
 	bool scrollToBottom;
 	vector<float> fps;

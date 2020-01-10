@@ -45,19 +45,23 @@ update_status ModuleInput::Update()
 	{
 		return UPDATE_STOP;
 	}
-	if (App->scene->camGame->isHovered) {
+	if (App->scene->camGame->isHovered) 
+	{
 		update_status resCam = SetInputsWithCam(App->scene->camGame);
 		if (resCam == UPDATE_STOP) 
 		{
 			return UPDATE_STOP;
 		}
 	}
-	if (App->scene->camScene->isHovered) {
+	else if (App->scene->camScene->isHovered) {
 		update_status resScene = SetInputsWithCam(App->scene->camScene);
 		if (resScene == UPDATE_STOP)
 		{
 			return UPDATE_STOP;
 		}
+	}
+	else {
+		SetInputsWithoutCam();
 	}
 	
 	return UPDATE_CONTINUE;
@@ -71,6 +75,48 @@ bool ModuleInput::CleanUp()
 	return true;
 }
 
+update_status ModuleInput::SetInputsWithoutCam()
+{
+
+	while (SDL_PollEvent(&event)) {
+		switch (event.type) {
+		case SDL_WINDOWEVENT:
+			switch (event.window.event) {
+			case SDL_WINDOWEVENT_SIZE_CHANGED:
+				break;
+			case SDL_WINDOWEVENT_CLOSE:
+				return UPDATE_STOP;
+				break;
+			}
+			break;
+
+		case SDL_MOUSEMOTION:
+			if (event.motion.state & SDL_BUTTON_RMASK) {
+
+
+
+			}
+			if ((event.motion.state & SDL_BUTTON_LMASK) && keyboard[SDL_SCANCODE_LALT]) {
+
+			}
+			break;
+
+		case SDL_MOUSEWHEEL:
+
+			break;
+		case SDL_MOUSEBUTTONDOWN:
+			App->imgui->mouse_buttons[event.button.button - 1] = KEY_DOWN;
+			break;
+		}
+
+	}
+
+	//keyboard inputs
+	if (keyboard[SDL_SCANCODE_ESCAPE])
+	{
+		return UPDATE_STOP;
+	}
+}
 update_status ModuleInput::SetInputsWithCam(Camera* cam)
 {
 	
@@ -120,7 +166,9 @@ update_status ModuleInput::SetInputsWithCam(Camera* cam)
 					App->camera->MoveBackwards(cam);
 				}
 				break;
-
+			case SDL_MOUSEBUTTONDOWN:
+				App->imgui->mouse_buttons[event.button.button - 1] = KEY_DOWN;
+			break;
 			case SDL_DROPFILE:
 				std::string path = event.drop.file;
 				std::string extension = path.substr(path.size() - 3, path.size());

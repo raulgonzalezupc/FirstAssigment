@@ -4,15 +4,18 @@
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
 #include "ModuleTexture.h"
+#include "ModuleInput.h"
 #include "GameObject.h"
 #include "ModuleModelLoader.h"
 #include "ModuleScene.h"
 #include "ModuleRender.h"
 #include "ModuleTimer.h"
 #include "glew/include/GL/glew.h"
+
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "imgui/imgui_impl_sdl.h"
+
 #include "SDL.h"
 
 ModuleImgui::ModuleImgui()
@@ -64,11 +67,37 @@ update_status ModuleImgui::Update()
 	GameObject* game = App->scene->root->FindChild("Game");
 	GameObject* scene = App->scene->root->FindChild("Scene");
 
+	
+
 	App->scene->camGame->Draw(game->name);
 	App->scene->camScene->Draw(scene->name);
 
 	if (showHierarchy) {
 		ImGui::Begin("GameObjects Hierarchy", &showHierarchy);
+		if (ImGui::IsWindowHovered() && GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+		{
+			ImGui::OpenPopup("RightClick");
+		}
+		if (ImGui::BeginPopup("RightClick"))
+		{
+			if (ImGui::Selectable("Create Empty"))
+			{
+				GameObject* newGO = new GameObject("New game object");
+				App->scene->root->children.push_back(newGO);
+				newGO->parent = App->scene->root;
+			}
+			ImGui::Separator();
+
+			if (ImGui::Selectable("Rename"))
+			{
+				//TODO: Rename gameobjects
+			}
+			if (ImGui::IsWindowHovered() && GetMouseButtonDown(SDL_BUTTON_RIGHT) != KEY_DOWN) 
+			{
+				ImGui::EndPopup();
+			}
+			
+		}
 		if (ImGui::TreeNode(App->scene->root->name)) {
 			int root = 0;
 			if (ImGui::Button("Create Empty Game Object")) {
@@ -79,8 +108,10 @@ update_status ModuleImgui::Update()
 			DrawHierarchy(App->scene->root->children, root);
 			ImGui::TreePop();
 		}
+		
 		ImGui::End();
 	}
+	
 
 	//Menu
 	if (ImGui::BeginMainMenuBar())
@@ -126,6 +157,7 @@ update_status ModuleImgui::Update()
 	}
 	return UPDATE_CONTINUE;
 }
+
 
 const void ModuleImgui::DrawHierarchy(const std::vector<GameObject*>& objects, int& index) {
 	for (unsigned i = 0; i < objects.size(); ++i)
