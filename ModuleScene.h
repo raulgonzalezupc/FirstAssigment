@@ -23,6 +23,10 @@ public :
 
 	void DrawAllBoundingBoxes();
 
+	GameObject* CreateGameObject(const char* name, const float3 & pos, const Quat & rot) const;
+
+	GameObject * CreateGameObjectByName(const char * name) const;
+
 private:
 	GameObject* CreateGameObject(const char * name);
 	std::vector<GameObject*> game_objects;

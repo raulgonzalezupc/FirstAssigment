@@ -159,3 +159,8 @@ void GameObject::DrawAABB()
 {
 	//dd::aabb(globalBoundingBox->minPoint, globalBoundingBox->maxPoint, float3(0, 1, 0));
 }
+
+
+void GameObject::CreateTransform(const float3& pos, const Quat& rot) {
+	components.push_back(new Transform(this, pos, rot));
+}
