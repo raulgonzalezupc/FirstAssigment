@@ -23,9 +23,9 @@ bool ModuleScene::Init()
 	root->children.push_back(scene);
 	scene->parent = root;
 
-	GameObject* bakerHouse = new GameObject("BakerHouse");
+	/*GameObject* bakerHouse = new GameObject("BakerHouse");
 	root->children.push_back(bakerHouse);
-	bakerHouse->parent = root;
+	bakerHouse->parent = root;*/
 
 	camGame = new Camera(game, 1);
 	game->components.push_back(camGame);

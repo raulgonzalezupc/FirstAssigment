@@ -17,6 +17,8 @@ public:
 
 	Mesh* myMesh;
 
+	void DrawView();
+
 	void ProcessMeshData(const MeshData & data);
 };
 
