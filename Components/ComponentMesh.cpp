@@ -3,6 +3,7 @@
 #include "Transform.h"
 #include "../GameObject.h"
 #include "ComponentMesh.h"
+#include "../imgui/imgui.h"
 
 using namespace std;
 
@@ -38,6 +39,12 @@ void ComponentMesh::Draw(const unsigned int program) const
 //
 //	return minDist;
 //}
+void ComponentMesh::DrawView() {
+	if (ImGui::TreeNode("Mesh")) {
+		ImGui::Text("Indices:%d\tVertices:%d\tTextures:%d ", myMesh->indices.size(), myMesh->vertices.size(), myMesh->textures.size());
+		ImGui::TreePop();
+	}
+}
 
 
 
