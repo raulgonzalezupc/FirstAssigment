@@ -201,6 +201,7 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="ModuleCamera.h" />
     <ClInclude Include="ModuleImgui.h" />
+    <ClInclude Include="ModuleImporter.h" />
     <ClInclude Include="ModuleModelLoader.h" />
     <ClInclude Include="ModuleProgram.h" />
     <ClInclude Include="glew\include\GL\eglew.h" />
@@ -266,6 +267,7 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
     <ClCompile Include="ModuleImgui.cpp" />
+    <ClCompile Include="ModuleImporter.cpp" />
     <ClCompile Include="ModuleModelLoader.cpp" />
     <ClCompile Include="ModuleProgram.cpp" />
     <ClCompile Include="log.cpp" />

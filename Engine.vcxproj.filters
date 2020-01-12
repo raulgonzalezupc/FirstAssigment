@@ -58,6 +58,7 @@
     <ClCompile Include="Components\Transform.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="ModuleScene.cpp" />
+    <ClCompile Include="ModuleImporter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -192,6 +193,7 @@
     <ClInclude Include="DebugDraw.h" />
     <ClInclude Include="Utils\debug_draw.hpp" />
     <ClInclude Include="Utils\par_shapes.h" />
+    <ClInclude Include="ModuleImporter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assimp\include\assimp\color4.inl" />
