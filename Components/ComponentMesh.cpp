@@ -8,40 +8,40 @@ using namespace std;
 
 ComponentMesh::~ComponentMesh()
 {
-	delete mesh;
+	delete myMesh;
 }
 
 void ComponentMesh::LoadMesh(Mesh* loadedMesh)
 {
-	mesh = loadedMesh;
+	myMesh = loadedMesh;
 }
 
 void ComponentMesh::Draw(const unsigned int program) const
 {
-	mesh->Draw(program);
+	myMesh->Draw(program);
 }
+//
+//float ComponentMesh::IsIntersectedByRay(const float3 &origin, const LineSegment & ray)
+//{
+//	float minDist = -1.0f;
+//
+//	for (unsigned int i = 0; i < myMesh->indices.size(); i += 3)
+//	{
+//
+//		Triangle tri = Triangle(myMesh->vertices[myMesh->indices[i]].Position, mesh->vertices[mesh->indices[i + 1]].Position, myMesh->vertices[mesh->indices[i + 2]].Position);
+//		if (tri.Intersects(tri))
+//		{
+//			minDist = tri.Distance(origin);
+//		}
+//	}
+//
+//
+//	return minDist;
+//}
 
-float ComponentMesh::IsIntersectedByRay(const float3 &origin, const LineSegment & ray)
-{
-	float minDist = -1.0f;
-
-	for (unsigned int i = 0; i < mesh->indices.size(); i += 3)
-	{
-
-		Triangle tri = Triangle(mesh->vertices[mesh->indices[i]].Position, mesh->vertices[mesh->indices[i + 1]].Position, mesh->vertices[mesh->indices[i + 2]].Position);
-		if (tri.Intersects(tri))
-		{
-			minDist = tri.Distance(origin);
-		}
-	}
 
 
-	return minDist;
-}
-
-
-
-void ComponentMesh::ProcessMeshData(const MeshData& data, Mesh& mesh)
+void ComponentMesh::ProcessMeshData(const MeshData& data)
 {
 	for (unsigned int i = 0; i < data.num_vertices; i++)
 	{
@@ -58,19 +58,19 @@ void ComponentMesh::ProcessMeshData(const MeshData& data, Mesh& mesh)
 		normals.z = data.normals[i * 3 + 2];
 		vertex.Normal = normals;
 
-		//TODO: check if mesh contains texture coords or not
+		
 		float2 texturesCoords;
 		texturesCoords.x = data.texture_coords[i * 2];
 		texturesCoords.y = data.texture_coords[i * 2 + 1];
 		vertex.TexCoords = texturesCoords;
 
-		mesh.vertices.push_back(vertex);
+		myMesh->vertices.push_back(vertex);
 	}
 
 	for (unsigned int i = 0; i < data.num_indices; i++)
 	{
-		mesh.indices.push_back(data.indices[i]);
+		myMesh->indices.push_back(data.indices[i]);
 	}
 
-	mesh.name = data.name;
+	myMesh->name = data.name;
 }

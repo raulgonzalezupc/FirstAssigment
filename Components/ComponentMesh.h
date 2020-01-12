@@ -7,17 +7,17 @@
 class ComponentMesh : public Component
 {
 public:
-	ComponentMesh(GameObject* owner) : Component(owner, ComponentType::Mesh) {}
+	ComponentMesh(GameObject* owner, Mesh* mesh) : Component(owner, ComponentType::Mesh), myMesh(mesh) {}
 	virtual ~ComponentMesh();
 
 	void LoadMesh(Mesh* mesh);
 	void Draw(const unsigned int program) const;
 
-	float IsIntersectedByRay(const float3 &origin, const LineSegment &ray);
+	/*float IsIntersectedByRay(const float3 &origin, const LineSegment &ray);*/
 
+	Mesh* myMesh;
 
-	Mesh* mesh;
-	void ProcessMeshData(const MeshData & data, Mesh & mesh);
+	void ProcessMeshData(const MeshData & data);
 };
 
 #endif 
