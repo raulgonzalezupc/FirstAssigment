@@ -7,7 +7,18 @@
 #include <vector>
 #include "ModuleTexture.h"
 
+struct MeshData
+{
+	unsigned int num_indices;
+	unsigned int num_vertices;
 
+	unsigned int * indices;
+	float * positions;
+	float * normals;
+	float * texture_coords;
+
+	std::string name;
+};
 
 class Mesh
 {
@@ -16,7 +27,7 @@ public:
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 	std::vector<Texture> textures;
-
+	std::string name;
 	
 	~Mesh();
 	Mesh();
