@@ -42,7 +42,7 @@ public:
 	std::vector<float3> modelBox;
 	float3 newCameraPos = float3(0.0f, 0.0f, 0.0f);
 	float3 modelCenter = float3(0.0f, 0.0f, 0.0f);
-	
+	Mesh* newMesh;
 private:
 	bool meshed = false;
 	std::string modelPath = "Models/";
