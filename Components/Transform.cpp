@@ -3,7 +3,7 @@
 #include "../imgui/imgui.h"
 
 void Transform::DrawView() {
-	if (ImGui::TreeNode("Transform test")) {
+	if (ImGui::TreeNode("Transform")) {
 		ImGui::Text("Position:\tX:%.f\tY:%.f\tZ:%.f ", position.x, position.y, position.z);
 		ImGui::Text("Rotation:\tX:%.f\tY:%.f\tZ:%.f", rotation.x, rotation.y, rotation.z);
 		ImGui::Text("Scale:\tX:%.f\tY:%.f\tZ:%.f", scaling.x, scaling.y, scaling.z);

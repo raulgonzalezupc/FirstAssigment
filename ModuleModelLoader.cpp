@@ -17,7 +17,7 @@
 #include "imgui/imgui_impl_sdl.h"
 
 #include "Components/Transform.h"
-
+#include "Components/ComponentMesh.h"
 
 
 class myStream : public Assimp::LogStream {
@@ -92,13 +92,18 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene, GameObje
 	
 	for (unsigned int i = 0; i < node->mNumMeshes; ++i) 
 	{
-		model = new GameObject(node->mName.C_Str());
+		const char* name = node->mName.C_Str();
+		model = new GameObject(name);
 		model->parent = parent;
 		
-		((Transform*)parent->FindComponent(ComponentType::Transform))->SetTransform(node->mTransformation);
+		((Transform*)model->FindComponent(ComponentType::Transform))->SetTransform(node->mTransformation);
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		meshes.push_back(processMesh(mesh, scene));
+		newMesh = processMesh(mesh, scene);
+		meshes.push_back(newMesh);
+		model->components.push_back(new ComponentMesh(model, newMesh));
 		++numMeshes;
+		parent->children.push_back(model);
+
 		
 	}
 
@@ -107,7 +112,8 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene, GameObje
 		processNode(node->mChildren[i], scene,parent);
 		
 	}
-	int i;
+	ComponentMesh* thisMesh = ((ComponentMesh*)model->FindComponent(ComponentType::Mesh));
+	
 }
 
 

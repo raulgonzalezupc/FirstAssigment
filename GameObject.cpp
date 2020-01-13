@@ -65,7 +65,7 @@ GameObject* GameObject::FindChild(const char* childName)
 }
 
 void GameObject::ShowProperties() {
-	ImGui::Begin("Properties Test");
+	ImGui::Begin("Properties PopUp");
 	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it) {
 		(*it)->uuid = uuid;
 		//ImGui::Begin("Component:%s:", (*it)->);
