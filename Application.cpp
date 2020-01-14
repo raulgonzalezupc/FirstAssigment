@@ -10,6 +10,8 @@
 #include "ModuleTimer.h"
 #include "ModuleScene.h"
 #include "ModuleModelLoader.h"
+#include "ModuleImporter.h"
+
 using namespace std;
 
 Application::Application()
@@ -25,8 +27,7 @@ Application::Application()
 	modules.push_back(program = new ModuleProgram());
 	modules.push_back(timer = new ModuleTimer());
 	modules.push_back(scene = new ModuleScene());
-
-	
+	modules.push_back(importer = new ModuleImporter());	
 	
 }
 

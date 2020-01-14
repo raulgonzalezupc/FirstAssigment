@@ -8,6 +8,7 @@
 using namespace std;
 using namespace std::tr2::sys;
 
+
 ModuleImporter::ModuleImporter()
 {
 }
@@ -19,9 +20,10 @@ ModuleImporter::~ModuleImporter()
 
 bool ModuleImporter::Init()
 {
+
 	LOG("Import all files on directory assets into own binary file");
 	//Import all files on directory assets into own binary file
-	string path = "../Assets";
+	string path = "./Assets";
 	for (const auto& entry : recursive_directory_iterator(path))
 	{
 		string fullPath(entry.path().string());
@@ -202,6 +204,7 @@ bool ModuleImporter::Import(const char * file, const void * buffer, unsigned int
 	output_file = "../Library/Meshes/"; output_file += filename.c_str();
 
 	return App->filesystem->Save("../Library/Meshes/", filename.c_str(), buffer, size, false);*/
+	return false;
 }
 
 void ModuleImporter::ProcessNode(aiNode * node, const aiScene * scene)

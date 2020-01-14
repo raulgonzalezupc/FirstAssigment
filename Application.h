@@ -15,6 +15,7 @@ class ModuleImgui;
 class ModuleTimer;
 class ModuleModelLoader;
 class ModuleScene;
+class ModuleImporter;
 
 class Application
 {
@@ -38,6 +39,7 @@ public:
 	ModuleTimer* timer = nullptr;
 	ModuleScene* scene = nullptr;
 	ModuleModelLoader* modelLoader = nullptr;
+	ModuleImporter* importer = nullptr;
 
 private:
 
