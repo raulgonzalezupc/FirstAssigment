@@ -4,10 +4,21 @@
 #include "assimp/include/assimp/cimport.h"
 #include "assimp/include/assimp/Logger.hpp"
 #include "Application.h"
+#include "assimp/include/assimp/cimport.h"
+#include "assimp/include/assimp/Importer.hpp"
+#include "assimp/include/assimp/scene.h"
+#include "assimp/include/assimp/postprocess.h"
 
 using namespace std;
 using namespace std::tr2::sys;
 
+class myStream : public Assimp::LogStream {
+public:
+	// LOG assimp debug output to GUI console
+	void write(const char *message) {
+		LOG("%s", message);
+	}
+};
 
 ModuleImporter::ModuleImporter()
 {
@@ -21,8 +32,7 @@ ModuleImporter::~ModuleImporter()
 bool ModuleImporter::Init()
 {
 
-	LOG("Import all files on directory assets into own binary file");
-	//Import all files on directory assets into own binary file
+	//Importing .fbx files from Assets folder
 	string path = "./Assets";
 	for (const auto& entry : recursive_directory_iterator(path))
 	{
@@ -40,6 +50,7 @@ bool ModuleImporter::Init()
 			path = path.substr(0, sizeFile);
 
 			string s;
+			LOG("Importing file %s", file);
 			Import(path.c_str(), file.c_str(), s);
 
 		}
@@ -84,11 +95,13 @@ bool ModuleImporter::Import(const char * path, const char * file, string & outpu
 {
 	string filepath = path; filepath += file;
 	LOG("Importing mesh from %s.", filepath.c_str());
-	/*
-	//Prepare assimp debugger
-	const unsigned int severity = Logger::Debugging | Logger::Info | Logger::Err | Logger::Warn;
-	DefaultLogger::create("", Logger::NORMAL);
-	Assimp::DefaultLogger::get()->attachStream(new myStream(), severity);
+	
+	// Assimp logger
+	Assimp::DefaultLogger::create("", Assimp::Logger::VERBOSE);
+	Assimp::DefaultLogger::get()->info("this is my info-call");
+	const unsigned int severity = Assimp::Logger::Debugging | Assimp::Logger::Info | Assimp::Logger::Err | Assimp::Logger::Warn;
+	Assimp::DefaultLogger::get()->attachStream(new myStream, severity);
+
 
 	//Load info from model
 	const aiScene* scene = aiImportFile(filepath.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
@@ -100,13 +113,13 @@ bool ModuleImporter::Import(const char * path, const char * file, string & outpu
 	}
 
 	LOG("For each mesh located on the current node, processing meshes.");
-	*/
+	
 	modelName = file;
 	size_t lastindex = modelName.find_last_of(".");
 	modelName = modelName.substr(0, lastindex);
 	directory = path;
 
-	//ProcessNode(scene->mRootNode, scene);
+	ProcessNode(scene->mRootNode, scene);
 
 
 	//Clear assimp debugger
@@ -208,7 +221,7 @@ bool ModuleImporter::Import(const char * file, const void * buffer, unsigned int
 }
 
 void ModuleImporter::ProcessNode(aiNode * node, const aiScene * scene)
-{/*
+{
 	// process all the node's meshes (if any)
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)
 	{
@@ -220,6 +233,6 @@ void ModuleImporter::ProcessNode(aiNode * node, const aiScene * scene)
 	{
 		ProcessNode(node->mChildren[i], scene);
 	}
-	*/
+	
 }
 
