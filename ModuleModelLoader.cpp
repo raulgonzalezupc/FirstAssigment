@@ -121,7 +121,8 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene, GameObje
 Mesh* ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene) 
 {
 	Mesh* res = new Mesh;
-	numVertices += mesh->mNumVertices;
+	res->numVertices += mesh->mNumVertices;
+	res->numPrimitives += mesh->mNumFaces;
 	for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
 	{
 		Vertex vertex;
@@ -330,36 +331,10 @@ void ModuleModelLoader::ChangeModel(const char* path)
 
 void ModuleModelLoader::ShowModelUI()
 {
-	/*float positionObject[3] = { 
-		((Transform*)model->FindComponent(ComponentType::Transform))->position.x, 
-		((Transform*)model->FindComponent(ComponentType::Transform))->position.y,
-		((Transform*)model->FindComponent(ComponentType::Transform))->position.z
-	};
-	float rotationObject[3] = {
-		((Transform*)model->FindComponent(ComponentType::Transform))->rotation.x,
-		((Transform*)model->FindComponent(ComponentType::Transform))->rotation.y,
-		((Transform*)model->FindComponent(ComponentType::Transform))->rotation.z
-	};
-	float scaleObject[3] = {
-		((Transform*)model->FindComponent(ComponentType::Transform))->scaling.x,
-		((Transform*)model->FindComponent(ComponentType::Transform))->scaling.y,
-		((Transform*)model->FindComponent(ComponentType::Transform))->scaling.z
-	};*/
+	
 	
 	ImGui::Begin("Properties");
-	if (ImGui::CollapsingHeader("Transformation"))
-	{
-		
-		/*ImGui::DragFloat3("Position", positionObject);
-		ImGui::DragFloat3("Rotation", rotationObject);
-		ImGui::DragFloat3("Scale", scaleObject);*/
-	}
-	if (ImGui::CollapsingHeader("Geometry"))
-	{
-		ImGui::Text("Number of meshes: %d", numMeshes);
-		ImGui::Text("Number of vertices: %d",numVertices);
-		ImGui::Text("Number of triangles: %d", numVertices/3);
-	}
+	
 	if (ImGui::CollapsingHeader("Texture"))
 	{
 		ImGui::Text("Texture id: %d", textureId);

@@ -40,8 +40,8 @@ void ComponentMesh::Draw(const unsigned int program) const
 //	return minDist;
 //}
 void ComponentMesh::DrawView() {
-	if (ImGui::TreeNode("Mesh")) {
-		ImGui::Text("Indices:%d\tVertices:%d\tTextures:%d ", myMesh->indices.size(), myMesh->vertices.size(), myMesh->textures.size());
+	if (ImGui::TreeNode("Geometry")) {
+		ImGui::Text("Indices:%d\nVertices:%d\nTextures:%d ", myMesh->indices.size(), myMesh->vertices.size(), myMesh->textures.size());
 		ImGui::TreePop();
 	}
 }

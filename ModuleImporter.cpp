@@ -16,7 +16,7 @@ class myStream : public Assimp::LogStream {
 public:
 	// LOG assimp debug output to GUI console
 	void write(const char *message) {
-		LOG("%s", message);
+	/*	LOG("%s", message);*/
 	}
 };
 
@@ -50,7 +50,7 @@ bool ModuleImporter::Init()
 			path = path.substr(0, sizeFile);
 
 			string s;
-			LOG("Importing file %s", file);
+		/*	LOG("Importing file %s", file);*/
 			Import(path.c_str(), file.c_str(), s);
 
 		}
@@ -65,26 +65,26 @@ std::string ModuleImporter::ComputeName(const std::string & path) const
 	size_t simpleRightSlash = path.find_last_of('/');
 	if (string::npos != simpleRightSlash)
 	{
-		LOG("Directory with simpleRightSlashes.")
+		/*LOG("Directory with simpleRightSlashes.")*/
 			return path.substr(path.find_last_of('/') + 1, path.size() - 1);
 	}
 	size_t simpleLeftSlash = path.find_last_of('\\');
 	if (string::npos != simpleLeftSlash)
 	{
-		LOG("Directory with simpleLeftSlashes.")
+		/*LOG("Directory with simpleLeftSlashes.")*/
 			return path.substr(path.find_last_of('\\') + 1, path.size() - 1);
 	}
 	size_t doubleRightSlash = path.find_last_of("//");
 	if (string::npos != doubleRightSlash)
 	{
-		LOG("Directory with doubleRightSlashes.")
+		/*LOG("Directory with doubleRightSlashes.")*/
 			return path.substr(path.find_last_of("//") + 1, path.size() - 1);
 	}
 
 	size_t doubleLeftSlash = path.find_last_of("\\\\");
 	if (string::npos != doubleLeftSlash)
 	{
-		LOG("Directory with doubleLeftSlashes.")
+		/*LOG("Directory with doubleLeftSlashes.")*/
 			return path.substr(path.find_last_of("\\\\") + 1, path.size() - 1);
 	}
 
@@ -94,7 +94,7 @@ std::string ModuleImporter::ComputeName(const std::string & path) const
 bool ModuleImporter::Import(const char * path, const char * file, string & output_file)
 {
 	string filepath = path; filepath += file;
-	LOG("Importing mesh from %s.", filepath.c_str());
+	/*LOG("Importing mesh from %s.", filepath.c_str());*/
 	
 	// Assimp logger
 	Assimp::DefaultLogger::create("", Assimp::Logger::VERBOSE);
@@ -107,12 +107,12 @@ bool ModuleImporter::Import(const char * path, const char * file, string & outpu
 	const aiScene* scene = aiImportFile(filepath.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
-		LOG("ERROR ASSIMP: %s \n", aiGetErrorString());
-		LOG("Can't load model from %s.", filepath.c_str());
+		/*LOG("ERROR ASSIMP: %s \n", aiGetErrorString());
+		LOG("Can't load model from %s.", filepath.c_str());*/
 		return false;
 	}
 
-	LOG("For each mesh located on the current node, processing meshes.");
+	/*LOG("For each mesh located on the current node, processing meshes.");*/
 	
 	modelName = file;
 	size_t lastindex = modelName.find_last_of(".");

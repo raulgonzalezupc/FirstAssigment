@@ -28,7 +28,10 @@ public:
 	std::vector<unsigned int> indices;
 	std::vector<Texture> textures;
 	std::string name;
-	
+	int numVertices, numPrimitives;
+
+
+
 	~Mesh();
 	Mesh();
 	/*  Functions  */

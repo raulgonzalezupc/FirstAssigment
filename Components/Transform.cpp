@@ -4,18 +4,24 @@
 
 void Transform::DrawView() {
 	if (ImGui::TreeNode("Transform")) {
-		ImGui::Text("Position:\tX:%.f\tY:%.f\tZ:%.f ", position.x, position.y, position.z);
-		ImGui::Text("Rotation:\tX:%.f\tY:%.f\tZ:%.f", rotation.x, rotation.y, rotation.z);
-		ImGui::Text("Scale:\tX:%.f\tY:%.f\tZ:%.f", scaling.x, scaling.y, scaling.z);
+		
+		ImGui::DragFloat3("Position:", position.ptr());
+		ImGui::DragFloat3("Scaling:", scaling.ptr());
+		ImGui::DragFloat3("Rotation:", rotationEuler.ptr());
 		ImGui::TreePop();
 	}
 }
 
-void Transform::CalculateWorldTransform(const float4x4& trans) {
-	/*if (parent != nullptr) {
-		trans = trans *
-		transformation = transformation * ((Transform*) owner->parent->FindComponent(ComponentType::Transform))->transformation;
-	}*/
+void Transform::CalculateWorldTransform() {
+	if (owner->parent) {
+		Transform* trans = ((Transform*)owner->parent->FindComponent(ComponentType::Transform));
+		if (trans) {
+			worldTransform = trans->localTransform * localTransform;
+		}
+	}
+	else {
+		worldTransform = localTransform;
+	}
 }
 
 void Transform::SetTransform(const aiMatrix4x4& trans) {
@@ -23,9 +29,9 @@ void Transform::SetTransform(const aiMatrix4x4& trans) {
 	localTransform.SetRow(1, float4(trans.b1, trans.b2, trans.b3, trans.d4));
 	localTransform.SetRow(2, float4(trans.c1, trans.c2, trans.c3, trans.c4));
 	localTransform.SetRow(3, float4(trans.d1, trans.d2, trans.d3, trans.d4));
-	if (owner->parent) {
-		worldTransform = ((Transform*)owner->parent->FindComponent(ComponentType::Transform))->localTransform * localTransform;
-	}
-	//localTransform.Decompose(position, rotation, scale);
+	
 	localTransform.Decompose(position, rotation, scaling);
+	rotationEuler = rotation.ToEulerXYZ();
+	rotationEuler = RadToDeg(rotationEuler);
+	CalculateWorldTransform();
 }
