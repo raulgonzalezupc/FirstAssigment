@@ -38,7 +38,9 @@ bool ModuleImgui::Init()
 	ImGui_ImplOpenGL3_Init("#version 330");
 	AddLog("Open GL version 330\n");
 
-	
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
 
 	SDL_VERSION(&compiled);
 	SDL_GetVersion(&linked);
