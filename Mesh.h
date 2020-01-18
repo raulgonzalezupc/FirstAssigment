@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 #include "ModuleTexture.h"
-
+#include "MathGeoLib/include/Geometry/AABB.h"
 struct MeshData
 {
 	unsigned int num_indices;
@@ -29,7 +29,7 @@ public:
 	std::vector<Texture> textures;
 	std::string name;
 	int numVertices, numPrimitives;
-
+	AABB box;
 
 
 	~Mesh();
@@ -38,7 +38,7 @@ public:
 	void Init();
 	Mesh* myMesh = nullptr;
 	void Draw(unsigned int program) const;
-	void setupMesh();
+	void SetUpMesh();
 private:
 	/*  Render data  */
 	unsigned int VAO, VBO, EBO;

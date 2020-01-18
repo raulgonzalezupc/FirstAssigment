@@ -4,6 +4,8 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Mesh.h"
+#define TEXTURE_PATH "Textures/"
+#define DEFAULT_TEXTURE "Baker_house.png"
 #include "assimp/include/assimp/scene.h"
 #include <vector>
 #include <string>
@@ -33,6 +35,8 @@ public:
 public:
 	void LoadModel(const char*);
 	void Draw(unsigned int program);
+	void processMaterials(const aiMaterial * mat, GameObject * owner);
+	void loadMaterialTextures(const aiMaterial * mat, aiTextureType type, const char * typeName, Material * material);
 	void computeModelBoundingBox();
 	void ChangeModel(const char * path);
 	void ShowModelUI();
@@ -49,7 +53,7 @@ private:
 	std::string myTexturesPath = "Textures/";
 	std::string finalPath = "";
 	void processNode(aiNode*, const aiScene*, GameObject* parent);
-	Mesh* processMesh(aiMesh*, const aiScene*);
+	Mesh* processMesh(const aiMesh * mesh, GameObject * owner);
 	std::vector<Texture> loadMaterialTextures(aiMaterial*, aiTextureType, char*);
 	float* onething;
 };

@@ -5,7 +5,15 @@
 #include "Application.h"
 
 #include "glew/include/GL/glew.h"
-
+enum class ProgramType
+{
+	Default = 0,
+	Flat,
+	Gouraud,
+	Phong,
+	Blinn,
+	Count
+};
 class ModuleProgram : public Module {
 	
 public:
