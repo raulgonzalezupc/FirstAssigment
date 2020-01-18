@@ -128,10 +128,6 @@ bool ModuleImporter::Import(const char * path, const char * file, string & outpu
 
 	ProcessNode(scene->mRootNode, scene);
 
-
-	//Clear assimp debugger
-	//DefaultLogger::kill();
-
 	SaveModelFile(output_file);
 
 
@@ -148,8 +144,8 @@ bool ModuleImporter::Import(const char * file, const MeshData & mesh, string & o
 		+ sizeof(float) * mesh.num_vertices * 3			//vertex positions
 		+ sizeof(float) * mesh.num_vertices * 3			//vertex normals
 		+ sizeof(float) * mesh.num_vertices * 2;		//vertex texture coord
-	//	+ sizeof(float) * 6;							//AABB
-	//TODO: add AABB and color to save and to load
+
+
 
 	char* data = new char[size]; // Allocate
 	char* cursor = data;
@@ -236,32 +232,32 @@ void ModuleImporter::SaveModelFile(string & output_file)
 	char* data = new char[size];
 	char* cursor = data;
 
-	unsigned int bytes = sizeof(ranges); // First store ranges
+	unsigned int bytes = sizeof(ranges); 
 	memcpy(cursor, ranges, bytes);
 
-	cursor += bytes; // Store mesh name sizes
+	cursor += bytes;
 	bytes = sizeof(unsigned int) * modelData.meshes.size();
 	memcpy(cursor, meshNameSizes, bytes);
 
-	for (unsigned int i = 0; i < modelData.meshes.size(); i++) // Store mesh names (strings)
+	for (unsigned int i = 0; i < modelData.meshes.size(); i++) 
 	{
 		cursor += bytes;
 		bytes = modelData.meshes[i].size() + 1;
 		memcpy(cursor, modelData.meshes[i].c_str(), bytes);
 	}
 
-	cursor += bytes; // Store texture name sizes
+	cursor += bytes; 
 	bytes = sizeof(unsigned int) * modelData.textures.size();
 	memcpy(cursor, textureNameSizes, bytes);
 
-	for (unsigned int i = 0; i < modelData.textures.size(); i++) // Store texture names (strings)
+	for (unsigned int i = 0; i < modelData.textures.size(); i++) 
 	{
 		cursor += bytes;
 		bytes = modelData.textures[i].size() + 1;
 		memcpy(cursor, modelData.textures[i].c_str(), bytes);
 	}
 
-	cursor += bytes; // Store mesh - texture pairs
+	cursor += bytes; 
 	bytes = sizeof(unsigned int) * 2 * modelData.pairs.size();
 	memcpy(cursor, pairData, bytes);
 
@@ -328,7 +324,7 @@ void ModuleImporter::ProcessMesh(const aiMesh * mesh, const aiScene * scene)
 		meshData.normals[3 * i + 1] = mesh->mNormals[i].y;
 		meshData.normals[3 * i + 2] = mesh->mNormals[i].z;
 
-		if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
+		if (mesh->mTextureCoords[0]) 
 		{
 			meshData.texture_coords[2 * i + 0] = mesh->mTextureCoords[0][i].x;
 			meshData.texture_coords[2 * i + 1] = mesh->mTextureCoords[0][i].y;
@@ -341,7 +337,7 @@ void ModuleImporter::ProcessMesh(const aiMesh * mesh, const aiScene * scene)
 	}
 
 	//Fill indices data
-	meshData.num_indices = mesh->mNumFaces * 3; //TODO: check what happens if not all faces are triangles?
+	meshData.num_indices = mesh->mNumFaces * 3; 
 	meshData.indices = new unsigned int[meshData.num_indices];
 
 	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
@@ -352,11 +348,11 @@ void ModuleImporter::ProcessMesh(const aiMesh * mesh, const aiScene * scene)
 	}
 
 	//Import mesh into own filesystem
-	ModuleImporter meshImporter;
 	string meshOutput;
 	unsigned int currentMeshCount = modelData.meshes.size() + 1;
-	string meshName = modelName; meshName += to_string(currentMeshCount);
-	meshImporter.Import(meshName.c_str(), meshData, meshOutput);
+	string meshName = modelName;
+	meshName += to_string(currentMeshCount);
+	Import(meshName.c_str(), meshData, meshOutput);
 	modelData.meshes.push_back(meshOutput);
 
 	//Mesh data have to be deleted
