@@ -1,19 +1,16 @@
-#ifndef _MODULIMPORTER_H_
-#define _MODULEIMPORTER_H_
+#ifndef __MODULIMPORTER_H__
+#define __MODULEIMPORTER_H__
 
 #include "Module.h"
+#include "Mesh.h"
 
-
-struct aiNode;
-struct aiMesh;
-struct aiScene;
-struct aiMaterial;
 
 struct MeshTexPair
 {
 	unsigned int mesh;
 	unsigned int tex;
 };
+
 
 struct ModelData
 {
@@ -22,6 +19,12 @@ struct ModelData
 
 	std::vector<MeshTexPair> pairs;
 };
+
+struct aiNode;
+struct aiMesh;
+struct aiScene;
+struct aiMaterial;
+
 
 
 class ModuleImporter :
@@ -37,17 +40,18 @@ public:
 
 	std::string ComputeName(const std::string & path) const;
 
-	bool Import(const char * path, const char * file, std::string & output_file);
-
 	void SaveModelFile(std::string & output_file);
 	bool Import(const char * file, const void * buffer, unsigned int size, std::string & output_file);
+	bool Import(const char * path, const char * file, std::string & output_file);
+	bool Import(const char * file, const MeshData & mesh, std::string & output_file);
 	bool Save(const char * path, const char * file, const void * buffer, unsigned int size, bool append) const;
 	void ProcessNode(aiNode * node, const aiScene * scene);
 	void ProcessMesh(const aiMesh * mesh, const aiScene * scene);
+
 	ModelData modelData;
 	std::string modelName;
 	std::string directory;
 
 };
 
-#endif
+#endif //__MODULEIMPORTER_H__

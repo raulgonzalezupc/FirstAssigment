@@ -1,15 +1,19 @@
 #include "ModuleImporter.h"
+#include "Application.h"
 #include <filesystem>
 #include "assimp/include/assimp/DefaultLogger.hpp"
-#include "assimp/include/assimp/cimport.h"
 #include "assimp/include/assimp/Logger.hpp"
-#include "Application.h"
 #include "assimp/include/assimp/cimport.h"
 #include "assimp/include/assimp/Importer.hpp"
 #include "assimp/include/assimp/scene.h"
 #include "assimp/include/assimp/postprocess.h"
+#include "assimp/include/assimp/mesh.h"
+#include "assimp/include/assimp/material.h"
 #include "SDL.h"
 
+
+
+using namespace Assimp;
 using namespace std;
 using namespace std::tr2::sys;
 
@@ -23,6 +27,7 @@ public:
 
 ModuleImporter::ModuleImporter()
 {
+
 }
 
 
@@ -60,6 +65,7 @@ bool ModuleImporter::Init()
 
 	return true;
 }
+
 
 std::string ModuleImporter::ComputeName(const std::string & path) const
 {
@@ -131,6 +137,62 @@ bool ModuleImporter::Import(const char * path, const char * file, string & outpu
 
 	return false;
 }
+
+
+bool ModuleImporter::Import(const char * file, const MeshData & mesh, string & output_file)
+{
+	unsigned int ranges[2] = { mesh.num_indices, mesh.num_vertices };
+
+	unsigned int size = sizeof(ranges)					//ranges
+		+ sizeof(unsigned int) * mesh.num_indices		//indices
+		+ sizeof(float) * mesh.num_vertices * 3			//vertex positions
+		+ sizeof(float) * mesh.num_vertices * 3			//vertex normals
+		+ sizeof(float) * mesh.num_vertices * 2;		//vertex texture coord
+	//	+ sizeof(float) * 6;							//AABB
+	//TODO: add AABB and color to save and to load
+
+	char* data = new char[size]; // Allocate
+	char* cursor = data;
+
+	unsigned int bytes = sizeof(ranges); // First store ranges
+	memcpy(cursor, ranges, bytes);
+
+	cursor += bytes; // Store indices
+	bytes = sizeof(unsigned int) * mesh.num_indices;
+	memcpy(cursor, mesh.indices, bytes);
+
+	cursor += bytes; // Store vertex positions
+	bytes = sizeof(float) * mesh.num_vertices * 3;
+	memcpy(cursor, mesh.positions, bytes);
+
+	cursor += bytes; // Store vertex normals
+	bytes = sizeof(float) * mesh.num_vertices * 3;
+	memcpy(cursor, mesh.normals, bytes);
+
+	cursor += bytes; // Store vertex texture coords
+	bytes = sizeof(float) * mesh.num_vertices * 2;
+	memcpy(cursor, mesh.texture_coords, bytes);
+
+	bool succes = Import(file, data, size, output_file);
+	delete[] data;
+	return succes;
+}
+
+
+bool ModuleImporter::Import(const char * file, const void * buffer, unsigned int size, string & output_file)
+{
+	if (!is_directory("../Library"));
+	create_directory("../Library");
+	if (!is_directory("../Library/Meshes"));
+	create_directory("../Library/Meshes");
+
+	string filename = file; filename += ".nfbx";
+	output_file = "../Library/Meshes/"; output_file += filename.c_str();
+
+	return Save("../Library/Meshes/", filename.c_str(), buffer, size, false);
+	return false;
+}
+
 
 void ModuleImporter::SaveModelFile(string & output_file)
 {
@@ -206,19 +268,6 @@ void ModuleImporter::SaveModelFile(string & output_file)
 	Import(modelName.c_str(), data, size, output_file);
 }
 
-bool ModuleImporter::Import(const char * file, const void * buffer, unsigned int size, string & output_file)
-{
-	if (!is_directory("../Library"));
-		create_directory("../Library");
-	if (!is_directory("../Library/Meshes"));
-		create_directory("../Library/Meshes");
-
-	string filename = file; filename += ".nfbx";
-	output_file = "../Library/Meshes/"; output_file += filename.c_str();
-
-	return Save("../Library/Meshes/", filename.c_str(), buffer, size, false);
-	return false;
-}
 
 bool ModuleImporter::Save(const char * path, const char * file, const void * buffer, unsigned int size, bool append) const
 {
@@ -248,7 +297,7 @@ void ModuleImporter::ProcessNode(aiNode * node, const aiScene * scene)
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
-		//ProcessMesh(mesh, scene);
+		ProcessMesh(mesh, scene);
 	}
 	// then do the same for each of its children
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
@@ -256,6 +305,82 @@ void ModuleImporter::ProcessNode(aiNode * node, const aiScene * scene)
 		ProcessNode(node->mChildren[i], scene);
 	}
 	
+}
+
+void ModuleImporter::ProcessMesh(const aiMesh * mesh, const aiScene * scene)
+{
+	MeshData meshData;
+
+	//Fill vertex data
+	meshData.num_vertices = mesh->mNumVertices;
+
+	meshData.positions = new float[meshData.num_vertices * 3];
+	meshData.normals = new float[meshData.num_vertices * 3];
+	meshData.texture_coords = new float[meshData.num_vertices * 2];
+
+	for (unsigned int i = 0; i < meshData.num_vertices; i++)
+	{
+		meshData.positions[3 * i + 0] = mesh->mVertices[i].x;
+		meshData.positions[3 * i + 1] = mesh->mVertices[i].y;
+		meshData.positions[3 * i + 2] = mesh->mVertices[i].z;
+
+		meshData.normals[3 * i + 0] = mesh->mNormals[i].x;
+		meshData.normals[3 * i + 1] = mesh->mNormals[i].y;
+		meshData.normals[3 * i + 2] = mesh->mNormals[i].z;
+
+		if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
+		{
+			meshData.texture_coords[2 * i + 0] = mesh->mTextureCoords[0][i].x;
+			meshData.texture_coords[2 * i + 1] = mesh->mTextureCoords[0][i].y;
+		}
+		else
+		{
+			meshData.texture_coords[2 * i + 0] = 0.0f;
+			meshData.texture_coords[2 * i + 1] = 0.0f;
+		}
+	}
+
+	//Fill indices data
+	meshData.num_indices = mesh->mNumFaces * 3; //TODO: check what happens if not all faces are triangles?
+	meshData.indices = new unsigned int[meshData.num_indices];
+
+	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
+	{
+		aiFace face = mesh->mFaces[i];
+		for (unsigned int j = 0; j < face.mNumIndices; j++)
+			meshData.indices[3 * i + j] = face.mIndices[j];
+	}
+
+	//Import mesh into own filesystem
+	ModuleImporter meshImporter;
+	string meshOutput;
+	unsigned int currentMeshCount = modelData.meshes.size() + 1;
+	string meshName = modelName; meshName += to_string(currentMeshCount);
+	meshImporter.Import(meshName.c_str(), meshData, meshOutput);
+	modelData.meshes.push_back(meshOutput);
+
+	//Mesh data have to be deleted
+	delete[] meshData.indices;
+	delete[] meshData.normals;
+	delete[] meshData.positions;
+	delete[] meshData.texture_coords;
+
+	//Process material
+	/*
+	string materialOutput;
+	if (mesh->mMaterialIndex >= 0)
+	{
+		aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
+
+		//TODO: chech this works correctly
+		SearchTextureByType(material, aiTextureType_DIFFUSE, currentMeshCount, "_diffuse");
+		SearchTextureByType(material, aiTextureType_SPECULAR, currentMeshCount, "_specular");
+		SearchTextureByType(material, aiTextureType_AMBIENT, currentMeshCount, "_occlusive");
+		SearchTextureByType(material, aiTextureType_EMISSIVE, currentMeshCount, "_emissive");
+		SearchTextureByType(material, aiTextureType_NORMALS, currentMeshCount, "_normal");
+		SearchTextureByType(material, aiTextureType_HEIGHT, currentMeshCount, "_height");
+	}
+	*/
 }
 
 
