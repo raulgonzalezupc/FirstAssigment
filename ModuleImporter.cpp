@@ -12,7 +12,7 @@
 #include "SDL.h"
 #include "json.hpp"
 
-
+using json = nlohmann::json;
 using namespace Assimp;
 using namespace std;
 using namespace std::tr2::sys;
@@ -180,8 +180,6 @@ bool ModuleImporter::Import(const char * file, const void * buffer, unsigned int
 	create_directory("../Library");
 	if (!is_directory("../Library/Meshes"));
 	create_directory("../Library/Meshes");
-
-	json j;
 
 	string filename = file; filename += ".nfbx";
 	output_file = "../Library/Meshes/"; output_file += filename.c_str();
@@ -370,7 +368,6 @@ void ModuleImporter::ProcessMesh(const aiMesh * mesh, const aiScene * scene)
 	{
 		aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
 
-		//TODO: chech this works correctly
 		SearchTextureByType(material, aiTextureType_DIFFUSE, currentMeshCount, "_diffuse");
 		SearchTextureByType(material, aiTextureType_SPECULAR, currentMeshCount, "_specular");
 		SearchTextureByType(material, aiTextureType_AMBIENT, currentMeshCount, "_occlusive");
