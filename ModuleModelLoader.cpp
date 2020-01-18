@@ -59,69 +59,50 @@ void ModuleModelLoader::Draw(unsigned int program)
 		meshes[i]->Draw(program);
 }
 
+ void ModuleModelLoader::LoadModel(std::string& path) {
+	 Assimp::DefaultLogger::create("", Assimp::Logger::VERBOSE);
 
+	 Assimp::DefaultLogger::get()->info("this is my info-call");
 
-void ModuleModelLoader::LoadModel(const char* path) 
-{
-	Assimp::DefaultLogger::create("", Assimp::Logger::VERBOSE);
+	 const unsigned int severity = Assimp::Logger::Debugging | Assimp::Logger::Info | Assimp::Logger::Err | Assimp::Logger::Warn;
 
-	Assimp::DefaultLogger::get()->info("this is my info-call");
-
-	const unsigned int severity = Assimp::Logger::Debugging | Assimp::Logger::Info | Assimp::Logger::Err | Assimp::Logger::Warn;
-
-	Assimp::DefaultLogger::get()->attachStream(new myStream, severity);
-	Assimp::Importer importer;
-	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+	 Assimp::DefaultLogger::get()->attachStream(new myStream, severity);
+	 Assimp::Importer importer;
+	 const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-		App->imgui->AddLog("ERROR::ASSIMP:: %s\n", importer.GetErrorString());
+		App->imgui->AddLog("ERROR::ASSIMP:: %s", importer.GetErrorString());
 		return;
 	}
-	else {
-		App->imgui->AddLog("Path of the geometry correct.\n");
-	}	
+	directory = path.substr(0, path.find_last_of('\\') + 1);
+	const char* path2 = (path.substr(path.find_last_of('\\') + 1, path.find_last_of('.') + 1)).c_str();
+	LOG("Name: %s", (path.substr(path.find_last_of('\\') + 1, path.find_last_of('.') + 1)).c_str());
+	GameObject* model = App->scene->CreateGameObjectByName(path2);
+	model->parent = App->scene->root;
+	processNode(scene->mRootNode, scene, model);
+	App->scene->root->children.push_back(model);
 
-	GameObject* modelLoaded = App->scene->CreateGameObjectByName(path);
-	modelLoaded->parent = App->scene->root;
-	App->scene->root->children.push_back(modelLoaded);
-	processNode(scene->mRootNode, scene, modelLoaded);
+	Assimp::DefaultLogger::kill();
 }
 
+void ModuleModelLoader::processNode(const aiNode *node, const aiScene *scene, GameObject* parent) {
 
-
-void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene, GameObject* parent)
-{
-	
-	for (unsigned int i = 0; i < node->mNumMeshes; ++i) 
-	{
-		const char* name = node->mName.C_Str();
-		model = new GameObject(name);
+	for (unsigned int i = 0; i < node->mNumMeshes; i++) {
+		GameObject* model = App->scene->CreateGameObjectByName(node->mName.C_Str());
 		model->parent = parent;
-		
 		((Transform*)model->FindComponent(ComponentType::Transform))->SetTransform(node->mTransformation);
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		/*newMesh = processMesh(mesh, scene);
-		meshes.push_back(newMesh);
-		model->components.push_back(new ComponentMesh(model, newMesh));*/
-		newMesh = processMesh(mesh, model);
-		meshes.push_back(newMesh);
-		model->components.push_back(new ComponentMesh(model, newMesh));
+		processMesh(mesh, model);
 		processMaterials(scene->mMaterials[mesh->mMaterialIndex], model);
 		parent->children.push_back(model);
-
-		
 	}
 
-	for (unsigned int i = 0; i < node->mNumChildren; ++i) 
-	{
-		processNode(node->mChildren[i], scene,parent);
-		
+	for (unsigned int i = 0; i < node->mNumChildren; i++) {
+		processNode(node->mChildren[i], scene, parent);
 	}
-	//ComponentMesh* thisMesh = ((ComponentMesh*)model->FindComponent(ComponentType::Mesh));
-	
 }
 
 
-Mesh* ModuleModelLoader::processMesh(const aiMesh* mesh, GameObject* owner) {
+void ModuleModelLoader::processMesh(const aiMesh* mesh, GameObject* owner) {
 	Mesh* meshAux = new Mesh;
 	meshAux->numPrimitives = mesh->mNumFaces;
 	meshAux->numVertices = mesh->mNumVertices;
@@ -175,7 +156,7 @@ Mesh* ModuleModelLoader::processMesh(const aiMesh* mesh, GameObject* owner) {
 			meshAux->indices.push_back(face.mIndices[j]);
 	}
 	meshAux->SetUpMesh();
-	return meshAux;
+	owner->components.push_back(new ComponentMesh(owner, meshAux));
 }
 
 void ModuleModelLoader::processMaterials(const aiMaterial* mat, GameObject* owner) {
@@ -223,7 +204,6 @@ void ModuleModelLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureTyp
 		material->kAmbient = 1.0f;
 	}
 }
-
 void ModuleModelLoader::computeModelBoundingBox()
 {
 
@@ -289,7 +269,8 @@ void ModuleModelLoader::ChangeModel(const char* path)
 	texturesLoaded.clear();
 	meshes.clear();
 	directory.clear();
-	LoadModel(path);
+	std::string pathToUse(path);	
+	LoadModel(pathToUse);
 }
 
 void ModuleModelLoader::ShowModelUI()

@@ -1,16 +1,14 @@
 #include "GameObject.h"
 #include "Components/Component.h"
 #include "Components/Transform.h"
+#include "Components/ComponentMesh.h"
 #include "imgui/imgui.h"
 #include <algorithm>
 #include "glew/include/GL/glew.h"
 #include "DebugDraw.h"
 
 Component* GameObject::CreateComponent(ComponentType type) {
-	if (type == ComponentType::Transform) {
-		components.push_back(new Transform(this));
-	}
-
+	
 	Component *newComponent;
 	switch (type)
 	{
@@ -20,11 +18,13 @@ Component* GameObject::CreateComponent(ComponentType type) {
 
 	case ComponentType::Material:
 		newComponent = new Material(this);
-		components.push_back(newComponent);
 		break;
 
 	case ComponentType::Mesh:
-		//components.push_back(new Mesh());
+		//newComponent = new ComponentMesh(this);
+		break;
+	case ComponentType::Transform:
+		newComponent = new Transform(this);
 		break;
 
 	default:

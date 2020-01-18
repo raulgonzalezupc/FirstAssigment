@@ -25,6 +25,8 @@ public:
 	update_status Update();
 	update_status PostUpdate();
 	bool CleanUp();
+	void DrawGameObject(GameObject * parent, Camera * cam);
+	void DrawMesh(Camera * cam, Transform * trans, Mesh * mesh, Material * material);
 	int loadCubemap(std::vector<std::string> faces);
 public:
 	void ShowGrid();

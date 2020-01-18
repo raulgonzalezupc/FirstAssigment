@@ -25,6 +25,7 @@ public:
 	int textureHeight = NULL;
 	int textureId = NULL;
 	GameObject* model;
+	float ambient = 0.0f;
 public:
 
 	ModuleModelLoader();
@@ -33,10 +34,10 @@ public:
 	bool CleanUp();
 
 public:
-	void LoadModel(const char*);
+	void LoadModel(std::string&);
 	void Draw(unsigned int program);
 	void processMaterials(const aiMaterial * mat, GameObject * owner);
-	void loadMaterialTextures(const aiMaterial * mat, aiTextureType type, const char * typeName, Material * material);
+	void loadMaterialTextures(const aiMaterial * mat, aiTextureType type, const char* typeName, Material* material);
 	void computeModelBoundingBox();
 	void ChangeModel(const char * path);
 	void ShowModelUI();
@@ -52,9 +53,8 @@ private:
 	std::string modelPath = "Models/";
 	std::string myTexturesPath = "Textures/";
 	std::string finalPath = "";
-	void processNode(aiNode*, const aiScene*, GameObject* parent);
-	Mesh* processMesh(const aiMesh * mesh, GameObject * owner);
-	std::vector<Texture> loadMaterialTextures(aiMaterial*, aiTextureType, char*);
+	void processNode(const aiNode *node, const aiScene *scene, GameObject* parent);
+	void processMesh(const aiMesh* mesh, GameObject* owner);
 	float* onething;
 };
 

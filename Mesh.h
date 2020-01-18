@@ -39,7 +39,7 @@ public:
 	Mesh* myMesh = nullptr;
 	void Draw(unsigned int program) const;
 	void SetUpMesh();
-private:
+public:
 	/*  Render data  */
 	unsigned int VAO, VBO, EBO;
 	/*  Functions    */

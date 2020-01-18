@@ -36,6 +36,7 @@ bool ModuleProgram::Init()
 
 	//set up the uniforms
 	setUniformsBuffer();
+	programs[int(ProgramType::Default)] = CreateProgram(skyboxVertexShader, skyboxFragmentShader);
 	return true;
 }
 

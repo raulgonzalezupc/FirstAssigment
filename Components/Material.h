@@ -18,6 +18,7 @@ public:
 	float kAmbient = 0.0f;
 	unsigned emissiveMap = 0;
 	math::float3 emissiveColor = math::float3::zero;
+	std::vector<Texture> texturesLoaded;
 
 public:
 	Material(GameObject* owner) : Component(owner, ComponentType::Material) {}

@@ -201,15 +201,14 @@ void Camera::GenerateFBOTexture(unsigned w, unsigned h)
 	glClearColor(0.2f, 0.2f, 0.2f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	
-		App->renderer->ShowAxis();
+	App->renderer->ShowAxis();
 		
 
-	
-		App->renderer->ShowGrid();
+	App->renderer->ShowGrid();
 	App->scene->DrawAllBoundingBoxes();
-	App->modelLoader->Draw(program);
-
+	//App->modelLoader->Draw(program);
+	App->renderer->DrawGameObject(App->scene->root, this);
+	
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

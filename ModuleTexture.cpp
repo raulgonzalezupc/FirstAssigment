@@ -78,7 +78,7 @@ void ModuleTexture::DrawTexture(unsigned& id) {
 	}
 	for (unsigned int i = 0; i < loadedTextures.size(); i++) {
 		if (loadedTextures[i].id == id) {
-			//DrawTexture(loadedTextures[i]);
+			DrawTexture(loadedTextures[i].id);
 		}
 	}
 	if (ImGui::ImageButton((void*)(intptr_t)id, ImVec2(128, 128))) {
@@ -91,7 +91,7 @@ void ModuleTexture::DrawTexture(unsigned& id) {
 void ModuleTexture::DrawTextureSelector(unsigned& id) {
 	ImGui::Begin("Textures");
 	for (unsigned int i = 0; i < loadedTextures.size(); i++) {
-		//DrawTexture(loadedTextures[i]);
+		DrawTexture(loadedTextures[i].id);
 		if (ImGui::ImageButton((void*)(intptr_t)loadedTextures[i].id, ImVec2(128, 128))) {
 			id = loadedTextures[i].id;
 			drawSelector = false;
@@ -102,7 +102,6 @@ void ModuleTexture::DrawTextureSelector(unsigned& id) {
 Material* ModuleTexture::CreateMaterial() {
 	return new Material(nullptr);
 }
-
 
 void ModuleTexture::LoadSkybox(const char * path, const std::string & directory, int index)const
 {

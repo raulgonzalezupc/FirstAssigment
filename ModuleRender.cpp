@@ -113,22 +113,6 @@ bool ModuleRender::Init()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
-	//glEnable(GL_BLEND);
-
-	/*game = new GameObject("Game");
-	scene = new GameObject("Scene");
-	bakerHouse = new GameObject("BakerHouse");
-
-	camGame = new Camera(game,1);
-	camScene = new Camera(scene,2);
-	game->components.push_back(camGame);
-	scene->components.push_back(camScene);
-*/
-	
-
-
-	//skybox = new Skybox();
-
 	
 	CatchFrameBufferErrors();
 	
@@ -136,7 +120,6 @@ bool ModuleRender::Init()
 
 	App->imgui->AddLog("Using Glew %s\n", glewGetString(GLEW_VERSION));
 
-	//App->modelLoader->LoadModel("BakerHouse.fbx");
 	
 	
 
@@ -157,13 +140,14 @@ update_status ModuleRender::Update()
 {
 	GameObject* game = App->scene->root->FindChild("Game");
 	GameObject* scene = App->scene->root->FindChild("Scene");
+	
 	Camera* cam2 = (Camera*)game->FindComponent(ComponentType::Camera);
 	cam2->GenerateFBOTexture(cam2->width, cam2->height);
 	
 	Camera* cam3 = (Camera*)scene->FindComponent(ComponentType::Camera);
 	cam3->GenerateFBOTexture(cam3->width, cam3->height);
 
-
+	
 	
 	return UPDATE_CONTINUE;
 }
@@ -187,6 +171,52 @@ bool ModuleRender::CleanUp()
 	return true;
 }
 
+void  ModuleRender::DrawGameObject(GameObject* parent, Camera* cam) {
+	DrawMesh(cam, (Transform*)parent->FindComponent(ComponentType::Transform), (Mesh*)parent->FindComponent(ComponentType::Mesh), (Material*)parent->FindComponent(ComponentType::Material));
+	for (unsigned i = 0; i < parent->children.size(); i++) {
+		DrawGameObject(parent->children[i], cam);
+	}
+}
+
+void  ModuleRender::DrawMesh(Camera* cam, Transform* trans, Mesh* mesh, Material* material) {
+	unsigned program = App->program->programs[int(ProgramType::Default)];
+	glUseProgram(program);
+	if (material) {
+		program = App->program->programs[material->program];
+		glUseProgram(program);
+		//glUniform3fv(glGetUniformLocation(program, "light_pos"), 1, (const float*)&App->modelLoader->light.pos);
+		glUniform1f(glGetUniformLocation(program, "ambient"), App->modelLoader->ambient);
+		glUniform1f(glGetUniformLocation(program, "shininess"), material->shininess);
+		glUniform1f(glGetUniformLocation(program, "k_ambient"), material->kAmbient);
+		glUniform1f(glGetUniformLocation(program, "k_diffuse"), material->kDiffuse);
+		glUniform1f(glGetUniformLocation(program, "k_specular"), material->kSpecular);
+		if (material->diffuseMap == 0) {
+			glUniform1i(glGetUniformLocation(program, "use_diffuse_map"), 0);
+			glUniform4fv(glGetUniformLocation(program, "object_color"), 1, (const float*)&material->diffuseColor);
+		}
+		else {
+			glUniform1i(glGetUniformLocation(program, "use_diffuse_map"), 1);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, material->diffuseMap);
+			glUniform1i(glGetUniformLocation(program, "diffuse_map"), 0);
+		}
+	}
+	if (trans) {
+		trans->CalculateTransform();
+		glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &(trans->worldTransform[0][0]));
+	}
+
+	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &(cam->view[0][0]));
+	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &(cam->proj[0][0]));
+	// TODO resize boundingbox
+	if (mesh) {
+		//dd::aabb(mesh->box.minPoint, mesh->box.maxPoint, float3(0, 0, 1));
+		glBindVertexArray(mesh->VAO);
+		glDrawElements(GL_TRIANGLES, mesh->indices.size(), GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
+		glActiveTexture(GL_TEXTURE0);
+	}
+}
 void ModuleRender::ShowGrid()
 {
 	glLineWidth(1.0f);

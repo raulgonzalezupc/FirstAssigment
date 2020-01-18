@@ -30,7 +30,7 @@ public:
 	unsigned int createVertexShader(const char* filename);
 	unsigned int createFragmentShader(const char* filename);
 	void setUniformsBuffer();
-
+	unsigned programs[int(ProgramType::Count)];
 public:
 	GLuint vertex_shader;
 	GLuint fragment_shader;

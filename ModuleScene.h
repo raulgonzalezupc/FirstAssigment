@@ -29,6 +29,7 @@ public :
 
 private:
 	GameObject* CreateGameObject(const char * name);
+	GameObject * CreateGameObject(const std::string & name) const;
 	std::vector<GameObject*> game_objects;
 
 };

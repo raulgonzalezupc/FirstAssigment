@@ -32,8 +32,8 @@ bool ModuleScene::Init()
 
 	camScene = new Camera(scene, 2);
 	scene->components.push_back(camScene);
-
-	App->modelLoader->LoadModel("BakerHouse.fbx");
+	std::string model = "BakerHouse.fbx";
+	App->modelLoader->LoadModel(model);
 
 	return true;
 }
