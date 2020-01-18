@@ -24,5 +24,6 @@ public:
 	void CalculateWorldTransform();
 	void CalculateWorldTransform(const float4x4&);
 	void SetTransform(const aiMatrix4x4&);
+	void CalculateTransform();
 };
 #endif

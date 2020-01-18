@@ -35,3 +35,8 @@ void Transform::SetTransform(const aiMatrix4x4& trans) {
 	rotationEuler = RadToDeg(rotationEuler);
 	CalculateWorldTransform();
 }
+void Transform::CalculateTransform() {
+	rotation = rotation.FromEulerXYZ(DegToRad(rotationEuler.x), DegToRad(rotationEuler.y), DegToRad(rotationEuler.z));
+	localTransform = localTransform.FromTRS(position, rotation, scaling);
+	CalculateWorldTransform();
+}
