@@ -4,6 +4,11 @@
 #include "Module.h"
 
 
+struct aiNode;
+struct aiMesh;
+struct aiScene;
+struct aiMaterial;
+
 struct MeshTexPair
 {
 	unsigned int mesh;
@@ -18,10 +23,6 @@ struct ModelData
 	std::vector<MeshTexPair> pairs;
 };
 
-struct aiNode;
-struct aiMesh;
-struct aiScene;
-struct aiMaterial;
 
 class ModuleImporter :
 	public Module
@@ -40,7 +41,9 @@ public:
 
 	void SaveModelFile(std::string & output_file);
 	bool Import(const char * file, const void * buffer, unsigned int size, std::string & output_file);
+	bool Save(const char * path, const char * file, const void * buffer, unsigned int size, bool append) const;
 	void ProcessNode(aiNode * node, const aiScene * scene);
+	void ProcessMesh(const aiMesh * mesh, const aiScene * scene);
 	ModelData modelData;
 	std::string modelName;
 	std::string directory;

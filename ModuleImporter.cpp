@@ -8,6 +8,7 @@
 #include "assimp/include/assimp/Importer.hpp"
 #include "assimp/include/assimp/scene.h"
 #include "assimp/include/assimp/postprocess.h"
+#include "SDL.h"
 
 using namespace std;
 using namespace std::tr2::sys;
@@ -206,19 +207,40 @@ void ModuleImporter::SaveModelFile(string & output_file)
 }
 
 bool ModuleImporter::Import(const char * file, const void * buffer, unsigned int size, string & output_file)
-{/*
-	//TODO:inlcude filesystem in application
-	if (!App->filesystem->IsDirectory("../Library"))
-		App->filesystem->MakeDirectory("../Library");
-	if (!App->filesystem->IsDirectory("../Library/Meshes"))
-		App->filesystem->MakeDirectory("../Library/Meshes");
+{
+	if (!is_directory("../Library"));
+		create_directory("../Library");
+	if (!is_directory("../Library/Meshes"));
+		create_directory("../Library/Meshes");
 
-	string filename = file; filename += ".notfbx";
+	string filename = file; filename += ".nfbx";
 	output_file = "../Library/Meshes/"; output_file += filename.c_str();
 
-	return App->filesystem->Save("../Library/Meshes/", filename.c_str(), buffer, size, false);*/
+	return Save("../Library/Meshes/", filename.c_str(), buffer, size, false);
 	return false;
 }
+
+bool ModuleImporter::Save(const char * path, const char * file, const void * buffer, unsigned int size, bool append) const
+{
+	string filename = path; filename += file;
+
+	SDL_RWops *rw;
+	if (append)
+		rw = SDL_RWFromFile(filename.c_str(), "a");
+	else
+		rw = SDL_RWFromFile(filename.c_str(), "w");
+
+	if (rw == NULL) return NULL;
+
+	Sint64 nb_write_total = SDL_RWwrite(rw, buffer, 1, size);
+	SDL_RWclose(rw);
+
+	if (nb_write_total != size)
+		return NULL;
+
+	return 1;
+}
+
 
 void ModuleImporter::ProcessNode(aiNode * node, const aiScene * scene)
 {
@@ -235,4 +257,5 @@ void ModuleImporter::ProcessNode(aiNode * node, const aiScene * scene)
 	}
 	
 }
+
 
