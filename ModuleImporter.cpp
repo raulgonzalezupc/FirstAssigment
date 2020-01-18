@@ -10,7 +10,7 @@
 #include "assimp/include/assimp/mesh.h"
 #include "assimp/include/assimp/material.h"
 #include "SDL.h"
-
+#include "json.hpp"
 
 
 using namespace Assimp;
@@ -27,7 +27,6 @@ public:
 
 ModuleImporter::ModuleImporter()
 {
-
 }
 
 
@@ -182,11 +181,14 @@ bool ModuleImporter::Import(const char * file, const void * buffer, unsigned int
 	if (!is_directory("../Library/Meshes"));
 	create_directory("../Library/Meshes");
 
+	json j;
+
 	string filename = file; filename += ".nfbx";
 	output_file = "../Library/Meshes/"; output_file += filename.c_str();
 
 	return Save("../Library/Meshes/", filename.c_str(), buffer, size, false);
 	return false;
+
 }
 
 
