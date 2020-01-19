@@ -23,9 +23,9 @@ public:
 	void GenerateFBOTexture(unsigned w, unsigned h);
 	int isCollidingFrustum(const AABB& aabb) const;
 	void BindBuffers(unsigned, unsigned);
-
+	void CreateRay(const float2& normalizedPos, LineSegment &value) const;
 	unsigned int fbo ;
-
+	void DrawFrustumPlanes();
 	unsigned int msfb_depth;
 	unsigned int msfb_color;
 	unsigned int texture;

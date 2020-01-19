@@ -13,6 +13,7 @@ class ModuleTexture;
 class ModuleCamera;
 class ModuleImgui;
 class ModuleTimer;
+class ModuleDebugDraw;
 class ModuleModelLoader;
 class ModuleScene;
 class ModuleImporter;
@@ -40,6 +41,7 @@ public:
 	ModuleScene* scene = nullptr;
 	ModuleModelLoader* modelLoader = nullptr;
 	ModuleImporter* importer = nullptr;
+	ModuleDebugDraw* debugDraw = nullptr;
 
 private:
 

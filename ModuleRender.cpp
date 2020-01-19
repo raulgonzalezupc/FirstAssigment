@@ -6,6 +6,7 @@
 #include "ModuleScene.h"
 #include "ModuleImgui.h"
 #include "ModuleModelLoader.h"
+#include "ModuleDebugDraw.h"
 #include "ModuleCamera.h"
 #include "Skybox.h"
 #include <set>
@@ -157,13 +158,13 @@ update_status ModuleRender::Update()
 {
 	GameObject* game = App->scene->root->FindChild("Game");
 	GameObject* scene = App->scene->root->FindChild("Scene");
+
 	Camera* cam2 = (Camera*)game->FindComponent(ComponentType::Camera);
 	cam2->GenerateFBOTexture(cam2->width, cam2->height);
 	
 	Camera* cam3 = (Camera*)scene->FindComponent(ComponentType::Camera);
 	cam3->GenerateFBOTexture(cam3->width, cam3->height);
-
-
+	App->debugDraw->Draw(cam2);
 	
 	return UPDATE_CONTINUE;
 }

@@ -10,6 +10,7 @@
 #include "../ModuleModelLoader.h"
 #include <math.h>
 #include "../imgui/imgui.h"
+#include "../Utils/DebugDraw.h"
 
 
 Camera::Camera(GameObject* owner, int number) : Component(owner, ComponentType::Camera)
@@ -48,6 +49,15 @@ Camera::~Camera()
 {
 	glDeleteFramebuffers(1, &fbo);
 	glDeleteFramebuffers(1, &fb_depth);
+}
+void Camera::CreateRay(const float2& normalizedPos, LineSegment &value) const
+{
+	value = frustum.UnProjectLineSegment(normalizedPos.x, normalizedPos.y);
+}
+void Camera::DrawFrustumPlanes()
+{
+	float4x4 clipMatrix = proj * view;
+	dd::frustum(clipMatrix.Inverted(), float3(0, 0, 1));
 }
 
 int Camera::isCollidingFrustum(const AABB& aabb) const
@@ -203,7 +213,7 @@ void Camera::GenerateFBOTexture(unsigned w, unsigned h)
 
 	
 		App->renderer->ShowAxis();
-		
+		DrawFrustumPlanes();
 
 	
 		App->renderer->ShowGrid();

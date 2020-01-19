@@ -3,7 +3,8 @@
 #define DEBUG_DRAW_IMPLEMENTATION
 #include "Utils/DebugDraw.h"
 //#include "debug_draw.hpp"
-#include "GL/glew.h"
+#include "glew/include/GL/glew.h"
+#include "Globals.h"
 #include <assert.h>
 
 class DDRenderInterface final : public dd::RenderInterface {
