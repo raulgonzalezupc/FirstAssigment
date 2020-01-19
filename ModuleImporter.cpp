@@ -10,9 +10,7 @@
 #include "assimp/include/assimp/mesh.h"
 #include "assimp/include/assimp/material.h"
 #include "SDL.h"
-#include "json.hpp"
 
-using json = nlohmann::json;
 using namespace Assimp;
 using namespace std;
 using namespace std::tr2::sys;

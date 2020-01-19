@@ -27,6 +27,10 @@ public :
 
 	GameObject * CreateGameObjectByName(const char * name) const;
 
+	update_status Update();
+
+	void SaveScene();
+
 private:
 	GameObject* CreateGameObject(const char * name);
 	std::vector<GameObject*> game_objects;
