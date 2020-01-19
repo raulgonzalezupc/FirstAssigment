@@ -5,6 +5,7 @@
 #include "ModuleRender.h"
 #include "ModuleImgui.h"
 #include "ModuleCamera.h"
+#include "ModuleProgram.h"
 #include "assimp/include/assimp/Importer.hpp"
 #include "assimp/include/assimp/matrix4x4.h"
 #include "assimp/include/assimp/scene.h"
@@ -98,10 +99,13 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene, GameObje
 		
 		((Transform*)model->FindComponent(ComponentType::Transform))->SetTransform(node->mTransformation);
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		newMesh = processMesh(mesh, scene);
+		/*newMesh = processMesh(mesh, scene);
+		meshes.push_back(newMesh);
+		model->components.push_back(new ComponentMesh(model, newMesh));*/
+		newMesh = processMesh(mesh, model);
 		meshes.push_back(newMesh);
 		model->components.push_back(new ComponentMesh(model, newMesh));
-		++numMeshes;
+		processMaterials(scene->mMaterials[mesh->mMaterialIndex], model);
 		parent->children.push_back(model);
 
 		
@@ -112,153 +116,113 @@ void ModuleModelLoader::processNode(aiNode *node, const aiScene *scene, GameObje
 		processNode(node->mChildren[i], scene,parent);
 		
 	}
-	ComponentMesh* thisMesh = ((ComponentMesh*)model->FindComponent(ComponentType::Mesh));
+	//ComponentMesh* thisMesh = ((ComponentMesh*)model->FindComponent(ComponentType::Mesh));
 	
 }
 
 
-
-Mesh* ModuleModelLoader::processMesh(aiMesh *mesh, const aiScene *scene) 
-{
-	Mesh* res = new Mesh;
-	numVertices += mesh->mNumVertices;
-	for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
+Mesh* ModuleModelLoader::processMesh(const aiMesh* mesh, GameObject* owner) {
+	Mesh* meshAux = new Mesh;
+	meshAux->numPrimitives = mesh->mNumFaces;
+	meshAux->numVertices = mesh->mNumVertices;
+	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 	{
 		Vertex vertex;
 		float3 vector;
-
 		// positions
 		vector.x = mesh->mVertices[i].x;
 		vector.y = mesh->mVertices[i].y;
 		vector.z = mesh->mVertices[i].z;
+		meshAux->box.maxPoint.x = max(meshAux->box.maxPoint.x, vector.x);
+		meshAux->box.minPoint.x = min(meshAux->box.minPoint.x, vector.x);
+		meshAux->box.maxPoint.y = max(meshAux->box.maxPoint.y, vector.y);
+		meshAux->box.minPoint.y = min(meshAux->box.minPoint.y, vector.y);
+		meshAux->box.maxPoint.z = max(meshAux->box.maxPoint.z, vector.z);
+		meshAux->box.minPoint.z = min(meshAux->box.minPoint.z, vector.z);
+
 		vertex.Position = vector;
 		// normals
 		vector.x = mesh->mNormals[i].x;
 		vector.y = mesh->mNormals[i].y;
 		vector.z = mesh->mNormals[i].z;
 		vertex.Normal = vector;
-
 		// texture coordinates
-		if (mesh->mTextureCoords[0]) 
-		{
+		if (mesh->mTextureCoords[0]) {
 			float2 vec;
 			vec.x = mesh->mTextureCoords[0][i].x;
 			vec.y = mesh->mTextureCoords[0][i].y;
 			vertex.TexCoords = vec;
 		}
-		else 
+		else {
 			vertex.TexCoords = float2(0.0f, 0.0f);
-
+		}
 		// tangent
 		vector.x = mesh->mTangents[i].x;
 		vector.y = mesh->mTangents[i].y;
 		vector.z = mesh->mTangents[i].z;
 		vertex.Tangent = vector;
-
 		// bitangent
 		vector.x = mesh->mBitangents[i].x;
 		vector.y = mesh->mBitangents[i].y;
 		vector.z = mesh->mBitangents[i].z;
 		vertex.Bitangent = vector;
-		res->vertices.push_back(vertex);
+		meshAux->vertices.push_back(vertex);
 	}
 
-
-	for (unsigned int i = 0; i < mesh->mNumFaces; i++) 
-	{
+	for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
 		aiFace face = mesh->mFaces[i];
 		for (unsigned int j = 0; j < face.mNumIndices; j++)
-			res->indices.push_back(face.mIndices[j]);
+			meshAux->indices.push_back(face.mIndices[j]);
 	}
-
-	// process materials
-	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-
-	// 1. diffuse maps
-	std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-	res->textures.insert(res->textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-
-	// 2. specular maps
-	std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
-	res->textures.insert(res->textures.end(), specularMaps.begin(), specularMaps.end());
-
-	// 3. normal maps
-	std::vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
-	res->textures.insert(res->textures.end(), normalMaps.begin(), normalMaps.end());
-
-	// 4. height maps
-
-	std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
-	res->textures.insert(res->textures.end(), heightMaps.begin(), heightMaps.end());
-
-	res->setupMesh();
-	
-	return res;
+	meshAux->SetUpMesh();
+	return meshAux;
 }
 
+void ModuleModelLoader::processMaterials(const aiMaterial* mat, GameObject* owner) {
+	Material* material = (Material*)owner->CreateComponent(ComponentType::Material);
+	// 1. diffuse maps
+	loadMaterialTextures(mat, aiTextureType_DIFFUSE, "texture_diffuse", material);
+	// 2. specular maps
+	loadMaterialTextures(mat, aiTextureType_SPECULAR, "texture_specular", material);
+	// 3. normal maps
+	loadMaterialTextures(mat, aiTextureType_AMBIENT, "texture_normal", material);
+	// 4. height maps
+	loadMaterialTextures(mat, aiTextureType_EMISSIVE, "texture_height", material);
+	material->program = int(ProgramType::Default);
+}
 
-std::vector<Texture> ModuleModelLoader::loadMaterialTextures(aiMaterial *mat, aiTextureType type, char* typeName) 
-{
-	std::vector<Texture> textures;
-	
-	for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
-	{
+void ModuleModelLoader::loadMaterialTextures(const aiMaterial* mat, aiTextureType type, const char* typeName, Material* material) {
+	App->imgui->AddLog("\nLoading textures of type : %s", typeName);
+	for (unsigned i = 0; i < mat->GetTextureCount(type); ++i) {
 		aiString str;
-		mat->GetTexture(type, i, &str);
-		bool skip = false;
-		for (unsigned int j = 0; j < texturesLoaded.size(); j++) 
-		{
-			if (std::strcmp(texturesLoaded[j].path, str.C_Str()) == 0)
-			{
-				textures.push_back(texturesLoaded[j]);
-				skip = true;
-				break;
-			}
-		}
-		if (!skip) 
-		{
-			if (FileExists(str.C_Str()))
-			{
-				App->imgui->AddLog("Texture loading from: %s\n", str.C_Str());
-				finalPath = str.C_Str();
-				std::size_t found = finalPath.find_last_of("/\\");
-				finalPath = finalPath.substr(found + 1);
-				finalPath = "Textures/"+finalPath;
-			}
-			else if (FileExists(modelPath.c_str()))
-			{
-				modelPath.append(str.C_Str());
-				App->imgui->AddLog("Texture loading from Models Path: %s\n", modelPath.c_str());
-				finalPath = modelPath.c_str();
-			}
-			else if(FileExists(myTexturesPath.c_str()))
-			{
-				myTexturesPath += str.C_Str();
-				if (FileExists(myTexturesPath.c_str()))
-				{
-					App->imgui->AddLog("Texture loading from Textures Path: %s\n", myTexturesPath.c_str());
-					finalPath = myTexturesPath.c_str();
-
+		aiTextureMapping mapping;
+		unsigned uvindex = 0;
+		mat->GetTexture(type, i, &str, &mapping, &uvindex);
+		std::string path = str.C_Str();
+		std::string textureName = path.substr(path.find_last_of('\\') + 1, path.size());
+		App->imgui->AddLog("Trying to load texture: %s", path.c_str());
+		if (FileExists(path.c_str()) == 1) {
+			path = directory;
+			path = path.append(textureName);
+			App->imgui->AddLog("Trying to load texture: %s", path.c_str());
+			if (FileExists(path.c_str()) == 1) {
+				path = TEXTURE_PATH;
+				path = path.append(textureName);
+				App->imgui->AddLog("Trying to load texture: %s", path.c_str());
+				if (FileExists(path.c_str()) == 1) {
+					path = TEXTURE_PATH;
+					path = path.append(DEFAULT_TEXTURE);
+					App->imgui->AddLog("Trying to load texture: %s", path.c_str());
 				}
 			}
-			else {
-				App->imgui->AddLog("Couldn't find a texture to load, loading previous one.\n");
-				finalPath = "";
-			}
-			if (finalPath == "")
-			{
-				return textures;
-			}
-			Texture texture = App->texture->LoadTexture(finalPath.c_str());
-			texture.type = typeName;
-			textures.push_back(texture);
-			texturesLoaded.push_back(texture); 
-			
 		}
-	}
-	return textures;
-}
 
+		material->shininess = 64.0f;
+		material->kSpecular = 0.6f;
+		material->kDiffuse = 0.5f;
+		material->kAmbient = 1.0f;
+	}
+}
 
 void ModuleModelLoader::computeModelBoundingBox()
 {
@@ -330,36 +294,10 @@ void ModuleModelLoader::ChangeModel(const char* path)
 
 void ModuleModelLoader::ShowModelUI()
 {
-	/*float positionObject[3] = { 
-		((Transform*)model->FindComponent(ComponentType::Transform))->position.x, 
-		((Transform*)model->FindComponent(ComponentType::Transform))->position.y,
-		((Transform*)model->FindComponent(ComponentType::Transform))->position.z
-	};
-	float rotationObject[3] = {
-		((Transform*)model->FindComponent(ComponentType::Transform))->rotation.x,
-		((Transform*)model->FindComponent(ComponentType::Transform))->rotation.y,
-		((Transform*)model->FindComponent(ComponentType::Transform))->rotation.z
-	};
-	float scaleObject[3] = {
-		((Transform*)model->FindComponent(ComponentType::Transform))->scaling.x,
-		((Transform*)model->FindComponent(ComponentType::Transform))->scaling.y,
-		((Transform*)model->FindComponent(ComponentType::Transform))->scaling.z
-	};*/
+	
 	
 	ImGui::Begin("Properties");
-	if (ImGui::CollapsingHeader("Transformation"))
-	{
-		
-		/*ImGui::DragFloat3("Position", positionObject);
-		ImGui::DragFloat3("Rotation", rotationObject);
-		ImGui::DragFloat3("Scale", scaleObject);*/
-	}
-	if (ImGui::CollapsingHeader("Geometry"))
-	{
-		ImGui::Text("Number of meshes: %d", numMeshes);
-		ImGui::Text("Number of vertices: %d",numVertices);
-		ImGui::Text("Number of triangles: %d", numVertices/3);
-	}
+	
 	if (ImGui::CollapsingHeader("Texture"))
 	{
 		ImGui::Text("Texture id: %d", textureId);

@@ -9,6 +9,7 @@ public:
 	float3 scaling = float3::zero;
 	float3 position = float3::zero;
 	Quat rotation = Quat::identity;
+	float3 rotationEuler = float3::zero;
 	float4x4 localTransform = float4x4::identity;
 	float4x4 worldTransform = float4x4::identity;
 
@@ -20,7 +21,9 @@ public:
 	virtual ~Transform(){}
 public:
 	void DrawView();
+	void CalculateWorldTransform();
 	void CalculateWorldTransform(const float4x4&);
 	void SetTransform(const aiMatrix4x4&);
+	void CalculateTransform();
 };
 #endif

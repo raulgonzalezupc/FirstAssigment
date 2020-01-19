@@ -28,7 +28,7 @@ void Mesh::Init()
 	;
 }
 
-void Mesh::setupMesh()
+void Mesh::SetUpMesh()
 {
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);

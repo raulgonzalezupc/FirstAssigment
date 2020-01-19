@@ -19,19 +19,21 @@ Component* GameObject::CreateComponent(ComponentType type) {
 		break;
 
 	case ComponentType::Material:
-		//components.push_back(new Material());
+		newComponent = new Material(this);
+		components.push_back(newComponent);
 		break;
 
 	case ComponentType::Mesh:
 		//components.push_back(new Mesh());
 		break;
+
 	default:
 		return nullptr;
 	}
-
-	newComponent->owner = this;
-	components.push_back(newComponent);
-
+	if (newComponent) {
+		newComponent->owner = this;
+		components.push_back(newComponent);
+	}
 	return newComponent;
 
 }
