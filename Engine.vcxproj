@@ -201,6 +201,7 @@
     <ClInclude Include="MathGeoLib\include\Time\Clock.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="ModuleCamera.h" />
+    <ClInclude Include="ModuleDebugDraw.h" />
     <ClInclude Include="ModuleImgui.h" />
     <ClInclude Include="ModuleImporter.h" />
     <ClInclude Include="ModuleModelLoader.h" />
@@ -218,6 +219,7 @@
     <ClInclude Include="ModuleTimer.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="Skybox.h" />
+    <ClInclude Include="Utils\DebugDraw.h" />
     <ClInclude Include="Utils\debug_draw.hpp" />
     <ClInclude Include="Utils\par_shapes.h" />
   </ItemGroup>
@@ -268,6 +270,7 @@
     <ClCompile Include="MathGeoLib\include\Time\Clock.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
+    <ClCompile Include="ModuleDebugDraw.cpp" />
     <ClCompile Include="ModuleImgui.cpp" />
     <ClCompile Include="ModuleImporter.cpp" />
     <ClCompile Include="ModuleModelLoader.cpp" />

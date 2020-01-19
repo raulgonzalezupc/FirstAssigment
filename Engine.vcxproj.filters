@@ -60,6 +60,7 @@
     <ClCompile Include="ModuleScene.cpp" />
     <ClCompile Include="ModuleImporter.cpp" />
     <ClCompile Include="Components\ComponentMesh.cpp" />
+    <ClCompile Include="ModuleDebugDraw.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -196,6 +197,8 @@
     <ClInclude Include="Utils\par_shapes.h" />
     <ClInclude Include="ModuleImporter.h" />
     <ClInclude Include="Components\ComponentMesh.h" />
+    <ClInclude Include="ModuleDebugDraw.h" />
+    <ClInclude Include="Utils\DebugDraw.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assimp\include\assimp\color4.inl" />
