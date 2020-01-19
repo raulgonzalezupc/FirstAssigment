@@ -18,8 +18,10 @@ public:
 	Mesh* myMesh;
 
 	void DrawView();
-
+	void TransformAABB(float4x4* transform);
 	void ProcessMeshData(const MeshData & data);
+	AABB box;
+	AABB originalBox;
 };
 
 #endif 

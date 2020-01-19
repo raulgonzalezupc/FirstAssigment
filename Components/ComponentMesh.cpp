@@ -81,3 +81,10 @@ void ComponentMesh::ProcessMeshData(const MeshData& data)
 
 	myMesh->name = data.name;
 }
+void ComponentMesh::TransformAABB(float4x4* transform) {
+	if (originalBox.IsDegenerate()) {
+		originalBox = box;
+	}
+	box = originalBox;
+	box.TransformAsAABB(*transform);
+}

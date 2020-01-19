@@ -63,20 +63,20 @@ void Camera::DrawFrustumPlanes()
 int Camera::isCollidingFrustum(const AABB& aabb) const
 {
 	float3 edges[8];
-	int totalPointsIn = 0;
+	int totalPointsIn = 6;
 	aabb.GetCornerPoints(edges);
 	Plane viewportPlanes[6];
 	frustum.GetPlanes(viewportPlanes);
 
 	for (int pl = 0; pl < 6; pl++)
 	{
-		int isInPlane = 0;
+		int isInPlane = 1;
 		for (int p = 0; p < 8; p++)
 		{
 			if (viewportPlanes[pl].IsOnPositiveSide(edges[p]))
 			{
-				isInPlane = 1;
-				++totalPointsIn;
+				isInPlane = 0;
+				--totalPointsIn;
 			}
 		}
 	}

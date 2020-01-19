@@ -12,7 +12,7 @@ public:
 	float3 rotationEuler = float3::zero;
 	float4x4 localTransform = float4x4::identity;
 	float4x4 worldTransform = float4x4::identity;
-
+	bool isDirty = false;
 public:
 	Transform(GameObject* owner) : Component(owner, ComponentType::Transform) {}
 	Transform(GameObject* owner, const float3& position, const Quat& rotation) : Component(owner, ComponentType::Transform), position(position), rotation(rotation) {

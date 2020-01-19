@@ -8,9 +8,10 @@
 #include "ModuleModelLoader.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleCamera.h"
+#include "Components/ComponentMesh.h"
 #include "Skybox.h"
 #include <set>
-
+#include "Utils/DebugDraw.h"
 #include "glew/include/GL/glew.h"
 #include "SDL.h"
 #include "stbi/stb_image.h"
@@ -165,6 +166,7 @@ update_status ModuleRender::Update()
 	Camera* cam3 = (Camera*)scene->FindComponent(ComponentType::Camera);
 	cam3->GenerateFBOTexture(cam3->width, cam3->height);
 	App->debugDraw->Draw(cam2);
+	DrawGameObject(App->scene->root, cam2);
 	
 	return UPDATE_CONTINUE;
 }
@@ -186,6 +188,57 @@ bool ModuleRender::CleanUp()
 	//Destroy window
 
 	return true;
+}
+
+void  ModuleRender::DrawGameObject(GameObject* parent, Camera* cam) {
+	DrawMesh(cam, (Transform*)parent->FindComponent(ComponentType::Transform), (ComponentMesh*)parent->FindComponent(ComponentType::Mesh), (Material*)parent->FindComponent(ComponentType::Material));
+	for (unsigned i = 0; i < parent->children.size(); i++) {
+		DrawGameObject(parent->children[i], cam);
+	}
+}
+
+void  ModuleRender::DrawMesh(Camera* cam, Transform* trans, ComponentMesh* mesh, Material* material) {
+	unsigned program = App->program->defaultProgram;
+	glUseProgram(program);
+	if (material) {
+	
+		glUseProgram(program);
+	
+		glUniform1f(glGetUniformLocation(program, "shininess"), material->shininess);
+		glUniform1f(glGetUniformLocation(program, "k_ambient"), material->kAmbient);
+		glUniform1f(glGetUniformLocation(program, "k_diffuse"), material->kDiffuse);
+		glUniform1f(glGetUniformLocation(program, "k_specular"), material->kSpecular);
+		if (material->diffuseMap == 0) {
+			glUniform1i(glGetUniformLocation(program, "use_diffuse_map"), 0);
+			glUniform4fv(glGetUniformLocation(program, "object_color"), 1, (const float*)&material->diffuseColor);
+		}
+		else {
+			glUniform1i(glGetUniformLocation(program, "use_diffuse_map"), 1);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, material->diffuseMap);
+			glUniform1i(glGetUniformLocation(program, "diffuse_map"), 0);
+		}
+	}
+	if (trans) {
+		trans->CalculateTransform();
+		glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &(trans->worldTransform[0][0]));
+	}
+
+	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &(cam->view[0][0]));
+	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &(cam->proj[0][0]));
+	if (mesh) {
+		if (trans->isDirty) {
+			mesh->TransformAABB(&trans->worldTransform);
+			trans->isDirty = false;
+		}
+		if (cam->isCollidingFrustum(mesh->box) == IS_IN) {
+			dd::aabb(mesh->box.minPoint, mesh->box.maxPoint, float3(0, 0, 1));
+			glBindVertexArray(mesh->myMesh->VAO);
+			glDrawElements(GL_TRIANGLES, mesh->myMesh->indices.size(), GL_UNSIGNED_INT, 0);
+			glBindVertexArray(0);
+			glActiveTexture(GL_TEXTURE0);
+		}
+	}
 }
 
 void ModuleRender::ShowGrid()

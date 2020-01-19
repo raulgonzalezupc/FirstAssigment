@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Components/Camera.h"
+#include "Components/ComponentMesh.h"
 #include "GameObject.h"
 #include "Skybox.h"
 #include "MathGeoLib/include/Math/float4x4.h"
@@ -25,6 +26,8 @@ public:
 	update_status Update();
 	update_status PostUpdate();
 	bool CleanUp();
+	void DrawGameObject(GameObject * parent, Camera * cam);
+	void DrawMesh(Camera * cam, Transform * trans, ComponentMesh * mesh, Material * material);
 	int loadCubemap(std::vector<std::string> faces);
 public:
 	void ShowGrid();

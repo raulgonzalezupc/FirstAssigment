@@ -31,7 +31,7 @@ public:
 	unsigned int texture;
 	unsigned int rbo;
 	unsigned int framebuffer;
-
+	
 	unsigned int fboGame, rboGame, textureGame;
 
 	GLuint program;

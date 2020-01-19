@@ -19,7 +19,7 @@ public :
 	const char* name;
 	Mesh* myMesh = nullptr;
 	std::vector<Component*> components;
-	GameObject* parent;
+	GameObject* parent = nullptr;
 	std::vector<GameObject*> children;
 	bool staticGO = false;
 	Transform* myTransform = nullptr;
