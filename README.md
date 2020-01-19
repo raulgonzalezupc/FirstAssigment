@@ -10,11 +10,11 @@
 - Repository: https://github.com/raulgonzalezupc/SecondAssigment
 
 - Licence: This project is licensed under the MIT License - see the [LICENSE](https://github.com/raulgonzalezupc/SecondAssigment/blob/master/LICENSE) file for details.
-The Engine suports FBX models and the respective textures. When it loads the model, the previous one is deleted. 
-
 
 ## How to use it
-- First of all, its going to load the default model with its texture.
+- First of all, its going to load the default model with its texture from the Assets Folder.
+
+- The models Fbx contained on the folder `Assets` will be imported to a new folder `Library/Meshes` as a binary format file. 
 
 - Unity-like controls.
 
