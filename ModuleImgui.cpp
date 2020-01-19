@@ -40,7 +40,7 @@ bool ModuleImgui::Init()
 
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-
+	io.ConfigWindowsMoveFromTitleBarOnly = TRUE;
 
 	SDL_VERSION(&compiled);
 	SDL_GetVersion(&linked);
