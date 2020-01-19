@@ -53,11 +53,9 @@
 	- Implementation of the fbx model import from the ../Assets folder.
 	- Implementation creation of the Binary File for the Mesh and creation of the directory Library/Mesh.
 	- Implementation to process the Mesh binary file and its nodes/meshes though the binary file.
-	- Implementation (comented, not working yet) of the Material importer.
-	- Implementation of the boundinx boxes for the GameObjects in the ModuleScene.
 	- Mesh class refactoring to fit the Mesh importer.
 	- Refactoring of the Old Model Class into the Scene for a later Scene Serialization.
-	- Working on the Json SceneLoader/Saver.
+	
 
 
 ## Authors
