@@ -34,7 +34,7 @@
 - If You want to focus on the model, press `F`.
 
 
-##Parts
+## Parts
 
 - Raúl González:
 	- Implementation and creation of FrameBuffer. 
