@@ -1,7 +1,11 @@
 #include "ModuleScene.h"
 #include "Application.h"
 #include "ModuleModelLoader.h"
+#include "json.hpp"
+#include <fstream>
+#include <iostream>
 
+using json = nlohmann::json;
 
 ModuleScene::ModuleScene()
 {
@@ -35,6 +39,8 @@ bool ModuleScene::Init()
 
 	App->modelLoader->LoadModel("BakerHouse.fbx");
 
+	SaveScene();
+
 	return true;
 }
 
@@ -54,7 +60,8 @@ void ModuleScene::LoadDefaultScene(const char* path)
 	}
 	else
 	{
-		//TODO: Read a json file and load the scene
+		////TODO: Implement and call avay OnLoad method from each component
+
 	}
 }
 
@@ -73,3 +80,14 @@ GameObject* ModuleScene::CreateGameObject(const char* name, const float3& pos, c
 GameObject* ModuleScene::CreateGameObjectByName(const char* name) const {
 	return new GameObject(name);
 }
+
+update_status ModuleScene::Update()
+{
+	return UPDATE_CONTINUE;
+}
+
+void ModuleScene::SaveScene() {
+	//TODO: Implement and call OnSave methods from each component
+
+}
+

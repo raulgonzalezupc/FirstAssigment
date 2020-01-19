@@ -7,15 +7,16 @@
 #include <vector>
 #include "ModuleTexture.h"
 #include "MathGeoLib/include/Geometry/AABB.h"
+
 struct MeshData
 {
 	unsigned int num_indices;
 	unsigned int num_vertices;
 
-	unsigned int * indices;
-	float * positions;
-	float * normals;
-	float * texture_coords;
+	unsigned int * indices = nullptr;
+	float * positions = nullptr;
+	float * normals = nullptr;
+	float * texture_coords = nullptr;
 
 	std::string name;
 };
