@@ -1,35 +1,43 @@
-<h1>Morgoth Engine</h1>
+<h1 align="center" style="border-bottom: none;">Morgoth Engine</h1>
 
-This Engine is a project made by Raúl González, a student of the UPC university (Universitat Politécnica de Catalunya) in 2019. 
+## Morgoth Engine
+- Game Engine developed with C++.
+- Libraries used: [SDL 2.0](https://www.libsdl.org/), [glew 2.1.0](http://glew.sourceforge.net/), [MathGeoLib 3.0.0](https://github.com/juj/MathGeoLib/), [Dear ImGui 1.73](https://github.com/ocornut/imgui/), [DevIL 1.8](http://openil.sourceforge.net/), [assimp 5.0](https://github.com/assimp/assimp/), [OpenGL](https://www.opengl.org/), [Rapidjson 1.1.0](https://github.com/Tencent/rapidjson/).
 
+- Project developed for [UPC programming AAA videogames master's degree](https://www.talent.upc.edu/ing/estudis/formacio/curs/201200/master-degree-advanced-programming-aaa-videogames/).
+
+
+- Repository: https://github.com/raulgonzalezupc/SecondAssigment
+
+- Licence: This project is licensed under the MIT License - see the [LICENSE](https://github.com/raulgonzalezupc/SecondAssigment/blob/master/LICENSE) file for details.
 The Engine suports FBX models and the respective textures. When it loads the model, the previous one is deleted. 
 
-<h3>License: </h3>
 
-This project uses the MIT License.
-
-<hr>
-<h3>Usage:</h3>
-
+## How to use it
 - First of all, its going to load the default model with its texture.
+
+- Unity-like controls.
+
+- `RightClick` + `W` `A` `S` `D` `Q` &rarr; For moving arround the scene.
+- If you want to speed up the movement, just press `Left Shift` while movint to double the speed. 
+
+- `RightClick` + Mouse movement &rarr; FPS camera
+
+- `Alt` + `Left Click` &rarr; Orbit arround the model.
+
+- `MouseWheel` &rarr; Zoom
+
 - If you want to load another one, just drag it from anywhere of your hard drive!
-- You can select the texture you want to attach and drag it. 
-- Feel free to explore the engine.
-- Enjoy!
 
-<h3>Camera Controls:</h3>
+- Pressing `ESC` will quit the app.
 
-- To move around the engine, use W/S/A/D to move forwards, backwards, to left and right respectivily. 
-- Press Q to go Up and E to go Down. 
-- If you want to speed up the movement, just press Left shift while movint to double the speed. 
-- If You want to focus on the model, press F.
-- With the mouse wheel you can aproach or go further at any time. 
-- In case you want to rotate the model, use Left Alt + left click to orbit. 
-- To camera move, use right click. 
+- If You want to focus on the model, press `F`.
 
-<h3>Links of interest</h3>
+## Authors
+| [![Raúl Golzález](https://github.com/raulgonzalezupc.png?size=10)](https://github.com/raulgonzalezupc) | [![Ricard Vivó Montero](https://github.com/RickyVimon.png?size=100)](https://github.com/RickyVimon) |
+| ---- | ---- |
+| [Raúl Golzález](https://github.com/raulgonzalezupc/) | [Ricard Vivó Montero](https://github.com/RickyVimon/) |
 
-[MIT license ](https://github.com/raulgonzalezupc/FirstAssigment/blob/master/LICENSE)
-[GitHub repository](https://github.com/raulgonzalezupc/FirstAssigment)
+
 
  
