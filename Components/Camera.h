@@ -17,7 +17,6 @@ public:
 	Camera(GameObject* owner, int number);
 	~Camera();
 
-	void SetFrustum();
 	
 	void Draw(const char*);
 	void GenerateFBOTexture(unsigned w, unsigned h);

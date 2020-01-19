@@ -176,7 +176,7 @@ update_status ModuleInput::SetInputsWithCam(Camera* cam)
 				if (extension == "fbx")
 				{
 				//ChangeModel(event.drop.file);
-				App->modelLoader->LoadModel(event.drop.file);
+					App->modelLoader->LoadModel(event.drop.file);
 					App->modelLoader->computeModelBoundingBox();
 					App->camera->focusCameraToNewPoint(App->modelLoader->newCameraPos,cam);
 				}

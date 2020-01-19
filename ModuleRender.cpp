@@ -115,30 +115,10 @@ bool ModuleRender::Init()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
-	//glEnable(GL_BLEND);
-
-	/*game = new GameObject("Game");
-	scene = new GameObject("Scene");
-	bakerHouse = new GameObject("BakerHouse");
-
-	camGame = new Camera(game,1);
-	camScene = new Camera(scene,2);
-	game->components.push_back(camGame);
-	scene->components.push_back(camScene);
-*/
-	
-
-
-	//skybox = new Skybox();
-
 	
 	CatchFrameBufferErrors();
 	
-
-
 	App->imgui->AddLog("Using Glew %s\n", glewGetString(GLEW_VERSION));
-
-	//App->modelLoader->LoadModel("BakerHouse.fbx");
 	
 	
 
@@ -167,7 +147,8 @@ update_status ModuleRender::Update()
 	cam3->GenerateFBOTexture(cam3->width, cam3->height);
 	App->debugDraw->Draw(cam2);
 	DrawGameObject(App->scene->root, cam2);
-	
+	cam2->DrawFrustumPlanes();
+	cam3->DrawFrustumPlanes();
 	return UPDATE_CONTINUE;
 }
 
@@ -227,10 +208,11 @@ void  ModuleRender::DrawMesh(Camera* cam, Transform* trans, ComponentMesh* mesh,
 	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &(cam->view[0][0]));
 	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &(cam->proj[0][0]));
 	if (mesh) {
-		if (trans->isDirty) {
+		
 			mesh->TransformAABB(&trans->worldTransform);
 			trans->isDirty = false;
-		}
+			App->modelLoader->Draw(program);
+	
 		if (cam->isCollidingFrustum(mesh->box) == IS_IN) {
 			dd::aabb(mesh->box.minPoint, mesh->box.maxPoint, float3(0, 0, 1));
 			glBindVertexArray(mesh->myMesh->VAO);

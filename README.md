@@ -33,6 +33,22 @@
 
 - If You want to focus on the model, press `F`.
 
+
+##Parts
+
+- Raúl González:
+	- Implementation and creation of FrameBuffer. 
+	- Implementation and creation of the class GameObject.
+	- Implementation and creation of classes: Component, ComponentMesh, ComponentTransform, ComponentMaterial and ComponentCamera.
+	- Implementation and creation of Module Scene with the creation of the Game Object root, scene and Game. 
+	- Implementation and creation of the Hierarchy with Imgui.
+	- Implementation and creation of the Timer class with the restriction of fps and the clock. 
+	- Implementation of the ImGui Docking. 
+	- Implementation of the DebugDraw class. 
+	- Creation of the AABB of the Game Objects. 
+	- Creation of the class Skybox and the respective shaders. 
+
+
 ## Authors
 | [![Raúl Golzález](https://github.com/raulgonzalezupc.png?size=10)](https://github.com/raulgonzalezupc) | [![Ricard Vivó Montero](https://github.com/RickyVimon.png?size=100)](https://github.com/RickyVimon) |
 | ---- | ---- |
